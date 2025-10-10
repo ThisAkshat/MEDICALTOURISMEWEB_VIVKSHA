@@ -1,0 +1,150 @@
+.search-header {
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1rem;
+}
+
+.section-title {
+  color: #2c3e50;
+  font-weight: 600;
+  border-left: 4px solid #007bff;
+  padding-left: 1rem;
+}
+
+/* Doctor Cards */
+.doctor-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #e9ecef;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.doctor-image img {
+  object-fit: cover;
+  border: 2px solid #f8f9fa;
+}
+
+.specialization {
+  color: #007bff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* Treatment Cards */
+.treatment-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+  border: 1px solid #e9ecef;
+}
+
+.treatment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.treatment-details .badge {
+  font-size: 0.75rem;
+}
+
+/* Hospital Cards */
+.hospital-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Card Footer */
+.card-footer {
+  border-top: 1px solid #f8f9fa;
+}
+
+/* Loading and Empty States */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.no-results,
+.no-search {
+  padding: 3rem 1rem;
+}
+
+.no-results i,
+.no-search i {
+  opacity: 0.5;
+}
+.user-card-content h5 {
+    color: var(--secondary-color);
+    font-weight: 500;
+    margin-bottom: 5px;
+    font-size: 18px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.hospital-card .card-location
+{
+    margin-top: 12px;
+}
+.doctors-card-info .card-location
+ {
+    margin-top: 12px;
+}
+.fee-amount
+{
+  color: #34363D;
+  font-weight: 600;
+  font-family: "OpenSans-SemiBold";
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .doctor-image img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Animation for cards appearing */
+.card {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -1,0 +1,67 @@
+<footer class="footer-main">
+  <div class="container">
+    <div class="row">
+      <!-- About Section -->
+      <div class="col-lg-4">
+        <div class="footer-about pe-4">
+          <h2>LOGO</h2>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+            when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+          </p>
+          <div class="footer-social">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="row">
+            <div class="col-lg-6 col-6">
+                <h4 class="footer-head">Links</h4>
+                <div class="footer-link">
+                    <ul class="ps-3 mb-0">
+                        <li *ngFor="let link of footerlink1">
+                            <a [routerLink]="link.route">{{ link.label }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 col-6">
+                <h4 class="footer-head">Services</h4>
+                <div class="footer-link">
+                    <ul class="ps-3 mb-0">
+                        <li *ngFor="let link of footerlink2">
+                            <a [routerLink]="link.route">{{ link.label }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- Quick Links -->
+      <div class="col-lg-3">
+        <div class="footer-news">
+            <h4 class="footer-head">Newsletter</h4>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting.</p>
+            <div class="footer-newsletter">
+                <form (ngSubmit)="subscribe()" #newsletterForm="ngForm" class="position-relative">
+                    <input  type="email" [(ngModel)]="email" name="email" placeholder="Email Address" class="form-control mb-2"/>
+                    <button type="submit" class="btn"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+            <div class="footer-contact mt-3">
+                <a href="#"><i class="fa-solid fa-phone"></i> +91 98547-58742</a>
+                <a href="#"><i class="fa-solid fa-envelope"></i> example@gmail.com</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<div class="footer-bottom text-center py-3">
+    <p class="mb-0">© 2025 Your Company. All rights reserved.</p>
+</div>

@@ -1,0 +1,378 @@
+<app-hero-section (searchResultsChange)="onSearchResultsChange($event)"></app-hero-section>
+
+<!-- Home page content - only show when no search results -->
+<div *ngIf="!hasSearchResults">
+
+    <section class="banner-services ptc-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="banner-offer">
+                        <img [src]="'assets/images/cancer.svg'">
+                        <p>Cancer Treatment <br>In India</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="banner-offer">
+                        <img [src]="'assets/images/nephrology.svg'">
+                        <p>Nephrology Treatment <br>In India</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="banner-offer">
+                        <img [src]="'assets/images/stem-cell.svg'">
+                        <p>Stem Cell Therapy <br>In India</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-us ptc-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img [src]="'assets/images/about-us.png'" class="img-fluid w-100">
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-details">
+                        <h2>Why You Choose <br> Medical Tourism</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                            galley of type and scrambled it to make a type specimen book. It has survived not only five
+                            centuries, but also the leap into electronic.</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                            galley of type and scrambled it to make a type specimen book. It has survived not only five
+                            centuries.</p>
+                        <a href="#" class="btn-default">About Us <i class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="we-offer ptc-80">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="main-head text-center mbc-50">
+                        <h2>What We Offer</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Dynamic Offers -->
+                <div class="col-lg-4" *ngFor="let offer of offers">
+                    <div class="offer-box position-relative">
+                        <img [src]="getOfferImageUrl(offer)" class="rounded-4 img-fluid home-offer-img"
+                            [alt]="offer.name">
+
+                        <!-- Discount Badge -->
+
+
+                        <div class="offer-info">
+                            <h4>{{ offer.name }}</h4>
+                            <div class="offer-tag">
+                                <span class="badge" *ngIf="offer.location">{{ offer.location.split(',')[0] }}</span>
+                                <span class="badge" *ngIf="offer.is_free_camp" class="text-success">Free Camp</span>
+                                <span class="badge">{{ offer.discount_percentage }}% OFF</span>
+                                <span class="badge" *ngIf="offer.treatment_type">{{ offer.treatment_type }}</span>
+                            </div>
+                        </div>
+                        <a [routerLink]="['/attractions-detail', offer.id]" class="offer-detail-btn">
+                            <img [src]="'assets/images/offer-link.svg'">
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Fallback if no offers -->
+                <div class="col-lg-12 text-center py-5" *ngIf="offers.length === 0">
+                    <p class="text-muted">No offers available at the moment</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="packages ptc-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="packages-head d-flex align-items-center justify-content-between mbc-40">
+                        <h2 class="mb-0">Our Packages</h2>
+                        <a href="#" class="btn-default">View All <i class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="package-box position-relative">
+                                <div class="package-title d-flex align-items-center">
+                                    <img [src]="'assets/images/packages1.svg'">
+                                    <h5 class="mb-0">Basic Health Checkup</h5>
+                                </div>
+                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+                                    1500s...</p>
+                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="package-box position-relative">
+                                <div class="package-title d-flex align-items-center">
+                                    <img [src]="'assets/images/packages2.svg'">
+                                    <h5 class="mb-0">Heart Implants</h5>
+                                </div>
+                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+                                    1500s...</p>
+                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="package-box position-relative">
+                                <div class="package-title d-flex align-items-center">
+                                    <img [src]="'assets/images/packages3.svg'">
+                                    <h5 class="mb-0">Kidney Transplant</h5>
+                                </div>
+                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+                                    1500s...</p>
+                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="package-box position-relative">
+                                <div class="package-title d-flex align-items-center">
+                                    <img [src]="'assets/images/packages4.svg'">
+                                    <h5 class="mb-0">Shoulder Arthroscopy</h5>
+                                </div>
+                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
+                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+                                    1500s...</p>
+                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <img [src]="'assets/images/packages-main.png'" class="img-fluid w-100 rounded-4 mt-2">
+                </div>
+            </div> -->
+            <!-- Nawab -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row" *ngIf="treatments.length > 0">
+                        <div class="col-lg-6 col-md-6" *ngFor="let treatment of treatments; let i = index">
+                            <div class="package-box position-relative">
+                                <div class="package-title d-flex align-items-center">
+                                    <!-- Static images -->
+                                    <img [src]="'assets/images/packages' + (i + 1) + '.svg'">
+                                    <h5 class="mb-0">{{ treatment.name }}</h5>
+                                </div>
+                                <p class="mb-0">{{ treatment.long_description }}</p>
+                                <a [routerLink]="['/treatment-detail/', treatment.id]">
+                                    <img [src]="'assets/images/packages-detail.svg'">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fallback if no featured treatments -->
+                    <div class="row" *ngIf="treatments.length === 0">
+                        <div class="col-lg-12 text-center py-5">
+                            <p class="text-muted">No featured treatments available at the moment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="package-image">
+                        <img [src]="'assets/images/packages-main.png'" class="img-fluid w-100 rounded-4 mt-2">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nawab -->
+
+        </div>
+    </section>
+    <section class="home-hospital ptc-80">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="main-head text-center mbc-50">
+                        <h2>Featured Hospitals</h2>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading spinner -->
+            <div *ngIf="loadingHospitals" class="text-center w-100 py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Hospital slider -->
+            <div *ngIf="!loadingHospitals && hospitals.length">
+                <owl-carousel-o [options]="hospitalSliderOptions">
+                    <ng-container *ngFor="let h of hospitals">
+                        <ng-template carouselSlide>
+                            <div class="user-card hospital-card">
+                                <div class="card-inner">
+                                    <div class="user-card-img">
+                                        <img *ngIf="h.images?.length"
+                                            [src]="'http://165.22.223.163:8000' + h.images[0].url" [alt]="h.name"
+                                            class="card-img-top img-fluid" />
+                                    </div>
+                                    <div class="user-card-content">
+                                        <h5 class="card-title">{{ h.name }}</h5>
+                                        <div class="user-card-description">
+                                            <p class="card-text truncate-2">{{ h.description }}</p>
+                                        </div>
+                                        <div class="d-flex align-items-center card-location">
+                                            <img [src]="'assets/images/card-location.svg'" alt="Location icon">
+                                            <p class="user-card-location mb-0">{{ h.location }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="read-more">
+                                        <a *ngIf="h.id" [routerLink]="['/hospital-detail', h.id]" class="btn">
+                                            More Detail <i class="fa fa-arrow-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </owl-carousel-o>
+            </div>
+
+            <!-- No hospitals message -->
+            <div *ngIf="!loadingHospitals && !hospitals.length" class="text-center w-100 py-5">
+                <p>No hospitals found.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="web-info ptc-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img [src]="'assets/images/info-image.png'" class="img-fluid w-100 rounded-4">
+                </div>
+                <div class="col-lg-6">
+                    <div class="info-detail">
+                        <h4>Lorem Ipsum Is <br> Dummy Text Of The Printing</h4>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                            galley of type and scrambled it to make a type specimen book. It has survived not only five
+                            centuries, but also the leap into electronic typesetting. </p>
+                        <div class="counters-main d-flex align-items-center">
+                            <!-- Patients Counter -->
+                            <div class="counter d-flex align-items-center">
+                                <img [src]="'assets/images/info-patients.svg'">
+                                <div class="counter-number">
+                                    <h1 class="mb-0">{{ patientsCount }}+</h1>
+                                    <p class="mb-0">Satisfied Patients</p>
+                                </div>
+                            </div>
+
+                            <!-- Awards Counter -->
+                            <div class="counter d-flex align-items-center">
+                                <img [src]="'assets/images/info-awards.svg'">
+                                <div class="counter-number">
+                                    <h1 class="mb-0">{{ awardsCount }}+</h1>
+                                    <p class="mb-0">Awards Winning</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="we-offer ptc-80">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="main-head text-center mbc-50">
+                        <h2>Our Partner Hospital</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br>Lorem Ipsum
+                            has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" *ngIf="partners.length > 0">
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-sm-6 col-6" *ngFor="let partner of partners">
+                    <div class="partner-logo h-100">
+                        <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name"
+                            class="img-fluid">
+                        <!-- <p>{{ partner.name }}</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="we-offer ptc-80">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="main-head text-center mbc-50">
+                        <h2>Patient Stories Of Care And Recovery</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="client-feedback" *ngIf="patientStories.length">
+                        <owl-carousel-o [options]="customOptions">
+                            <ng-template carouselSlide *ngFor="let story of patientStories">
+                                <div class="feedback-card p-3">
+
+                                    <!-- Dynamic Rating Stars -->
+                                    <div class="user-card-rating d-flex align-items-center">
+                                        <ng-container *ngFor="let star of getStars(story.rating)">
+                                            <!-- Full star -->
+                                            <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                                            <!-- Half star -->
+                                            <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                                            <!-- Empty star -->
+                                            <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                                        </ng-container>
+                                    </div>
+
+                                    <!-- Patient Description -->
+                                    <p>{{ story.description | slice:0:200 }}...</p>
+                                    <hr>
+
+                                    <!-- Profile Photo & Name -->
+                                    <div class="feedback-profile d-flex align-items-center">
+                                        <img [src]="'http://165.22.223.163:8000' + story.profile_photo"
+                                            alt="{{ story.patient_name }}" class="me-2 rounded-circle" width="50"
+                                            height="50">
+                                        <h6 class="mb-0">{{ story.patient_name }}</h6>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

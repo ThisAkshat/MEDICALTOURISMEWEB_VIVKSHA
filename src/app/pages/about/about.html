@@ -1,0 +1,341 @@
+<section class="inner-banner" *ngIf="banner">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-baner-dtl position-relative text-center">
+                    <!-- Dynamic Banner Image -->
+                    <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+                    <div class="inner-heading">
+                        <h2>{{ banner.title }}</h2>
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                            <li><a routerLink="/">Home</a></li>
+                            <li><img src="assets/images/breadcumb.svg" /></li>
+                            <li><a routerLink="/about">{{ banner.name }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="about-us about-main ptc-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="about-details">
+                    <p class="sub-head">About Us</p>
+                    <h2>Why You Choose <br> Medical Tourism</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                        galley of type and scrambled it to make a type specimen book. It has survived not only five
+                        centuries, but also the leap into electronic.</p>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                        galley of type and scrambled it to make a type specimen book. It has survived not only five
+                        centuries.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img [src]="'assets/images/about1.png'" class="img-fluid w-100">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="oue-vision position-relative mtc-80">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <div class="about-vision">
+                    <img [src]="'assets/images/about-vision.png'" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="vision-detail about-details">
+                    <h2>Lorem Ipsum <br>Medical Tourism</h2>
+                    <p class="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+                        has
+                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
+                        galley of type and scrambled it to make a type specimen book. It has survived not only five
+                        centuries, but also the leap into electronic typesetting.</p>
+                    <div class="vision-main d-flex align-items-center">
+                        <img [src]="'assets/images/vision.svg'">
+                        <div class="vision-inner">
+                            <h4>Our Vision</h4>
+                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem
+                                Ipsum has been the industry's standard dummy text ever since.</p>
+                        </div>
+                    </div>
+                    <div class="vision-main d-flex align-items-center">
+                        <img [src]="'assets/images/mission.svg'">
+                        <div class="vision-inner">
+                            <h4>Our Vision</h4>
+                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                Lorem
+                                Ipsum has been the industry's standard dummy text ever since.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="about-back"></div>
+</section>
+<section class="about-feture ptc-80">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="about-feture-head about-details ps-0">
+                    <h2>Professionals dedicated to your health</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-feture-list">
+                    <ul class="mb-0">
+                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
+                                the printing and typeing.</span></li>
+                        <li><img [src]="'assets/images/features-check.svg'"><span>It is a long established fact that a
+                                reader will be distracted by the readable content of a page when looking.</span></li>
+                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
+                                the printing and typeing.</span></li>
+                        <li><img [src]="'assets/images/features-check.svg'"><span>It is a long established fact that a
+                                reader will be distracted.</span></li>
+                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
+                                the printing and typeing.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="about-feture-main position-relative">
+                    <img [src]="'assets/images/about-5.png'" class="img-fluid w-100 rounded-5">
+                    <div class="about-feture-info">
+                        <div class="about-feture-info-main">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="about-feture-dtl d-flex align-items-center">
+                                        <img [src]="'assets/images/doctor-expert.svg'">
+                                        <div class="about-feture-inner">
+                                            <h5>50+ Expert Doctor</h5>
+                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and
+                                                typesetting.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="about-feture-dtl d-flex align-items-center">
+                                        <img [src]="'assets/images/support.svg'">
+                                        <div class="about-feture-inner">
+                                            <h5>24/7 Instant Support</h5>
+                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and
+                                                typesetting.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="about-feture-dtl d-flex align-items-center">
+                                        <img [src]="'assets/images/happy-patient.svg'">
+                                        <div class="about-feture-inner">
+                                            <h5>2500+ Happy Patient</h5>
+                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and
+                                                typesetting.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="about-option ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Professionals dedicated to <br>your health</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="about-option-inner">
+                    <img [src]="'assets/images/equipment.svg'">
+                    <h6>Modern Equipment</h6>
+                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="about-option-inner">
+                    <img [src]="'assets/images/highly-doctor.svg'">
+                    <h6>Highly Qualified Doctor</h6>
+                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="about-option-inner">
+                    <img [src]="'assets/images/treatment.svg'">
+                    <h6>Pain - Free Treatment</h6>
+                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="we-offer ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Our Partner Hospital</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                        been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" *ngIf="partners.length > 0">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-6 col-6" *ngFor="let partner of partners">
+                <div class="partner-logo h-100">
+                    <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name" class="img-fluid">
+                    <!-- <p>{{ partner.name }}</p> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="we-offer ptc-80">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9">
+                    <div class="main-head text-center mbc-50">
+                        <h2>Patient Stories Of Care And Recovery</h2>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                  <div class="client-feedback" *ngIf="patientStories.length">
+                    <owl-carousel-o [options]="customOptions">
+                      <ng-template carouselSlide *ngFor="let story of patientStories">
+                        <div class="feedback-card p-3">
+                          
+                          <!-- Dynamic Rating Stars -->
+                          <div class="user-card-rating d-flex align-items-center">
+                            <ng-container *ngFor="let star of getStars(story.rating)">
+                              <!-- Full star -->
+                              <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                              <!-- Half star -->
+                              <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                              <!-- Empty star -->
+                              <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                            </ng-container>
+                          </div>
+              
+                          <!-- Patient Description -->
+                          <p>{{ story.description | slice:0:200 }}...</p>
+                          <hr>
+              
+                          <!-- Profile Photo & Name -->
+                          <div class="feedback-profile d-flex align-items-center">
+                            <img [src]="'http://165.22.223.163:8000' + story.profile_photo" alt="{{ story.patient_name }}" class="me-2 rounded-circle" width="50" height="50">
+                            <h6 class="mb-0">{{ story.patient_name }}</h6>
+                          </div>
+              
+                        </div>
+                      </ng-template>
+                    </owl-carousel-o>
+                  </div>
+                </div>
+              </div>
+              
+        </div>
+    </section>
+<!-- <section class="we-offer ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Patient Stories Of Care And Recovery</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
+                        been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="client-feedback">
+                    <owl-carousel-o [options]="customOptions">
+                        <ng-template carouselSlide>
+                            <div class="feedback-card">
+                                <img [src]="'assets/images/rating-star.svg'">
+                                <p>My first appointment, but the staff was so welcoming. They took the time to listen to
+                                    my concerns and made sure I felt comfortable.</p>
+                                <hr>
+                                <div class="feedback-profile d-flex align-items-center">
+                                    <img [src]="'assets/images/profile1.png'">
+                                    <h6>Brooklyn Simmons</h6>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template carouselSlide>
+                            <div class="feedback-card">
+                                <img [src]="'assets/images/rating-star.svg'">
+                                <p>My first appointment, but the staff was so welcoming. They took the time to listen to
+                                    my concerns and made sure I felt comfortable.</p>
+                                <hr>
+                                <div class="feedback-profile d-flex align-items-center">
+                                    <img [src]="'assets/images/profile2.png'">
+                                    <h6>Brooklyn Simmons</h6>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template carouselSlide>
+                            <div class="feedback-card">
+                                <img [src]="'assets/images/rating-star.svg'">
+                                <p>My first appointment, but the staff was so welcoming. They took the time to listen to
+                                    my concerns and made sure I felt comfortable.</p>
+                                <hr>
+                                <div class="feedback-profile d-flex align-items-center">
+                                    <img [src]="'assets/images/profile1.png'">
+                                    <h6>Brooklyn Simmons</h6>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template carouselSlide>
+                            <div class="feedback-card">
+                                <img [src]="'assets/images/rating-star.svg'">
+                                <p>My first appointment, but the staff was so welcoming. They took the time to listen to
+                                    my concerns and made sure I felt comfortable.</p>
+                                <hr>
+                                <div class="feedback-profile d-flex align-items-center">
+                                    <img [src]="'assets/images/profile2.png'">
+                                    <h6>Brooklyn Simmons</h6>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </owl-carousel-o>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->

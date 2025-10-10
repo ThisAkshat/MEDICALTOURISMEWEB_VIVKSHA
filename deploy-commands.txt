@@ -1,0 +1,23 @@
+# Commands to run on your Ubuntu server
+
+# 1. Install Node.js and npm (if not already installed)
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# 2. Navigate to your project directory
+cd ~/medi-tour-backend/mediTour-Frontend
+
+# 3. Install dependencies
+npm install
+
+# 4. Build the Angular application
+npm run build
+
+# 5. Start the server
+node server.js
+
+# Alternative: Use PM2 for production (recommended)
+# sudo npm install -g pm2
+# pm2 start server.js --name "medical-tourism"
+# pm2 startup
+# pm2 save

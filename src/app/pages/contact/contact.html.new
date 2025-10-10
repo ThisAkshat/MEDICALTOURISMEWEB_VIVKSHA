@@ -1,0 +1,169 @@
+<section class="inner-banner">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-baner-dtl position-relative text-center">
+                    <!-- Banner Image -->
+                    <img [src]="'assets/images/contact-us.png'" class="w-100 img-fluid rounded-5" />
+                    <div class="inner-heading">
+                        <h2>Contact Us</h2>
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                            <li><a routerLink="/">Home</a></li>
+                            <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                            <li><a routerLink="/">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-detail ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Contact Us</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="contact-inner d-flex align-items-center">
+                    <img [src]="'assets/images/call.svg'" />
+                    <div class="contact-info">
+                        <h5>Call Now</h5>
+                        <p class="mb-0">+91 98XXX XXX25</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-inner d-flex align-items-center">
+                    <img [src]="'assets/images/email.svg'" />
+                    <div class="contact-info">
+                        <h5>Send Email</h5>
+                        <p class="mb-0">example85@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-inner d-flex align-items-center">
+                    <img [src]="'assets/images/location-contact.svg'" />
+                    <div class="contact-info">
+                        <h5>Address</h5>
+                        <p class="mb-0">85/4, lorem, Ipsum is simply dummy text</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-form ptc-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <img [src]="'assets/images/contact-form.png'" class="img-fluid w-100 rounded-4" />
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-form-inner">
+                    <div *ngIf="!isSubmitted">
+                        <h5>Get in touch with us</h5>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                            the industry's standard dummy.</p>
+                        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" placeholder="First Name"
+                                            formControlName="firstName" />
+                                        <div class="text-danger"
+                                            *ngIf="contactForm.get('firstName')?.touched && contactForm.get('firstName')?.invalid">
+                                            First Name is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" placeholder="Last Name"
+                                            formControlName="lastName" />
+                                        <div class="text-danger"
+                                            *ngIf="contactForm.get('lastName')?.touched && contactForm.get('lastName')?.invalid">
+                                            Last Name is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control" placeholder="Enter Email Id"
+                                            formControlName="email" />
+                                        <div class="text-danger"
+                                            *ngIf="contactForm.get('email')?.touched && contactForm.get('email')?.invalid">
+                                            Enter a valid email
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" placeholder="Enter Mobile Number"
+                                            formControlName="mobile" />
+                                        <div class="text-danger"
+                                            *ngIf="contactForm.get('mobile')?.touched && contactForm.get('mobile')?.invalid">
+                                            Enter a valid 10-digit mobile number
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" formControlName="department">
+                                    <option value="">Select Treatment Type</option>
+                                    <option *ngFor="let type of treatmentTypes" [value]="type">
+                                        {{ type }}
+                                    </option>
+                                </select>
+                                <div class="text-danger"
+                                    *ngIf="contactForm.get('department')?.touched && contactForm.get('department')?.invalid">
+                                    Treatment type is required
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" rows="3" placeholder="Enter Your Query"
+                                    formControlName="query"></textarea>
+                                <div class="text-danger"
+                                    *ngIf="contactForm.get('query')?.touched && contactForm.get('query')?.invalid">
+                                    Query is required
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn-default">Send <i class="fa-solid fa-arrow-up"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Thank you message after submission -->
+                    <div *ngIf="isSubmitted" class="text-center py-5">
+                        <i class="fa fa-check-circle text-success" style="font-size: 48px;"></i>
+                        <h3 class="mt-4">Thank You!</h3>
+                        <p class="mb-4">Your message has been successfully sent. We will contact you very soon!</p>
+                        <button class="btn-default" (click)="isSubmitted = false">Send Another Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contact-map ptc-80">
+    <div class="container">
+        <div class="col-lg-12">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14717.094017012312!2d75.88652043885348!3d22.755229057468668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af403406fb%3A0x5b50834b117f8bab!2sVijay%20Nagar%2C%20Scheme%20No%2054%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1758971607856!5m2!1sen!2sin"
+                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>

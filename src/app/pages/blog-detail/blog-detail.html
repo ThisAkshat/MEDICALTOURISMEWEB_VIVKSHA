@@ -1,0 +1,121 @@
+<section class="inner-banner" *ngIf="banner">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="inner-baner-dtl position-relative text-center">
+            <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+            <div class="inner-heading">
+              <h2>{{ banner.title }}</h2>
+              <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                <li><a routerLink="/">Home</a></li>
+                <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                <li><a routerLink="/blog">{{ banner.title }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<section class="blog-main blog-detail ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Blog/Articles</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-card" *ngIf="blog">
+                    <!-- Featured image -->
+                    <div class="blog-dtl-img">
+                        <img [src]="getImageUrl(blog.featured_image)" class="w-100 img-fluid rounded-4"
+                            alt="{{ blog.title }}" />
+                    </div>
+
+                    <div class="blog-card-dtl">
+                        <!-- Date -->
+                        <div class="blog-date d-flex align-items-center">
+                            <img [src]="'assets/images/date.svg'" class="img-fluid me-2" />
+                            <p class="mb-0">{{ blog.published_at | date : 'MMMM d, y' }}</p>
+                        </div>
+
+                        <!-- Title -->
+                        <h4>{{ blog.title }}</h4>
+
+                        <!-- Subtitle -->
+                        <p class="mb-0"><em>{{ blog.subtitle }}</em></p>
+
+                        <!-- Main content (HTML from API) -->
+                        <div class="blog-dtl mt-3" [innerHTML]="blog.content"></div>
+
+                        <!-- Extra images (if available) -->
+                        <div class="blogdtl-img mt-4" *ngIf="blog.images?.length">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6" *ngFor="let img of blog.images">
+                                    <img [src]="getImageUrl(img.url)" class="img-fluid w-100 rounded-3 mb-3" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-4">
+                <div class="blog-category-main">
+                    <div class="blog-category">
+                        <div class="detail-doctors">
+                            <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                                <h4>Categories</h4>
+                            </div>
+                            
+                            <!-- Dynamic categories from blog data -->
+                            <div class="dtl-doctor-info" *ngFor="let category of categories">
+                                <p>
+                                    <a href="#" (click)="filterByCategory(category); $event.preventDefault()">
+                                        {{ category }}
+                                    </a>
+                                </p>
+                            </div>
+                            
+                            <!-- Fallback message if no categories -->
+                            <div class="dtl-doctor-info" *ngIf="categories.length === 0">
+                                <p class="text-muted">No categories available</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-doctors recent-post">
+                                            <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                            <h4>Recent Posts</h4>
+                        </div>
+                        
+                        <!-- Dynamic recent posts from blog data -->
+                        <div class="dtl-doctor-list d-flex align-items-center" *ngFor="let post of recentPosts">
+                            <div class="dtl-doctor-img">
+                                <img [src]="getImageUrl(post.featured_image)" class="img-fluid">
+                            </div>
+                            <div class="dtl-doctor-info">
+                                <p>
+                                    <a [attr.href]="'/blog-detail/' + post.id" class="text-decoration-none">
+                                        {{ post.title }}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Fallback message if no recent posts -->
+                        <div class="dtl-doctor-info" *ngIf="recentPosts.length === 0">
+                            <p class="text-muted">No recent posts available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,17 @@
+<div class="book-package-modal">
+  <div class="modal-backdrop" *ngIf="show" (click)="onClose()"></div>
+
+  <div class="modal" *ngIf="show">
+    <div class="modal-header">
+      <h3 class="mb-0">{{ title }}</h3>
+      <button class="close-btn" (click)="onClose()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <!-- <div class="modal-footer justify-content-start">
+      <button type="submit" class="btn-default">Send <i class="fa-solid fa-arrow-up"></i></button>
+    </div> -->
+  </div>
+</div>

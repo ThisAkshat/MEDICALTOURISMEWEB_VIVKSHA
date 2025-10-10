@@ -1,0 +1,132 @@
+.doctors-card-info .card-location
+{
+    margin-top: 12px;
+}
+/* Keep your existing styles */
+.doctors-card-info .card-location {
+  margin-top: 12px;
+}
+
+/* Custom Select Wrapper */
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 200px;
+}
+
+/* Form Select Button */
+.form-select {
+  position: relative;
+  background-color: #fff;
+  color: #333;
+  padding: 8px 30px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+  width: 100%;
+  background-image: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form-select:hover {
+  border-color: #007bff;
+}
+
+.form-select span:first-child {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Placeholder styling */
+.form-select.placeholder span {
+  color: #AEAEAE;
+}
+
+/* Dropdown Arrow */
+.form-select::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #333;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.form-select.open::after {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Container */
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+/* Dropdown Options */
+.select-option {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #fff;
+  color: #333;
+}
+
+.select-option:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.select-option.selected {
+  background-color: #e7f3ff;
+  color: #007bff;
+}
+
+.select-option:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.select-option:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* Scrollbar styling */
+.select-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.select-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

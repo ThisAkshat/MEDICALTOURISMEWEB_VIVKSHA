@@ -1,0 +1,220 @@
+<section class="inner-banner" *ngIf="hospital">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-baner-dtl position-relative text-center">
+                    <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[1].url"
+                        class="w-100 img-fluid rounded-5 banner-img" [alt]="hospital.name" />
+                    <!-- <img [src]="'assets/images/associate-hospital.png'" class="w-100 img-fluid rounded-5" /> -->
+                    <div class="inner-heading">
+                        <h2>{{ hospital.name }}</h2>
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                            <li><a routerLink="/">Home</a></li>
+                            <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                            <li><a routerLink="/associate-hospitals">Associate Hospitals</a></li>
+                            <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                            <li><a routerLink="/">{{ hospital.name }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hospital-detail ptc-80" *ngIf="hospital">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="detail-image">
+                    <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[0].url"
+                        class="img-fluid w-100" [alt]="hospital.name" />
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="dtl-info hospital-info">
+                    <h2 class="section-title">{{ hospital.name }}</h2>
+                    <div class="detail-location d-flex align-items-center card-location">
+                        <img [src]="'assets/images/card-location.svg'">
+                        <p class="mb-0">{{ hospital.location }}</p>
+                    </div>
+                    <div class="detail-description">
+                        <p>{{ hospital.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="detail-info">
+                    <div class="dtl-head">
+                        <h2>Lorem ipsum is simply dummy text</h2>
+                    </div>
+                    <p class="mb-0">Cras vel bibendum nisl. Sed tincidunt purus nec vehicula aliquet. Vestibulum gravida
+                        molestie
+                        lectus, ut facilisis nisl ultrices eu. Ut sed nunc quis metus egestas fringilla sed at arcu.
+                        Aenean vel varius orci. Morbi sed augue at odio mattis vehicula. Quisque nisl dui, vehicula vel
+                        lacinia congue, pellentesque eget dolor. Aliquam ullamcorper tempus risus ut luctus. Curabitur
+                        nec nisi cursus, semper turpis in, bibendum risus. Aenean ac diam a nulla tincidunt lobortis a
+                        eu erat. Nullam sit amet mauris vel urna ornare suscipit at ac metus. Maecenas hendrerit magna
+                        efficitur felis ultrices, sit amet sollicitudin nisi porta. Curabitur in massa vel diam euismod
+                        vestibulum.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="facilities ptc-60" *ngIf="hospital">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="dtl-head">
+                    <h2>Facilities :-</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="hospital?.facilities">
+            <div class="col-lg-3 col-md-6" *ngFor="let facility of hospital.facilities.split('\n'); let i = index">
+                <div class="facility-item d-flex align-items-center justify-content-center">
+                    <img [src]="facilityIcons[i] || 'assets/images/facilities/default.png'" alt="facility {{ i + 1 }}"
+                        class="img-fluid" />
+                    <p class="mb-0">{{ facility.trim() }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="facilities ptc-60" *ngIf="hospital">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="dtl-head">
+                    <h2>Key Features :-</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div *ngIf="hospital?.features" class="dtl-features-list">
+                    <ul class="list-unstyled mb-0">
+                        <li *ngFor="let feature of hospital.features.split('\n')">
+                            <img [src]="featureIcon" alt="feature icon" />
+                            <span>{{ feature.trim() }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="dtl-center-image ptc-60" *ngIf="hospital">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[2].url"
+                    class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[3].url"
+                    class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
+            </div>
+        </div>
+    </div>
+</section>
+<section class="faq-main ptc-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="dtl-faq">
+                    <div class="faq-head">
+                        <p>Frequently Asked Questions</p>
+                        <h4>Helping you understand healthcare</h4>
+                    </div>
+
+                    <div class="accordion accordion-main" id="accordionExample">
+                        <div class="accordion-item" *ngFor="let faq of getDynamicFaqs(); let i = index">
+                            <h2 class="accordion-header" [id]="'heading' + i">
+                                <button class="accordion-button" type="button" [class.collapsed]="!isFaqExpanded(i)"
+                                    (click)="toggleFaq(i)" [attr.aria-expanded]="isFaqExpanded(i)"
+                                    [attr.data-bs-target]="'#collapse' + i" [attr.aria-controls]="'collapse' + i">
+                                    {{ faq.question }}
+                                </button>
+                            </h2>
+                            <div [id]="'collapse' + i" class="accordion-collapse collapse"
+                                [class.show]="isFaqExpanded(i)" [attr.data-bs-parent]="'#accordionExample'">
+                                <div class="accordion-body">
+                                    <p class="mb-0">{{ faq.answer }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="detail-doctors">
+                    <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                        <h4>Top Doctors</h4>
+                        <a href="/doctors">View All</a>
+                    </div>
+
+                    <!-- Loading state -->
+                    <div *ngIf="loadingDoctors" class="text-center py-3">
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading doctors...</span>
+                        </div>
+                        <p class="mt-2 mb-0">Loading hospital doctors...</p>
+                    </div>
+
+                    <!-- Dynamic doctor list -->
+                    <div *ngFor="let doctor of hospitalDoctors" class="dtl-doctor-list d-flex align-items-center">
+                        <div class="dtl-doctor-img">
+                            <img *ngIf="doctor.profile_photo" [src]="baseUrl + doctor.profile_photo" [alt]="doctor.name"
+                                class="img-fluid">
+                            <img *ngIf="!doctor.profile_photo" [src]="'assets/images/dtl-doctor.png'" class="img-fluid">
+                        </div>
+                        <div class="dtl-doctor-info">
+                            <p>{{ doctor.name }}</p>
+                            <ul>
+                                <li>{{ doctor.designation || doctor.specialization }}</li>
+                                <li *ngIf="doctor.experience_years">{{ doctor.experience_years }} Years of Experience
+                                </li>
+                                <li *ngIf="!doctor.experience_years && doctor.consultancy_fee">Consultation Fee: ₹{{
+                                    doctor.consultancy_fee | number }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- No doctors found -->
+                    <div *ngIf="!loadingDoctors && hospitalDoctors.length === 0" class="text-center py-3">
+                        <p class="mb-0 text-muted">No doctors available at this time.</p>
+                        <small class="text-muted">Please check back later or contact us for more information.</small>
+                    </div>
+
+                    <!-- Debug info (remove in production) -->
+                    <div *ngIf="!loadingDoctors" class="mt-2" style="font-size: 12px; color: #666;">
+                        <small>Debug: {{ hospitalDoctors.length }} doctors loaded</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="dtl-cta ptc-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="dtl-cta-main position-relative">
+                    <img [src]="'assets/images/dtl-cta.jpg'" class="img-fluid w-100 rounded-4">
+                    <div class="dtl-cta-action">
+                        <h2>Take the first step to <br> better health</h2>
+                        <a href="/contact" class="btn-default">Talk To Our Experts Now <i
+                                class="fa-solid fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

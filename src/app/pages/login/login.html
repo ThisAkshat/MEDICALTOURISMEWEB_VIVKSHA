@@ -1,0 +1,92 @@
+<section class="inner-banner" *ngIf="banner">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="inner-baner-dtl position-relative text-center">
+            <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+            <div class="inner-heading">
+              <h2>{{ banner.title }}</h2>
+              <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                <li><a routerLink="/">Home</a></li>
+                <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                <li><a routerLink="/login">{{ banner.title }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<section class="contact-form login-form ptc-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <img [src]="'assets/images/contact.png'" class="img-fluid w-100 rounded-4" />
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-form-inner">
+                    <h5>Login</h5>
+                    <p>Sign Into Your Account</p>
+                    <div class="login-form">
+                        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-0 w-100">
+                            <div class="mb-3">
+                                <input 
+                                    type="email" 
+                                    class="form-control" 
+                                    placeholder="Enter Email" 
+                                    formControlName="email"
+                                    [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                                <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                                    <small *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</small>
+                                    <small *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="password position-relative">
+                                    <input 
+                                        [type]="showPassword ? 'text' : 'password'" 
+                                        class="form-control"
+                                        placeholder="Password" 
+                                        formControlName="password"
+                                        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
+                                    <a href="javascript:void(0)" (click)="togglePassword()">
+                                        <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    </a>
+                                </div>
+                                <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                                    <small *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</small>
+                                    <small *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</small>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <div class="forgot-password text-end">
+                                    <a href="forgot-password">Forgot password?</a>
+                                </div>
+                            </div>
+                            <div class="mb-3" *ngIf="successMessage">
+                                <div class="alert alert-success">{{ successMessage }}</div>
+                            </div>
+                            <div class="mb-3" *ngIf="errorMessage">
+                                <div class="alert alert-danger">{{ errorMessage }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <button 
+                                    type="submit" 
+                                    class="btn-default w-100" 
+                                    [disabled]="loginForm.invalid || isLoading">
+                                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                    {{ isLoading ? 'Logging in...' : 'Login' }} 
+                                    <i class="fa-solid fa-arrow-up" *ngIf="!isLoading"></i>
+                                </button>
+                            </div>
+                            <div class="sing-option">
+                                <p class="mb-0">Don't have an account? <a href="/sign-up">Sign Up</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

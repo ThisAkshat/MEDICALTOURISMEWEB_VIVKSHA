@@ -1,0 +1,133 @@
+<section class="inner-banner">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-baner-dtl position-relative text-center">
+                    <!-- Banner Image -->
+                    <img [src]="'assets/images/attractions.png'" class="w-100 img-fluid rounded-5" />
+                    <div class="inner-heading">
+                        <h2>Attractions</h2>
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                            <li><a routerLink="/">Home</a></li>
+                            <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                            <li><a routerLink="/">Attractions</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="blog-main blog-detail attraction-main ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Attractions</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                        <div class="col-lg-4">
+                <div class="detail-doctors recent-post">
+                    <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                        <h4>Recent Event</h4>
+                    </div>
+                    
+                    <!-- Dynamic recent offers -->
+                    <div class="dtl-doctor-list d-flex align-items-center" *ngFor="let offer of recentOffers">
+                        <div class="dtl-doctor-img">
+                            <img [src]="getOfferImageUrl(offer)" class="img-fluid">
+                        </div>
+                        <div class="dtl-doctor-info">
+                            <p>
+                                <a [routerLink]="['/attractions-detail', offer.id]" class="text-decoration-none">
+                                    {{ offer.name }}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Fallback message if no recent offers -->
+                    <div class="dtl-doctor-info" *ngIf="recentOffers.length === 0">
+                        <p class="text-muted">No recent offers available</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <!-- Loading State -->
+                <div *ngIf="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading attractions...</span>
+                    </div>
+                    <p class="mt-2">Loading special offers...</p>
+                </div>
+
+                <!-- No Content State -->
+                <div *ngIf="!loading && offers.length === 0" class="text-center py-5">
+                    <h5>No attractions available at the moment</h5>
+                    <p class="text-muted">Please check back later for exciting medical tourism offers.</p>
+                    <!-- Debug Info -->
+                    <div class="mt-3">
+                        <small class="text-info">Debug: Offers loaded: {{ offersLoaded }}</small><br>
+                        <small class="text-info">Offers count: {{ offers.length }}</small>
+                    </div>
+                </div>
+
+                <!-- Dynamic Offers -->
+                <div class="blog-card" *ngFor="let offer of offers">
+                    <!-- Featured Image -->
+                    <div class="blog-dtl-img position-relative">
+                        <img [src]="getOfferImageUrl(offer)" 
+                             [alt]="offer.name" 
+                             class="w-100 img-fluid rounded-4"
+                             (error)="$event.target.src='assets/images/attractions1.png'"/>
+                        
+                        <!-- Discount Badge -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge bg-danger fs-6 px-3 py-2">
+                                {{ offer.discount_percentage }}% OFF
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="blog-card-dtl">
+                        <!-- Title -->
+                        <h4>{{ offer.name }}</h4>
+                        
+                        <!-- Offer Details -->
+                        <!-- <div class="offer-meta mb-3">
+                            <div class="d-flex align-items-center mb-2" *ngIf="offer.location">
+                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                <small class="text-muted">{{ offer.location }}</small>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                <small class="text-muted">
+                                    Valid: {{ formatDate(offer.start_date) }} - {{ formatDate(offer.end_date) }}
+                                </small>
+                            </div>
+                            <div class="d-flex align-items-center" *ngIf="offer.is_free_camp">
+                                <i class="fas fa-gift text-success me-2"></i>
+                                <small class="text-success fw-bold">Free Medical Camp</small>
+                            </div>
+                        </div> -->
+
+                        <!-- Description -->
+                        <div class="blog-dtl attractions-detail">
+                            <p>{{ offer.description }}</p>
+                            <a [routerLink]="['/attractions-detail', offer.id]" class="btn-default mt-3">
+                                Read More <i class="fa-solid fa-arrow-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

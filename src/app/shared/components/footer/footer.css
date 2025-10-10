@@ -1,0 +1,103 @@
+.footer-main
+{
+    padding: 60px 0px;
+    margin-top: 80px;
+    background-color: #151515;
+}
+.footer-about h2,
+.footer-head
+{
+    color: #fff;
+}
+.footer-about p
+{
+    color: #fff;
+    font-size: 14px;
+    line-height: 23px;
+}
+.footer-head
+{
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-family: var(--primary-font);
+}
+.footer-social a i
+{
+    color: #fff;
+    font-size: 16px;
+    margin-right: 15px;
+    transition: all 0.5s;
+    border: 1px solid #fff;
+    padding: 10px;
+    border-radius: 60px;
+    width: 38px;
+    text-align: center;
+}
+.footer-social a:hover i
+{
+    color: #fff;
+    background-color: #0e99ff;
+}
+.footer-link ul li a
+{
+    text-decoration: none;
+    color: #fff;
+}
+.footer-link ul li
+{
+    color: #fff;
+    margin: 15px 0px;
+}
+.footer-newsletter form input
+{
+    padding: 12px 0px;
+    border-radius: 0px;
+    border: none;
+    color: #fff;
+    border-bottom: 1px solid #fff;
+    background-color: transparent;
+    box-shadow: none;
+}
+.footer-newsletter form input::placeholder
+{
+    color: #fff;
+}
+.footer-newsletter form button.btn
+{
+    border-radius: 50px;
+    color: #fff;
+    position: absolute;
+    top: 6px;
+    right: 0;
+}
+.footer-contact a
+{
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin-bottom: 12px;
+}
+.footer-contact a i
+{
+    background-color: #fff;
+    color: #151515;
+    font-size: 14px;
+    padding: 7px;
+    border-radius: 30px;
+    margin-right: 10px;
+}
+.footer-news p
+{
+    color: #fff;
+    font-size: 14px;
+}
+.footer-bottom
+{
+    background-color: #000;
+}
+.footer-bottom p
+{
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 0px;
+}

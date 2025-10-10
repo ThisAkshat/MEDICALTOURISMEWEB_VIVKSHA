@@ -1,0 +1,40 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Custom global styles */
+:root {
+  --primary-color: #0E99FF;
+  --secondary-color: #151515;
+  --info-color: #34363D;
+
+  /* font root */
+  --primary-font: 'Lexend-Medium', sans-serif;
+  --secondary-font: 'Poppins', sans-serif;
+}
+*
+{
+	margin: 0;
+	padding: 0;
+}
+body
+{
+    line-height: 1.5;
+	font-family: var(--secondary-font);
+}
+@font-face {
+    font-family: 'Lexend-Medium';
+    src: url('../src/assets/fonts/Lexend-Medium.ttf');
+}
+@font-face {
+    font-family: 'Lexend-Regular';
+    src: url('../src/assets/fonts/Lexend-Regular.ttf');
+}
+@font-face {
+    font-family: 'OpenSans-SemiBold';
+    src: url('../src/assets/fonts/OpenSans-SemiBold.ttf');
+}
+@font-face {
+    font-family: 'Raleway';
+    src: url('../src/assets/fonts/Raleway-Medium.ttf');
+}
+/* Add any custom global styles below */

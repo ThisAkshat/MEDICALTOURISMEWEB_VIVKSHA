@@ -1,0 +1,107 @@
+<section class="inner-banner" *ngIf="banner">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="inner-baner-dtl position-relative text-center">
+            <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+            <div class="inner-heading">
+              <h2>{{ banner.title }}</h2>
+              <ul class="breadcumb d-flex justify-content-center align-items-center gap-3 ms-0">
+                <li><a routerLink="/">Home</a></li>
+                <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                <li><a routerLink="/sign-up">{{ banner.title }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<section class="contact-form login-form ptc-80">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <img [src]="'assets/images/contact.png'" class="img-fluid w-100 rounded-4" />
+            </div>
+            <div class="col-lg-6">
+                <div class="contact-form-inner">
+                    <h5>Sign Up</h5>
+                    <div class="login-form">
+                        <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="mt-0 w-100">
+                            <div class="mb-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    placeholder="Full Name" 
+                                    formControlName="name"
+                                    [class.is-invalid]="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+                                <div class="invalid-feedback" *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.touched">
+                                    <small *ngIf="signupForm.get('name')?.errors?.['required']">Name is required</small>
+                                    <small *ngIf="signupForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                    type="email" 
+                                    class="form-control" 
+                                    placeholder="Email Address" 
+                                    formControlName="email"
+                                    [class.is-invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+                                <div class="invalid-feedback" *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
+                                    <small *ngIf="signupForm.get('email')?.errors?.['required']">Email is required</small>
+                                    <small *ngIf="signupForm.get('email')?.errors?.['email']">Please enter a valid email</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input 
+                                    type="tel" 
+                                    class="form-control" 
+                                    placeholder="Mobile Number" 
+                                    formControlName="phone"
+                                    [class.is-invalid]="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched">
+                                <div class="invalid-feedback" *ngIf="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched">
+                                    <small *ngIf="signupForm.get('phone')?.errors?.['required']">Phone number is required</small>
+                                    <small *ngIf="signupForm.get('phone')?.errors?.['pattern']">Please enter a valid phone number</small>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="password position-relative">
+                                    <input 
+                                        [type]="showPassword ? 'text' : 'password'" 
+                                        class="form-control"
+                                        placeholder="Password" 
+                                        formControlName="password"
+                                        [class.is-invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" />
+                                    <a href="javascript:void(0)" (click)="togglePassword()">
+                                        <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    </a>
+                                </div>
+                                <div class="invalid-feedback" *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched">
+                                    <small *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</small>
+                                    <small *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</small>
+                                </div>
+                            </div>
+                            <div class="mb-3" *ngIf="errorMessage">
+                                <div class="alert alert-danger">{{ errorMessage }}</div>
+                            </div>
+                            <div class="mb-3">
+                                <button 
+                                    type="submit" 
+                                    class="btn-default w-100" 
+                                    [disabled]="signupForm.invalid || isLoading">
+                                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                    {{ isLoading ? 'Creating Account...' : 'Sign Up' }} 
+                                    <i class="fa-solid fa-arrow-up" *ngIf="!isLoading"></i>
+                                </button>
+                            </div>
+                            <div class="sing-option">
+                                <p class="mb-0">Already you have an account? <a href="/login">Login</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

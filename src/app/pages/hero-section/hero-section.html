@@ -1,0 +1,474 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="hero-main">
+                <div class="hero-image">
+                    <img [src]="'http://165.22.223.163:8000' + banner?.image_url" [alt]="banner?.title || 'Hero Image'"
+                        class="img-fluid w-100 main-bnr" />
+                </div>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content">
+                        <!-- <h2 class="display-4 text-white text-center">LOREM IPSUM IS SIMPLY <br> DUMMY TEXT</h2> -->
+                        <h2 class="display-4 text-white text-center">
+                            {{ banner?.title || 'Medi Tourist' }}
+                        </h2>
+                        <div class="banner-filter">
+                            <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="surgical-tab" data-bs-toggle="tab"
+                                        data-bs-target="#surgical" type="button" role="tab" aria-controls="home"
+                                        aria-selected="true">
+                                        <img [src]="'assets/images/surgical-treatment.svg'"> Surgical Treatment
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="onlinecunsul-tab" data-bs-toggle="tab"
+                                        data-bs-target="#onlinecunsul" type="button" role="tab" aria-controls="profile"
+                                        aria-selected="false">
+                                        <img [src]="'assets/images/consultation.svg'"> Online Consultation
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" type="button" (click)="goToContact()">
+                                        <img [src]="'assets/images/assistance.svg'"> Assistance
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" type="button" (click)="goToAttractions()">
+                                        <img [src]="'assets/images/attractions.svg'"> Attractions
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="surgical" role="tabpanel"
+                                    aria-labelledby="surgical">
+                                    <div class="modern-filter-container">
+                                        <div class="filter-main d-flex">
+                                            <!-- Location Filter -->
+                                            <!-- 🔹 Location Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/location.svg'" alt="Location Icon">
+                                                    <span>Location</span>
+                                                </div>
+
+                                                <div class="custom-dropdown" (click)="toggleDropdown('location')">
+                                                    <div class="selected-option">
+                                                        {{ selectedLocation || 'Where you want to get treated' }}
+                                                        <i class="fa-solid fa-caret-down"></i>
+                                                    </div>
+
+                                                    <ul *ngIf="openDropdown === 'location'" class="dropdown-options">
+                                                        <li *ngFor="let loc of locations"
+                                                            (click)="selectLocation(loc, $event)"
+                                                            [class.active]="loc === selectedLocation">
+                                                            {{ loc }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <!-- 🔹 Treatment Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/treatments.svg'" alt="Treatment Icon">
+                                                    <span>Treatments</span>
+                                                </div>
+
+                                                <div class="custom-dropdown" (click)="toggleDropdown('treatment')">
+                                                    <div class="selected-option">
+                                                        {{ selectedTreatment || 'All Treatments' }}
+                                                        <i class="fa-solid fa-caret-down"></i>
+                                                    </div>
+
+                                                    <ul *ngIf="openDropdown === 'treatment'" class="dropdown-options">
+                                                        <li *ngFor="let t of treatments"
+                                                            (click)="selectTreatment(t, $event)"
+                                                            [class.active]="t === selectedTreatment">
+                                                            {{ t }}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Search Button -->
+                                        <button class="btn-default filter-btn" (click)="search()"
+                                            [disabled]="isSearching">
+                                            <img [src]="'assets/images/search.svg'">
+                                            {{ isSearching ? 'Searching...' : 'Search' }}
+                                        </button>
+
+                                        <!-- Test Button that changes color -->
+                                        <!-- <button 
+                                            (click)="testButtonClick()" 
+                                            [style.background-color]="buttonClicked ? 'green' : 'red'"
+                                            [style.color]="buttonClicked ? 'white' : 'yellow'"
+                                            style="padding: 15px 30px; margin: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; position: relative; z-index: 9999;">
+                                            {{ buttonClicked ? 'CLICKED!' : 'CLICK ME TEST' }}
+                                        </button> -->
+                                    </div>
+                                </div>
+
+                                <!-- Updated Online Consultation Tab -->
+                                <div class="tab-pane fade" id="onlinecunsul" role="tabpanel"
+                                    aria-labelledby="onlinecunsul">
+                                    <div class="modern-filter-container">
+                                        <div class="filter-main d-flex">
+                                            <!-- Location Filter -->
+                                            <!-- Doctor Location Filter -->
+                                            <div class="filter-item custom-dropdown"
+                                                (click)="toggleDropdown('doctorLocation')">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/location.svg'">
+                                                    <span>Location</span>
+                                                </div>
+
+                                                <div class="selected-option">
+                                                    {{ selectedDoctorLocation || 'Select doctor location' }}
+                                                    <i class="fa-solid fa-caret-down"></i>
+                                                </div>
+
+                                                <ul class="dropdown-options" *ngIf="openDropdown === 'doctorLocation'">
+                                                    <li *ngFor="let loc of doctorLocations"
+                                                        (click)="selectDoctorLocation(loc, $event)">
+                                                        {{ loc }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- Specialization Filter -->
+                                            <div class="filter-item custom-dropdown"
+                                                (click)="toggleDropdown('specialization')">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/treatments.svg'">
+                                                    <span>Specialization</span>
+                                                </div>
+
+                                                <div class="selected-option">
+                                                    {{ selectedSpecialization || 'All Specializations' }}
+                                                    <i class="fa-solid fa-caret-down"></i>
+                                                </div>
+
+                                                <ul class="dropdown-options" *ngIf="openDropdown === 'specialization'">
+                                                    <li *ngFor="let spec of specializations"
+                                                        (click)="selectSpecialization(spec, $event)">
+                                                        {{ spec }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                        <!-- Search Button -->
+                                        <button class="btn-default filter-btn" (click)="searchDoctors()"
+                                            [disabled]="isDoctorSearching">
+                                            <img [src]="'assets/images/search.svg'">
+                                            {{ isDoctorSearching ? 'Searching...' : 'Search' }}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Doctor Loading Indicator -->
+                                <div class="row mt-4" *ngIf="isDoctorSearching">
+                                    <div class="col-lg-12">
+                                        <div class="text-center">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Searching doctors...</span>
+                                            </div>
+                                            <p class="mt-2">Searching for doctors...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="assistance" role="tabpanel" aria-labelledby="assistance">
+                                    <div class="modern-filter-container">
+                                        <div class="filter-main d-flex">
+                                            <!-- Location Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/location.svg'">
+                                                    <span>Location</span>
+                                                </div>
+                                                <select [(ngModel)]="selectedLocation" class="filter-select">
+                                                    <option value="" disabled selected>Where you want to get treated
+                                                    </option>
+                                                    <option *ngFor="let loc of locations; let i = index" [value]="loc">
+                                                        {{ loc }}</option>
+                                                </select>
+                                                <i class="fa-solid fa-caret-down"></i>
+                                            </div>
+                                            <!-- Treatment Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/treatments.svg'">
+                                                    <span>Treatments</span>
+                                                </div>
+                                                <select [(ngModel)]="selectedTreatment" class="filter-select">
+                                                    <option value="" disabled selected>All Treatments</option>
+                                                    <option *ngFor="let t of treatments; let i = index" [value]="t">{{ t
+                                                        }}</option>
+                                                </select>
+                                                <i class="fa-solid fa-caret-down"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Search Button -->
+                                        <button class="btn-default filter-btn" (click)="search()"
+                                            [disabled]="isSearching">
+                                            <img [src]="'assets/images/search.svg'">
+                                            {{ isSearching ? 'Searching...' : 'Search' }}
+                                        </button>
+
+                                        <!-- Test Button that changes color -->
+                                        <!-- <button 
+                                            (click)="testButtonClick()" 
+                                            [style.background-color]="buttonClicked ? 'green' : 'red'"
+                                            [style.color]="buttonClicked ? 'white' : 'yellow'"
+                                            style="padding: 15px 30px; margin: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; position: relative; z-index: 9999;">
+                                            {{ buttonClicked ? 'CLICKED!' : 'CLICK ME TEST' }}
+                                        </button> -->
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="attractions" role="tabpanel"
+                                    aria-labelledby="attractions">
+                                    <div class="modern-filter-container">
+                                        <div class="filter-main d-flex">
+                                            <!-- Location Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/location.svg'">
+                                                    <span>Location</span>
+                                                </div>
+                                                <select [(ngModel)]="selectedLocation" class="filter-select">
+                                                    <option value="" disabled selected>Where you want to get treated
+                                                    </option>
+                                                    <option *ngFor="let loc of locations; let i = index" [value]="loc">
+                                                        {{ loc }}</option>
+                                                </select>
+                                                <i class="fa-solid fa-caret-down"></i>
+                                            </div>
+                                            <!-- Treatment Filter -->
+                                            <div class="filter-item">
+                                                <div class="filter-label">
+                                                    <img [src]="'assets/images/treatments.svg'">
+                                                    <span>Treatments</span>
+                                                </div>
+                                                <select [(ngModel)]="selectedTreatment" class="filter-select">
+                                                    <option value="" disabled selected>All Treatments</option>
+                                                    <option *ngFor="let t of treatments; let i = index" [value]="t">{{ t
+                                                        }}</option>
+                                                </select>
+                                                <i class="fa-solid fa-caret-down"></i>
+                                            </div>
+                                        </div>
+                                        <!-- Search Button -->
+                                        <button class="btn-default filter-btn" (click)="search()"
+                                            [disabled]="isSearching">
+                                            <img [src]="'assets/images/search.svg'">
+                                            {{ isSearching ? 'Searching...' : 'Search' }}
+                                        </button>
+
+                                        <!-- Test Button that changes color -->
+                                        <!-- <button 
+                                            (click)="testButtonClick()" 
+                                            [style.background-color]="buttonClicked ? 'green' : 'red'"
+                                            [style.color]="buttonClicked ? 'white' : 'yellow'"
+                                            style="padding: 15px 30px; margin: 10px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; position: relative; z-index: 9999;">
+                                            {{ buttonClicked ? 'CLICKED!' : 'CLICK ME TEST' }}
+                                        </button> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="row mt-4" *ngIf="isSearching">
+        <div class="col-lg-12">
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Searching...</span>
+                </div>
+                <p class="mt-2">Searching for treatments...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Section -->
+    <div class="container">
+        <div class="row mt-4" *ngIf="searchResults.length > 0 && !isSearching">
+            <div class="col-lg-12">
+                <div class="search-results-container">
+                    <h3 class="mb-4">Search Results ({{ searchResults.length }} treatments found)</h3>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let treatment of searchResults">
+                            <div class="user-card">
+                                <div class="user-card-img" *ngIf="treatment.images && treatment.images.length > 0">
+                                    <img [src]="'http://165.22.223.163:8000' + treatment.images[0].url"
+                                        [alt]="treatment.name" class="img-fluid">
+                                </div>
+                                <div class="user-card-content">
+                                    <h5>{{ treatment.name }}</h5>
+                                    <div class="user-card-description">
+                                        <p class="treatment-description mb-0">{{ treatment.short_description }}</p>
+                                    </div>
+                                    <div class="user-card-rating">
+                                        <div class="user-card-rating d-flex align-items-center">
+                                            <ng-container *ngFor="let star of getStars(treatment.rating)">
+                                                <!-- Full star -->
+                                                <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                                                <!-- Half star -->
+                                                <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                                                <!-- Empty star with border -->
+                                                <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                                            </ng-container>
+                                            <span class="ms-2" *ngIf="treatment.rating !== null"></span>
+                                        </div>
+                                    </div>
+                                    <p class="treatment-price"
+                                        *ngIf="treatment.price_min || treatment.price_max || treatment.price_exact">
+                                        <span *ngIf="treatment.price_exact"><strong>Price:</strong> ₹{{
+                                            treatment.price_exact | number }} <span class="ms-1">Onward</span></span>
+                                    </p>
+                                    <!-- <p class="treatment-type">{{ treatment.treatment_type }}</p> -->
+                                    <div class="d-flex align-items-center card-location">
+                                        <img [src]="'assets/images/card-location.svg'">
+                                        <p class="user-card-location mb-0">{{ treatment.location }}</p>
+                                    </div>
+                                </div>
+                                <div class="read-more">
+                                    <a *ngIf="treatment.id" [attr.href]="'/treatment-detail/' + treatment.id"
+                                        class="btn">
+                                        More Detail <i class="fa fa-arrow-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row mt-4" *ngIf="searchClicked && searchResults.length == 0 && !isSearching">
+                <div class="col-lg-12">
+                    <div class="search-results-container">
+                        <div class="text-center">
+                            <h4>No Results Found</h4>
+                            <p>No treatments found matching your search criteria. Please try different filters.</p>
+                            <button class="btn btn-primary" (click)="clearSearch()">Clear Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Doctor Results Section -->
+    <div class="container">
+        <div class="row mt-4" *ngIf="doctorResults.length > 0 && !isDoctorSearching">
+            <div class="col-lg-12">
+                <div class="doctor-results-container search-results-container">
+                    <h3 class="mb-4">Doctor Results ({{ doctorResults.length }} doctors
+                        found)</h3>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let doctor of doctorResults">
+                            <div class="user-card">
+                                <div class="user-card-img" *ngIf="doctor.profile_photo">
+                                    <img [src]="'http://165.22.223.163:8000' + doctor.profile_photo" [alt]="doctor.name"
+                                        class="img-fluid">
+                                </div>
+                                <div class="user-card-content doctors-card-info">
+                                    <h5>{{ doctor.name }}</h5>
+                                    <div class="user-card-description">
+                                        <p class="doctor-description mb-0">{{ doctor.short_description }}</p>
+                                    </div>
+                                    <div class="user-card-rating">
+                                        <div class="user-card-rating d-flex align-items-center">
+                                            <ng-container *ngFor="let star of getStars(doctor.rating)">
+                                                <!-- Full star -->
+                                                <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                                                <!-- Half star -->
+                                                <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                                                <!-- Empty star with border -->
+                                                <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center card-location">
+                                        <img src="assets/images/d-designation.svg">
+                                        <p class="mb-0">{{ doctor.designation }}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center card-location">
+                                        <img src="assets/images/fees.svg">
+                                        <p class="mb-0" *ngIf="doctor.consultancy_fee">Consultation Fee:
+                                            ₹{{doctor.consultancy_fee | number }}</p>
+                                    </div>
+                                    <div class="d-flex align-items-center card-location">
+                                        <img src="assets/images/d-experience.svg">
+                                        <p class="mb-0">{{doctor.experience_years }} Years of Experience</p>
+                                    </div>
+                                    <div class="d-flex align-items-center card-location">
+                                        <img src="assets/images/d-hospital.svg">
+                                        <p class="mb-0">Central Medical Hospital</p>
+                                    </div>
+                                    <!-- <p class="doctor-specialization"><strong>Specialization:</strong> {{doctor.specialization }}</p> -->
+                                    <!-- <div class="d-flex align-items-center card-location"
+                                        *ngIf="doctor.location">
+                                        <img [src]="'assets/images/card-location.svg'">
+                                        <p class="user-card-location mb-0">{{
+                                            doctor.location }}</p>
+                                    </div> -->
+                                </div>
+                                <div class="read-more">
+                                    <a *ngIf="doctor.id" [attr.href]="'/doctor-details/' + doctor.id" class="btn">More
+                                        Detail <i class="fa fa-arrow-up"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Doctor Results Found -->
+        <!-- <div class="row mt-4" *ngIf="doctorSearchClicked && doctorResults.length == 0 && !isDoctorSearching">
+            <div class="col-lg-12">
+                <div class="doctor-results-container">
+                    <div class="text-center">
+                        <h4>No Doctors Found</h4>
+                        <p>No doctors found matching your search criteria. Please try
+                            different filters.</p>
+                        <button class="btn btn-primary" (click)="clearDoctorSearch()">Clear
+                            Search</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+
+    <!-- No Results Found -->
+    <!-- <div class="row mt-4" *ngIf="searchClicked && searchResults.length == 0 && !isSearching">
+        <div class="col-lg-12">
+            <div class="search-results-container">
+                <div class="text-center">
+                    <h4>No Results Found</h4>
+                    <p>No treatments found matching your search criteria. Please try different filters.</p>
+                    <button class="btn btn-primary" (click)="clearSearch()">Clear Search</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- ✅ No Results Modal -->
+    <app-modal [title]="'No Results Found'" [show]="showNoResultsModal" (close)="closeNoResultsModal()">
+        <div class="text-center p-4">
+            <i class="fa-solid fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+            <h4>No Results Found</h4>
+            <p>No results found matching your search criteria. Please try different filters.</p>
+            <button class="btn btn-primary mt-3" (click)="clearSearchFromModal()">
+                Clear Search
+            </button>
+        </div>
+    </app-modal>
+</div>

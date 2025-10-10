@@ -1,0 +1,173 @@
+<section class="inner-banner" *ngIf="banner">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="inner-baner-dtl position-relative text-center">
+          <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+          <div class="inner-heading">
+            <h2>{{ banner.title }}</h2>
+            <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+              <li><a routerLink="/">Home</a></li>
+              <li><img src="assets/images/breadcumb.svg" /></li>
+              <li><a routerLink="/treatments">{{ banner.name }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="card-list-main ptc-80">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="main-head text-center mbc-50">
+          <!-- <h2>Our Surgical Treatments Plan</h2> -->
+          <h2 *ngIf="treatmentName">Treatments for {{ treatmentName }}</h2>
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry's standard dummy text
+            ever since the 1500s, when an unknown printer
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <!-- <div class="row">
+      <div class="tret-filter-main d-flex align-items-center">
+        <div class="tret-filter">
+          <h4 class="mb-0">Select Treatments</h4>
+        </div>
+        <div class="filter-option d-flex gap-3">
+          <select class="form-select" [(ngModel)]="selectedLocation" (change)="applyFilters()">
+            <option value="">Change Location</option>
+            <option *ngFor="let loc of availableLocations" [value]="loc">
+              {{ loc }}
+            </option>
+          </select>
+
+          <select class="form-select" [(ngModel)]="selectedTreatmentType" (change)="applyFilters()">
+            <option value="">Change Treatment</option>
+            <option *ngFor="let type of availableTreatmentTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="tret-filter-main d-flex align-items-center">
+        <div class="tret-filter">
+          <h4 class="mb-0">Select Treatments</h4>
+        </div>
+
+        <div class="filter-option d-flex gap-3">
+          <!-- Location Filter -->
+          <div class="custom-select-wrapper">
+            <div class="form-select" [class.open]="isLocationOpen" [class.placeholder]="!selectedLocation"
+              (click)="toggleLocationDropdown()">
+              <span>{{ selectedLocation || 'Change Location' }}</span>
+            </div>
+
+            <div class="select-dropdown" *ngIf="isLocationOpen">
+              <div class="select-option" (click)="selectLocation('')">
+                Change Location
+              </div>
+              <div class="select-option" *ngFor="let loc of availableLocations"
+                [class.selected]="selectedLocation === loc" (click)="selectLocation(loc)">
+                {{ loc }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Treatment Filter -->
+          <div class="custom-select-wrapper">
+            <div class="form-select" [class.open]="isTreatmentOpen" [class.placeholder]="!selectedTreatmentType"
+              (click)="toggleTreatmentDropdown()">
+              <span>{{ selectedTreatmentType || 'Change Treatment' }}</span>
+            </div>
+
+            <div class="select-dropdown" *ngIf="isTreatmentOpen">
+              <div class="select-option" (click)="selectTreatment('')">
+                Change Treatment
+              </div>
+              <div class="select-option" *ngFor="let type of availableTreatmentTypes"
+                [class.selected]="selectedTreatmentType === type" (click)="selectTreatment(type)">
+                {{ type }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Treatments List -->
+    <div class="row">
+      <div *ngIf="loading">Loading treatments...</div>
+
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let t of filteredTreatments">
+        <div class="user-card" *ngIf="!loading && filteredTreatments.length > 0">
+          <div class="card-inner">
+            <div class="user-card-img">
+              <img *ngIf="t.images && t.images.length > 0" [src]="'http://165.22.223.163:8000' + t.images[0].url"
+                [alt]="t.name" class="img-fluid" />
+            </div>
+            <div class="user-card-content">
+              <h5 class="card-title">{{ t.name }}</h5>
+              <div class="user-card-description">
+                <p>{{ t.short_description }}</p>
+              </div>
+
+              <!-- Rating -->
+              <div class="user-card-rating">
+                <div class="user-card-rating d-flex align-items-center">
+                  <ng-container *ngFor="let star of getStars(t.rating)">
+                    <!-- Full star -->
+                    <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                    <!-- Half star -->
+                    <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                    <!-- Empty star -->
+                    <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                  </ng-container>
+                  <span class="ms-2" *ngIf="t.rating !== null"></span>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <p class="treatment-price" *ngIf="t.price_exact">
+                <strong>Price:</strong> ${{ t.price_exact }}
+                <span class="ms-1">Onward</span>
+              </p>
+              <p class="treatment-price" *ngIf="t.price_min && t.price_max">
+                <strong>Price:</strong> ${{ t.price_min }} –
+                ${{ t.price_max }}
+                <span class="ms-1">Onward</span>
+              </p>
+
+              <!-- Location -->
+              <div class="d-flex align-items-center card-location">
+                <img [src]="'assets/images/card-location.svg'" />
+                <p class="user-card-location mb-0">
+                  {{ t.location }}
+                </p>
+              </div>
+            </div>
+
+            <!-- More Detail -->
+            <div class="read-more">
+              <a *ngIf="t.id" [attr.href]="'/treatment-detail/' + t.id" class="btn">
+                More Detail <i class="fa fa-arrow-up"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results -->
+      <div *ngIf="!loading && filteredTreatments.length === 0" class="alert alert-info mt-3">
+        No treatments found for selected filters.
+      </div>
+    </div>
+  </div>
+</section>

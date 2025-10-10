@@ -1,0 +1,274 @@
+<section class="inner-banner" *ngIf="banner">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-baner-dtl position-relative text-center">
+                    <!-- 🔹 Use dynamic banner image -->
+                    <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+                    <div class="inner-heading">
+                        <!-- 🔹 Use dynamic title -->
+                        <h2>{{ banner.title }}</h2>
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                            <li><a routerLink="/">Home</a></li>
+                            <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+                            <li><a routerLink="/online-consultation">{{ banner.title }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="card-list-main ptc-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="main-head text-center mbc-50">
+                    <h2>Medical Procedure</h2>
+                    <p>Get expert guidance from the comfort of your home. Our online consultation service helps you
+                        understand medical procedures in detail—what they involve, the preparation required, recovery
+                        expectations, and possible alternatives. Whether you are exploring treatment options, seeking a
+                        second opinion, or preparing for surgery, we provide clear, reliable, and personalized
+                        information to support your healthcare decisions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="row">
+            <div class="tret-filter-main d-flex align-items-center">
+                <div class="tret-filter">
+                    <h4 class="mb-0">Filter Doctors</h4>
+                </div>
+                <div class="filter-option d-flex gap-3">
+                    <!-- Location Filter -->
+                    <div class="custom-select-wrapper">
+                        <div class="form-select" [class.open]="isLocationOpen" [class.placeholder]="!selectedLocation"
+                            (click)="toggleLocationDropdown()">
+                            <span>{{ selectedLocation || 'All Locations' }}</span>
+                        </div>
+
+                        <div class="select-dropdown" *ngIf="isLocationOpen">
+                            <div class="select-option" (click)="selectLocation('')">
+                                All Locations
+                            </div>
+                            <div class="select-option" *ngFor="let loc of locations" [class.selected]="selectedLocation === loc"
+                                (click)="selectLocation(loc)">
+                                {{ loc }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specialization Filter -->
+                    <div class="custom-select-wrapper">
+                        <div class="form-select" [class.open]="isSpecializationOpen" [class.placeholder]="!selectedSpecialization"
+                            (click)="toggleSpecializationDropdown()">
+                            <span>{{ selectedSpecialization || 'All Specializations' }}</span>
+                        </div>
+
+                        <div class="select-dropdown" *ngIf="isSpecializationOpen">
+                            <div class="select-option" (click)="selectSpecialization('')">
+                                All Specializations
+                            </div>
+                            <div class="select-option" *ngFor="let spec of specializations"
+                                [class.selected]="selectedSpecialization === spec" (click)="selectSpecialization(spec)">
+                                {{ spec }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="loading" class="text-center">Loading doctors...</div>
+
+        <div class="row" *ngIf="!loading && doctors.length">
+            <div *ngFor="let d of doctors" class="col-lg-4 col-md-6 mb-4">
+                <div class="user-card">
+                    <div class="user-card-img">
+                        <img *ngIf="d.profile_photo?.length" [src]="'http://165.22.223.163:8000' + d.profile_photo"
+                            [alt]="d.name" class="card-img-top img-fluid" />
+                    </div>
+                    <div class="user-card-content doctors-card-info">
+                        <h5 class="card-title">{{ d.name }}</h5>
+                        <div class="user-card-description">
+                            <p class="card-text truncate-2">{{ d.short_description }}</p>
+                        </div>
+
+                        <div class="user-card-rating">
+                            <div class="user-card-rating d-flex align-items-center">
+                                <ng-container *ngFor="let star of getStars(d.rating)">
+                                    <!-- Full star -->
+                                    <i *ngIf="star === 'full'" class="fa fa-star text-warning"></i>
+                                    <!-- Half star -->
+                                    <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                                    <!-- Empty star with border -->
+                                    <i *ngIf="star === 'empty'" class="fa-regular fa-star text-warning"></i>
+                                </ng-container>
+                                <span class="ms-2" *ngIf="d.rating !== null"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center card-location">
+                            <img [src]="'assets/images/d-designation.svg'">
+                            <p class="mb-0">{{ d.designation }}</p>
+                        </div>
+                        <div class="d-flex align-items-center card-location">
+                            <img [src]="'assets/images/fees.svg'">
+                            <p class="mb-0">Consultation Fees: <span class="fee-amount">₹{{ d.consultancy_fee | number
+                                    }}</span></p>
+                        </div>
+                        <div class="d-flex align-items-center card-location">
+                            <img [src]="'assets/images/d-experience.svg'">
+                            <p class="mb-0"> {{ d.experience_years || 'N/A' }} Years of Experience</p>
+                        </div>
+                        <div class="d-flex align-items-center card-location" *ngIf="d.hospitalName">
+                            <img [src]="'assets/images/hospital.svg'">
+                            <p class="mb-0">{{ d.hospitalName }}</p>
+                        </div>
+
+                        <!-- Add Book Consultation Button -->
+                        <div class="book-package mt-3">
+                            <button (click)="openModal(d)" class="btn-default">
+                                Book Consultation <i class="fa-solid fa-arrow-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && !doctors.length" class="text-center">
+            No doctors found.
+        </div>
+    </div>
+
+    <!-- Modal Component -->
+    <app-modal [title]="'Book Online Consultation'" [show]="showModal" (close)="closeModal()">
+        <div class="book-package-form">
+            <!-- Success Message -->
+            <div *ngIf="submitSuccess" class="alert alert-success text-center">
+                <i class="fas fa-check-circle me-2"></i>
+                Your online consultation booking has been submitted successfully! We'll contact you soon.
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="submitError" class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>{{ submitError }}
+            </div>
+
+            <!-- Doctor Info (if selected) -->
+            <!-- <div *ngIf="selectedDoctor" class="selected-doctor-info mb-3 p-3 bg-light rounded">
+                <h6 class="mb-2">Selected Doctor:</h6>
+                <div class="d-flex align-items-center">
+                    <img *ngIf="selectedDoctor.profile_photo?.length" 
+                         [src]="'http://165.22.223.163:8000' + selectedDoctor.profile_photo"
+                         [alt]="selectedDoctor.name" 
+                         class="rounded-circle me-3" 
+                         style="width: 50px; height: 50px; object-fit: cover;" />
+                    <div>
+                        <strong>{{ selectedDoctor.name }}</strong><br>
+                        <small class="text-muted">{{ selectedDoctor.designation }}</small><br>
+                        <small class="text-primary">Consultation Fee: ₹{{ selectedDoctor.consultancy_fee | number }}</small>
+                    </div>
+                </div>
+            </div> -->
+
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" *ngIf="!submitSuccess">
+
+                <!-- First Name -->
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">First Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [class.is-invalid]="isFieldInvalid('first_name')"
+                        placeholder="First Name" formControlName="first_name">
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('first_name')">
+                        {{ getFieldError('first_name') }}
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Last Name<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" [class.is-invalid]="isFieldInvalid('last_name')"
+                        placeholder="Last Name" formControlName="last_name">
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('last_name')">
+                        {{ getFieldError('last_name') }}
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Id<span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" [class.is-invalid]="isFieldInvalid('email')"
+                        placeholder="Enter Email Id" formControlName="email">
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                        {{ getFieldError('email') }}
+                    </div>
+                </div>
+
+                <!-- Mobile Number -->
+                <div class="mb-3">
+                    <label for="mobile_no" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                    <input type="tel" class="form-control" [class.is-invalid]="isFieldInvalid('mobile_no')"
+                        placeholder="Enter Mobile Number" formControlName="mobile_no">
+                    <div class="invalid-feedback" *ngIf="isFieldInvalid('mobile_no')">
+                        {{ getFieldError('mobile_no') }}
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="budget" class="form-label">Consultation Fees</label>
+                    <input type="text" class="form-control" formControlName="budget" readonly>
+                </div>
+                <!-- Doctor Preference -->
+                <div class="mb-3">
+                    <label for="doctor_preference" class="form-label">Doctor Preference</label>
+                    <input type="text" class="form-control" placeholder="Doctor Preference (Optional)"
+                        formControlName="doctor_preference">
+                </div>
+
+                <!-- Hospital Preference -->
+                <div class="mb-3">
+                    <label for="hospital_preference" class="form-label">Hospital Preference</label>
+                    <input type="text" class="form-control" placeholder="Hospital Preference (Optional)"
+                        formControlName="hospital_preference">
+                </div>
+
+                <!-- Medical History File -->
+                <div class="mb-3">
+                    <label for="formFileLg" class="form-label">Upload Your Medical History</label>
+                    <input class="form-control form-control-lg" id="formFileLg" type="file"
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" (change)="onFileSelect($event)">
+                    <small class="form-text text-muted">Accepted formats: PDF, DOC, DOCX, JPG, PNG (Max 5MB)</small>
+                </div>
+
+                <!-- User Query -->
+                <div class="mb-3">
+                    <label for="hospital_preference" class="form-label">Query</label>
+                    <textarea class="form-control" rows="3" placeholder="Enter Your Query (Optional)"
+                        formControlName="user_query"></textarea>
+                </div>
+
+
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="custom-submit btn-default" [disabled]="isSubmitting">
+                        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        {{ isSubmitting ? 'Booking...' : 'Book Consultation' }} <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+
+                    <!-- Form validation summary -->
+                    <div *ngIf="bookingForm.invalid && bookingForm.touched" class="alert form-alert mt-2"
+                        role="alert">
+                        <small><i class="fas fa-exclamation-triangle me-1"></i>Please fill in all
+                            required fields marked with *</small>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </app-modal>
+</section>

@@ -1,0 +1,76 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  /* backdrop */
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #F6FBFF;
+  width: 40%;
+  height: auto;
+  border-radius: 8px;
+  z-index: 10000;
+  /* modal should be above backdrop */
+  display: block;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.close-btn {
+  border: none;
+  background: #151515;
+  font-size: 25px;
+  cursor: pointer;
+  color: #fff;
+  height: 30px;
+  width: 30px;
+  line-height: 20px;
+  border-radius: 50px;
+}
+
+.book-package-modal .modal-header h3 {
+  font-size: 22px;
+  font-family: var(--primary-font);
+  color: var(--secondary-color);
+}
+.book-package-modal .modal .modal-body
+{
+    max-height: 530px;
+    overflow-y: scroll;
+}
+.book-package-modal .modal-footer button
+{
+  padding: 10px 20px;
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px)
+{
+  .modal
+  {
+    width: 90%;
+  }
+  .book-package-modal .modal .modal-body
+  {
+    max-height: 760px;
+  }
+}
+@media screen and (max-width: 767px)
+{
+  .modal
+  {
+    width: 90%;
+  }
+}

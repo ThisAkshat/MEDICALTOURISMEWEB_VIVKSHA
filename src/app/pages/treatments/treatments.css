@@ -1,0 +1,122 @@
+/* Custom Select Wrapper */
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 200px;
+}
+
+/* Your existing form-select styling - now works as button */
+
+.tret-filter-main .form-select:hover {
+  border-color: #007bff;
+}
+
+.tret-filter-main .form-select span:first-child {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Arrow */
+
+/* Dropdown Container */
+.tret-filter-main .select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+/* Options - THIS NOW WORKS IN ALL BROWSERS */
+.tret-filter-main .select-option {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: #fff;
+  color: #333;
+}
+
+.tret-filter-main .select-option:hover {
+  background-color: #007bff; /* Your desired hover background */
+  color: #fff; /* Your desired hover text color */
+}
+
+.tret-filter-main .select-option.selected {
+  background-color: #e7f3ff;
+  color: #007bff;
+}
+
+.tret-filter-main .select-option:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.tret-filter-main .select-option:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+/* Scrollbar styling (optional) */
+.tret-filter-main .select-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tret-filter-main .select-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.tret-filter-main .select-dropdown::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.tret-filter-main .select-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.tret-filter-main .form-select {
+  position: relative;
+  background-color: #fff;
+  color: #333;
+  padding: 8px 30px 8px 12px; /* extra padding for arrow */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+  width: 100%;
+  background-image: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.tret-filter-main .form-select::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #333; /* Border arrow pointing down */
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.tret-filter-main .form-select.open::after {
+  transform: rotate(180deg);
+}
+.tret-filter-main .form-select.placeholder span {
+  color: #999; /* placeholder color */
+}

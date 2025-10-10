@@ -1,0 +1,81 @@
+.attractions-detail a
+{
+    display: block;
+    margin-top: 20px;
+    width: fit-content;
+}
+.blog-dtl-img img
+{
+    height: 250px;
+    object-fit: cover;
+}
+.blog-dtl-img
+{
+    padding: 20px 20px 0px 20px;
+}
+.attraction-main .recent-post .dtl-doctor-info p
+{
+    font-size: 16px;
+}
+
+/* Offer-specific styles */
+.offer-meta {
+    border-left: 3px solid #007bff;
+    padding-left: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin: 15px 0px;
+}
+
+.offer-meta i {
+    width: 16px;
+    text-align: center;
+}
+
+.badge {
+    font-size: 0.85rem !important;
+    font-weight: 600;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.blog-dtl-img.position-relative {
+    overflow: hidden;
+}
+
+.blog-dtl-img img {
+    transition: transform 0.3s ease;
+}
+
+/* Blog-specific styles */
+.blog-meta {
+    border-left: 3px solid #28a745;
+    padding-left: 15px;
+    background-color: #f8fff8;
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+.blog-meta i {
+    width: 16px;
+    text-align: center;
+}
+.blog-inner-dtl img
+{
+    height: 280px;
+    width: 100%;
+    object-fit: cover;
+}
+.dtl-doctor-info a 
+{
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 3px;
+    text-decoration: none;
+    color: var(--primary-font) !important;
+}
+.attraction-call i
+{
+    transform: rotate(0deg)
+}

@@ -1,0 +1,148 @@
+<section class="inner-banner">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="inner-baner-dtl position-relative text-center">
+            <!-- Banner Image -->
+            <img src="assets/images/attractions.png" class="w-100 img-fluid rounded-5" />
+            <div class="inner-heading">
+              <h2>Attraction Details</h2>
+              <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                <li><a routerLink="/">Home</a></li>
+                <li><img src="assets/images/breadcumb.svg" /></li>
+                <li><a routerLink="/attractions">Attractions</a></li>
+                <li><img src="assets/images/breadcumb.svg" /></li>
+                <li><a >{{ offer?.name || 'Details' }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="blog-main blog-detail attraction-main ptc-80">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4">
+          <div class="detail-doctors recent-post">
+              <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                  <h4>Recent Event</h4>
+              </div>
+              
+              <!-- Dynamic recent offers -->
+              <div class="dtl-doctor-list d-flex align-items-center" *ngFor="let recentOffer of recentOffers">
+                  <div class="dtl-doctor-img">
+                      <img [src]="getOfferImageUrl(recentOffer)" class="img-fluid">
+                  </div>
+                  <div class="dtl-doctor-info">
+                      <p>
+                          <a [routerLink]="['/attractions-detail', recentOffer.id]" class="text-decoration-none">
+                              {{ recentOffer.name }}
+                          </a>
+                      </p>
+                  </div>
+              </div>
+              
+                            <!-- Fallback message if no recent offers -->
+              <div class="dtl-doctor-info" *ngIf="recentOffers.length === 0">
+                  <p class="text-muted">No recent offers available</p>
+              </div>
+          </div>
+      </div>
+        <div class="col-lg-8">
+          <!-- Loading State -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Fetching offer details...</p>
+          </div>
+  
+          <!-- Error State -->
+          <div *ngIf="error" class="alert alert-danger text-center py-5">
+            {{ error }}
+          </div>
+  
+          <!-- Offer Details -->
+          <div *ngIf="!loading && offer" class="blog-card mb-0">
+            <!-- Featured Image -->
+            <div class="blog-dtl-img position-relative">
+              <img
+                [src]="'http://165.22.223.163:8000' + getPrimaryImage(offer)"
+                [alt]="offer.name"
+                class="w-100 img-fluid rounded-4"
+                (error)="$event.target.src='assets/images/attractions1.png'"
+              />
+  
+              <!-- Discount Badge -->
+              <div class="position-absolute top-0 end-0 m-3">
+                <span class="badge bg-danger fs-6 px-3 py-2">
+                  {{ offer.discount_percentage }}% OFF
+                </span>
+              </div>
+            </div>
+  
+            <!-- Offer Info -->
+            <div class="blog-card-dtl">
+              <h4>{{ offer.name }}</h4>
+  
+              <div class="offer-meta">
+                <div class="d-flex align-items-center mb-2" *ngIf="offer.location">
+                  <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                  <small class="text-muted">{{ offer.location }}</small>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-calendar-alt text-primary me-2"></i>
+                  <small class="text-muted">
+                    Valid: {{ formatDate(offer.start_date) }} - {{ formatDate(offer.end_date) }}
+                  </small>
+                </div>
+                <div class="d-flex align-items-center" *ngIf="offer.is_free_camp">
+                  <i class="fas fa-gift text-success me-2"></i>
+                  <small class="text-success fw-bold">Free Medical Camp</small>
+                </div>
+              </div>
+  
+              <!-- Description -->
+              <div class="blog-dtl attractions-detail">
+                <p>{{ offer.description }}</p>
+              </div>
+  
+              <!-- Extra Images -->
+              <div class="mt-4" *ngIf="offer.images?.length > 1">
+                <!-- <h5>More Images</h5> -->
+                <div class="row mt-3">
+                  <!-- show only 2 images after the first one -->
+                  <div class="col-md-6 col-lg-6" *ngFor="let img of offer.images.slice(1, 3)">
+                    <div class="blog-inner-dtl">
+                      <img
+                        [src]="'http://165.22.223.163:8000' + img.url"
+                        class="img-fluid rounded-3 shadow-sm"
+                        (error)="$event.target.src='assets/images/attractions1.png'"
+                      />
+                    </div>
+                  </div>
+                  <!-- Contact Now Button -->
+              <div class="">
+                <button class="btn-default mt-4 attraction-call" (click)="contactNow()">
+                  <i class="fas fa-phone me-2"></i>
+                  Contact Now
+                </button>
+              </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+  
+          <!-- No Data -->
+          <div *ngIf="!loading && !offer" class="text-center py-5">
+            <h5>No details found</h5>
+            <p class="text-muted">Please check back later for updated information.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

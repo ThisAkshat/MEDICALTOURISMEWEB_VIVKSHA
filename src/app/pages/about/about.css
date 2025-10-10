@@ -1,0 +1,189 @@
+.about-main .about-details
+{
+    padding-left: 0px !important;
+    padding-right: 30px;
+}
+.about-main .about-details P.sub-head
+{
+    color: #0E99FF;
+    margin-bottom: 0;
+}
+.vision-main img
+{
+    width: 50px;
+    margin-right: 20px;
+}
+.vision-inner h4
+{
+    color: #34363D;
+    font-weight: 600;
+    margin-bottom: 0px;
+    font-size: 20px;
+}
+.vision-inner p
+{
+    font-size: 14px;
+}
+.about-vision img
+{
+    border-radius: 20px;
+}
+.vision-main
+{
+    margin-bottom: 20px;
+}
+.about-back
+{
+    background-color: #F6FBFF;
+    width: 75%;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    z-index: -1;
+    border-radius: 25px 0px 0px 25px;
+}
+.oue-vision
+{
+    padding: 35px 0px;
+}
+.about-feture-list ul li
+{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 13px;
+}
+.about-feture-list ul li img
+{
+    width: 22px;
+}
+.about-feture-list ul li span
+{
+    line-height: 21px;
+    margin-left: 13px;
+    font-size: 15px;
+}
+.about-feture-info
+{
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 50%;
+    display: flex;
+    align-items: end;
+    border-radius: 0px 0px 35px 35px;
+    background-image: linear-gradient(to bottom, #00000000, #000);
+}
+.about-feture-dtl img
+{
+    width: 63px;
+    margin-right: 15px;
+}
+.about-feture-inner h5
+{
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+.about-feture-inner p
+{
+    color: #fff;
+    font-size: 14px;
+    line-height: 22px;
+}
+.about-feture-info-main
+{
+    padding: 35px;
+    border-top: 1px solid #fff;
+}
+.about-option-inner
+{
+    background-color: #F6FBFF;
+    padding: 25px;
+    border-radius: 20px;
+}
+.about-option-inner h6
+{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+.about-option-inner img
+{
+    width: 70px;
+    margin-bottom: 20px;
+}
+.about-feture-main
+{
+    margin-top: 20px;
+}
+.partner-logo
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.user-card-rating i
+{
+  font-size: 18px;
+  color: #F66F4D !important;
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px)
+{
+    .about-feture-info
+    {
+        position: initial;
+        margin-top: 25px;
+        border-radius: 20px;
+        background-image: initial;
+        background-color: #676767;
+    }
+    .about-feture-info-main
+    {
+        padding: 20px 35px;
+    }
+    .about-feture-dtl
+    {
+        margin: 10px 0px;
+    }
+}
+@media screen and (max-width: 767px)
+{
+    .about-feture-info
+    {
+        position: initial;
+        background-image: initial;
+        background-color: #6b6b6b;
+        border-radius: 15px;
+        margin-top: 20px;
+    }
+    .oue-vision
+    {
+        padding: 0px;
+    }
+    .about-feture-info-main
+    {
+        padding: 20px;
+    }
+    .about-feture-dtl img
+    {
+        width: 42px;
+    }
+    .about-feture-inner h5
+    {
+        font-size: 18px;
+        margin-bottom: 0px;
+    }
+    .about-feture-dtl
+    {
+        margin: 10px 0px;
+    }
+    .partner-logo
+    {
+        margin-bottom: 15px;
+    }
+}

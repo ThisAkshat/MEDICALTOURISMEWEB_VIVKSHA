@@ -1,0 +1,55 @@
+.hospital-info .card-location
+{
+    margin: 15px 0px;
+}
+.hospital-info .card-location p
+{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--info-color);
+}
+.hospital-info .card-location img
+{
+    width: 32px;
+    margin-right: 12px;
+}
+.detail-info p
+{
+    font-size: 16px;
+    color: var(--info-color);
+}
+.facility-item img
+{
+    width: 50px;
+    margin-right: 10px;
+}
+.facility-item p
+{
+    font-weight: 500;
+    color: var(--info-color);
+    font-size: 18px;
+    line-height: 25px;
+}
+.facility-item
+{
+    padding: 30px 25px;
+    border-radius: 10px;
+    margin-top: 15px;
+    background-color: #F6FBFF;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+}
+.dtl-features-list ul li
+{
+    margin: 15px 0px;
+    display: flex;
+    color: var(--info-color);
+}
+.dtl-features-list ul li img
+{
+    width: 22px;
+    margin-right: 15px;
+}
+.dtl-features-list ul li span
+{
+    display: block;
+}

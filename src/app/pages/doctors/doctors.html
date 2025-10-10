@@ -1,0 +1,119 @@
+<section class="inner-banner" *ngIf="banner">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="inner-baner-dtl position-relative text-center">
+          <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+          <div class="inner-heading">
+            <h2>{{ banner.title }}</h2>
+            <ul class="breadcumb d-flex justify-content-center align-items-center gap-3 ps-0">
+              <li><a routerLink="/">Home</a></li>
+              <li><img [src]="'assets/images/breadcumb.svg'" /></li>
+              <li><a routerLink="/doctors">{{ banner.title }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card-list-main ptc-80">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="main-head text-center mbc-50">
+          <h2>Our Doctors</h2>
+          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+            the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+        </div>
+      </div>
+    </div> <!-- Debug info (remove in production) -->
+    <!-- <div class="text-center mb-3" style="background: #f0f0f0; padding: 10px; border-radius: 5px;"> <small>Debug: loading = {{ loading }}, doctors.length = {{ doctors.length }}</small> </div> -->
+    <!-- Filters -->
+    <div class="row">
+      <div class="tret-filter-main d-flex align-items-center">
+        <div class="tret-filter">
+          <h4 class="mb-0">Select Treatments</h4>
+        </div>
+        <div class="filter-option d-flex gap-3">
+          <!-- Location Filter -->
+          <div class="custom-select-wrapper">
+            <div class="form-select" [class.open]="isLocationOpen" [class.placeholder]="!selectedLocation"
+              (click)="toggleLocationDropdown()">
+              <span>{{ selectedLocation || 'All Locations' }}</span>
+            </div>
+
+            <div class="select-dropdown" *ngIf="isLocationOpen">
+              <div class="select-option" (click)="selectLocation('')">
+                All Locations
+              </div>
+              <div class="select-option" *ngFor="let loc of locations" [class.selected]="selectedLocation === loc"
+                (click)="selectLocation(loc)">
+                {{ loc }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Specialization Filter -->
+          <div class="custom-select-wrapper">
+            <div class="form-select" [class.open]="isSpecializationOpen" [class.placeholder]="!selectedSpecialization"
+              (click)="toggleSpecializationDropdown()">
+              <span>{{ selectedSpecialization || 'All Specializations' }}</span>
+            </div>
+
+            <div class="select-dropdown" *ngIf="isSpecializationOpen">
+              <div class="select-option" (click)="selectSpecialization('')">
+                All Specializations
+              </div>
+              <div class="select-option" *ngFor="let spec of specializations"
+                [class.selected]="selectedSpecialization === spec" (click)="selectSpecialization(spec)">
+                {{ spec }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="loading" class="text-center">Loading doctors...</div>
+    <div class="row" *ngIf="!loading && doctors.length">
+      <div *ngFor="let d of doctors" class="col-lg-4 col-md-6 mb-4">
+        <div class="user-card">
+          <div class="user-card-img"> <img *ngIf="d.profile_photo?.length"
+              [src]="'http://165.22.223.163:8000' + d.profile_photo" [alt]="d.name" class="card-img-top img-fluid" />
+            <!-- <img class="card-img-top img-fluid" [src]="'https://static.vecteezy.com/system/resources/thumbnails/030/928/115/small_2x/handsome-indian-doctor-generate-ai-photo.jpg'" [alt]="d.name" /> -->
+          </div>
+          <div class="user-card-content doctors-card-info">
+            <h5 class="card-title">{{ d.name }}</h5>
+            <div class="user-card-description">
+              <p class="card-text truncate-2">{{ d.short_description }}</p>
+            </div>
+            <div class="user-card-rating">
+              <div class="user-card-rating d-flex align-items-center"> <ng-container
+                  *ngFor="let star of getStars(d.rating)"> <!-- Full star --> <i *ngIf="star === 'full'"
+                    class="fa fa-star text-warning"></i> <!-- Half star -->
+                  <i *ngIf="star === 'half'" class="fa fa-star-half-alt text-warning"></i>
+                  <!-- Empty star with border --> <i *ngIf="star === 'empty'"
+                    class="fa-regular fa-star text-warning"></i> </ng-container> <span class="ms-2"
+                  *ngIf="d.rating !== null"></span> </div>
+            </div>
+            <div class="d-flex align-items-center card-location"> <img [src]="'assets/images/d-designation.svg'">
+              <p class="mb-0">{{ d.designation }}</p>
+            </div>
+            <div class="d-flex align-items-center card-location"> <img [src]="'assets/images/d-hospital.svg'">
+              <p class="mb-0">{{ d.hospitalName || 'Loading hospital...' }}</p>
+            </div>
+            <div class="d-flex align-items-center card-location"> <img [src]="'assets/images/d-experience.svg'">
+              <p class="mb-0"> {{ d.experience_years || 'N/A' }} Years of Experience</p>
+            </div> <!-- <p><strong>Awards:</strong> {{ d.awards }}</p> -->
+          </div>
+          <div class="read-more"> <!-- <a hre class="btn">More Detail <i class="fa fa-arrow-up"></i></a> -->
+            <a *ngIf="d.id" [attr.href]="'/doctor-details/' + d.id" class="btn"> More Detail <i
+                class="fa fa-arrow-up"></i> </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!loading && !doctors.length" class="text-center"> No doctors found. </div>
+  </div>
+</section>
