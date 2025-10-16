@@ -7,13 +7,13 @@ import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
 
 @Component({
-  selector: 'app-treatments',
+  selector: 'app-ayushman-treatment',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './treatments.html',
-  styleUrls: ['./treatments.css']
+  templateUrl: './ayushman-treatment.html',
+  styleUrls: ['./ayushman-treatment.css']
 })
-export class Treatments implements OnInit {
+export class AyushmanTreatment implements OnInit {
   slug: string | null = null;
   treatmentName: string | null = null;
 
@@ -47,7 +47,7 @@ export class Treatments implements OnInit {
     this.loadTreatments();
 
     // ✅ Load Treatments Banner
-    this.bannerService.getBannerByTitle('Treatment Plan').subscribe({
+    this.bannerService.getBannerByTitle('Ayushman Treatment').subscribe({
       next: (banner) => {
         this.banner = banner;
       },
@@ -55,20 +55,20 @@ export class Treatments implements OnInit {
     });
   }
 
-  /** Load non-Ayushman treatments from API */
+  /** Load Ayushman treatments from API */
   loadTreatments(): void {
     this.loading = true;
     const requestPayload = { skip: 0, limit: 100 };
 
-    this.treatmentService.searchTreatments(requestPayload).subscribe({
+    this.treatmentService.getAyushmanTreatments(requestPayload).subscribe({
       next: (data) => {
-        console.log('✅ All treatments loaded:', data);
+        console.log(' Ayushman treatments loaded:', data);
         
-        // Filter out Ayushman treatments - only show non-Ayushman treatments
-        const nonAyushmanTreatments = data.filter(t => t.is_ayushman === false);
-        console.log(`🔍 Filtered ${nonAyushmanTreatments.length}/${data.length} non-Ayushman treatments`);
+        // Verify all treatments have is_ayushman: true
+        const ayushmanCount = data.filter(t => t.is_ayushman === true).length;
+        console.log(` Verification: ${ayushmanCount}/${data.length} treatments have is_ayushman: true`);
         
-        this.treatments = nonAyushmanTreatments.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
+        this.treatments = data.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
 
         this.availableLocations = Array.from(new Set(this.treatments.map(t => t.location).filter(Boolean)));
         this.availableTreatmentTypes = Array.from(new Set(this.treatments.map(t => t.treatment_type).filter(Boolean)));
@@ -76,10 +76,10 @@ export class Treatments implements OnInit {
         this.filteredTreatments = [...this.treatments];
         this.loading = false;
         
-        console.log(`📊 Loaded ${this.treatments.length} non-Ayushman treatments`);
+        console.log(` Loaded ${this.treatments.length} Ayushman treatments`);
       },
       error: (err) => {
-        console.error('Error fetching treatments:', err);
+        console.error('Error fetching Ayushman treatments:', err);
         this.loading = false;
       }
     });
@@ -119,11 +119,16 @@ export class Treatments implements OnInit {
     this.filteredTreatments = this.treatments.filter(t => {
       const locationMatch = this.selectedLocation ? t.location === this.selectedLocation : true;
       const treatmentMatch = this.selectedTreatmentType ? t.treatment_type === this.selectedTreatmentType : true;
-      const nonAyushmanMatch = t.is_ayushman === false; // Ensure only non-Ayushman treatments
-      return locationMatch && treatmentMatch && nonAyushmanMatch;
+      const ayushmanMatch = t.is_ayushman === true; // Ensure only Ayushman treatments
+      return locationMatch && treatmentMatch && ayushmanMatch;
     });
     
-    console.log(`🔍 Filtered ${this.filteredTreatments.length} non-Ayushman treatments after applying filters`);
+    console.log(`🔍 Filtered ${this.filteredTreatments.length} Ayushman treatments after applying filters`);
+  }
+
+  // Get only Ayushman treatments for display
+  get ayushmanTreatments(): Treatment[] {
+    return this.filteredTreatments.filter(t => t.is_ayushman === true);
   }
 
   getStars(rating: number | null): ('full' | 'half' | 'empty')[] {
@@ -147,11 +152,6 @@ export class Treatments implements OnInit {
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
-  }
-
-  // Get only non-Ayushman treatments for display
-  get nonAyushmanTreatments(): Treatment[] {
-    return this.filteredTreatments.filter(t => t.is_ayushman === false);
   }
 
   // TrackBy function for better performance in *ngFor

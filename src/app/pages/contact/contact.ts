@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
+import { ContactService, ContactInfo } from 'src/app/core/services/contact.service';
 
 @Component({
   selector: 'app-contact',
@@ -17,6 +18,7 @@ export class ContactComponent implements OnInit {
   treatmentTypes: string[] = [];
   isSubmitted: boolean = false;
   banner: Banner | null = null;
+  contactInfo: ContactInfo | null = null;
 
   // ✅ NEW: Dropdown open/close state
   isDepartmentDropdownOpen = false;
@@ -28,7 +30,8 @@ export class ContactComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private treatmentService: TreatmentService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private contactService: ContactService
   ) {
     this.contactForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -73,6 +76,15 @@ export class ContactComponent implements OnInit {
         }
       },
       error: (err) => console.error('❌ Error loading contact banner:', err)
+    });
+
+    // load contact information
+    this.contactService.getContactInfo().subscribe({
+      next: (contactInfo) => {
+        this.contactInfo = contactInfo;
+        console.log('✅ Contact info loaded:', this.contactInfo);
+      },
+      error: (err) => console.error('❌ Error loading contact info:', err)
     });
 
     // fetch treatment types on load

@@ -56,14 +56,13 @@
     border-radius: 5px;
     padding: 10px 15px;
 }
-
 .blog-meta i {
     width: 16px;
     text-align: center;
 }
 .blog-inner-dtl img
 {
-    height: 280px;
+    height: 250px;
     width: 100%;
     object-fit: cover;
 }
@@ -73,6 +72,7 @@
     font-weight: 400;
     margin-bottom: 3px;
     text-decoration: none;
+    line-height: 21px;
     color: var(--primary-font) !important;
 }
 .attraction-call i

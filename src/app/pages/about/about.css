@@ -132,6 +132,12 @@
   font-size: 18px;
   color: #F66F4D !important;
 }
+/* .about-us.about-main img
+{
+    min-height: 450px;
+    object-fit: cover;
+    height: 100%;
+} */
 @media only screen and (min-width: 768px) and (max-width: 1024px)
 {
     .about-feture-info

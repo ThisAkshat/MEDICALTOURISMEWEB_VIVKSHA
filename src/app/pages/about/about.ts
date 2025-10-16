@@ -4,6 +4,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { PartnerService, Partner } from 'src/app/core/services/partner.service';
 import { PatientStory, PatientStoryService } from 'src/app/core/services/patient-story.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
+import { AboutUsService, AboutUs } from 'src/app/core/services/about-us.service';
 
 @Component({
   selector: 'app-about',
@@ -15,6 +16,7 @@ import { BannerService, Banner } from 'src/app/core/services/banner.service';
 export class AboutComponent implements OnInit {
   partners: Partner[] = [];
   patientStories: PatientStory[] = [];
+  aboutUsData: AboutUs | null = null;
   customOptions = {
     loop: true,
     autoplay: true,
@@ -34,16 +36,32 @@ export class AboutComponent implements OnInit {
   constructor(
     private bannerService: BannerService,
     public partnerService: PartnerService,
-    private patientStoryService: PatientStoryService
+    private patientStoryService: PatientStoryService,
+    public aboutUsService: AboutUsService
   ) {}
 
   ngOnInit(): void {
+    this.loadAboutUsData();
     this.loadPartners();
     this.loadPatientStories();
     this.bannerService.getBannerByTitle('About Us').subscribe(banner => {
       this.banner = banner;
     });
   }
+
+  // Load about us data
+  private loadAboutUsData(): void {
+    this.aboutUsService.getAboutUsInfo().subscribe({
+      next: (res) => {
+        if (res && res.length > 0) {
+          this.aboutUsData = res[0]; // Get the first active about us record
+          console.log('✅ About Us data loaded:', this.aboutUsData);
+        }
+      },
+      error: (err) => console.error('❌ Failed to load about us data:', err)
+    });
+  }
+
   // Load active partners
   private loadPartners(): void {
     this.partnerService.getActivePartners().subscribe({
@@ -71,5 +89,27 @@ export class AboutComponent implements OnInit {
       ...Array(halfStar).fill('half'),
       ...Array(emptyStars).fill('empty')
     ];
+  }
+
+  // Get bottom list items as array
+  getBottomListItems(): string[] {
+    if (!this.aboutUsData?.bottom_list) return [];
+    return this.aboutUsService.getBottomListItems(this.aboutUsData.bottom_list);
+  }
+
+  // Get about us image URL safely
+  getAboutUsImageUrl(): string {
+    if (this.aboutUsData?.images && this.aboutUsData.images.length > 0 && this.aboutUsData.images[0]?.url) {
+      return 'http://165.22.223.163:8000' + this.aboutUsData.images[0].url;
+    }
+    return 'assets/images/about1.png';
+  }
+
+  // Get about us vision image URL safely (second image)
+  getAboutUsVisionImageUrl(): string {
+    if (this.aboutUsData?.images && this.aboutUsData.images.length > 1 && this.aboutUsData.images[1]?.url) {
+      return 'http://165.22.223.163:8000' + this.aboutUsData.images[1].url;
+    }
+    return 'assets/images/about-vision.png';
   }
 }

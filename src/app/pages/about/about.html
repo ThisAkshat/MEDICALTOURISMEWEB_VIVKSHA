@@ -24,19 +24,12 @@
             <div class="col-lg-6">
                 <div class="about-details">
                     <p class="sub-head">About Us</p>
-                    <h2>Why You Choose <br> Medical Tourism</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                        galley of type and scrambled it to make a type specimen book. It has survived not only five
-                        centuries, but also the leap into electronic.</p>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                        galley of type and scrambled it to make a type specimen book. It has survived not only five
-                        centuries.</p>
+                    <h2>{{ aboutUsData?.heading || 'Why You Choose Medical Tourism' }}</h2>
+                    <p [innerHTML]="aboutUsData?.description || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic.'"></p>
                 </div>
             </div>
             <div class="col-lg-6">
-                <img [src]="'assets/images/about1.png'" class="img-fluid w-100">
+                <img [src]="getAboutUsImageUrl()" class="img-fluid w-100">
             </div>
         </div>
     </div>
@@ -46,33 +39,25 @@
         <div class="row align-items-center">
             <div class="col-lg-5">
                 <div class="about-vision">
-                    <img [src]="'assets/images/about-vision.png'" class="img-fluid">
+                    <img [src]="getAboutUsVisionImageUrl()" class="img-fluid">
                 </div>
             </div>
             <div class="col-lg-7">
                 <div class="vision-detail about-details">
-                    <h2>Lorem Ipsum <br>Medical Tourism</h2>
-                    <p class="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                        has
-                        been the industry's standard dummy text ever since the 1500s, when an unknown printer took a
-                        galley of type and scrambled it to make a type specimen book. It has survived not only five
-                        centuries, but also the leap into electronic typesetting.</p>
+                    <h2>{{ aboutUsData?.vision_heading || 'Lorem Ipsum Medical Tourism' }}</h2>
+                    <p class="">{{ aboutUsData?.vision_desc || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting.' }}</p>
                     <div class="vision-main d-flex align-items-center">
                         <img [src]="'assets/images/vision.svg'">
                         <div class="vision-inner">
                             <h4>Our Vision</h4>
-                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem
-                                Ipsum has been the industry's standard dummy text ever since.</p>
+                            <p class="mb-0">{{ aboutUsData?.vision || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since.' }}</p>
                         </div>
                     </div>
                     <div class="vision-main d-flex align-items-center">
                         <img [src]="'assets/images/mission.svg'">
                         <div class="vision-inner">
-                            <h4>Our Vision</h4>
-                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem
-                                Ipsum has been the industry's standard dummy text ever since.</p>
+                            <h4>Our Mission</h4>
+                            <p class="mb-0">{{ aboutUsData?.mission || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since.' }}</p>
                         </div>
                     </div>
                 </div>
@@ -86,26 +71,17 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="about-feture-head about-details ps-0">
-                    <h2>Professionals dedicated to your health</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
-                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
-                        but also the leap.</p>
+                    <h2>{{ aboutUsData?.bottom_heading || 'Professionals dedicated to your health' }}</h2>
+                    <p>{{ aboutUsData?.bottom_desc || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap.' }}</p>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="about-feture-list">
                     <ul class="mb-0">
-                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
-                                the printing and typeing.</span></li>
-                        <li><img [src]="'assets/images/features-check.svg'"><span>It is a long established fact that a
-                                reader will be distracted by the readable content of a page when looking.</span></li>
-                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
-                                the printing and typeing.</span></li>
-                        <li><img [src]="'assets/images/features-check.svg'"><span>It is a long established fact that a
-                                reader will be distracted.</span></li>
-                        <li><img [src]="'assets/images/features-check.svg'"><span>Lorem Ipsum is simply dummy text of
-                                the printing and typeing.</span></li>
+                        <li *ngFor="let item of getBottomListItems()">
+                            <img [src]="'assets/images/features-check.svg'">
+                            <span>{{ item }}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -160,38 +136,17 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="main-head text-center mbc-50">
-                    <h2>Professionals dedicated to <br>your health</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    <h2>{{ aboutUsData?.feature_title || 'Professionals dedicated to your health' }}</h2>
+                    <p>{{ aboutUsData?.feature_desc || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer' }}</p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-4" *ngFor="let card of aboutUsData?.featured_cards; let i = index">
                 <div class="about-option-inner">
-                    <img [src]="'assets/images/equipment.svg'">
-                    <h6>Modern Equipment</h6>
-                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="about-option-inner">
-                    <img [src]="'assets/images/highly-doctor.svg'">
-                    <h6>Highly Qualified Doctor</h6>
-                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="about-option-inner">
-                    <img [src]="'assets/images/treatment.svg'">
-                    <h6>Pain - Free Treatment</h6>
-                    <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s. When an unknown printer.
-                    </p>
+                    <img [src]="'assets/images/' + (i === 0 ? 'equipment' : i === 1 ? 'highly-doctor' : 'treatment') + '.svg'">
+                    <h6>{{ card.heading }}</h6>
+                    <p class="mb-0">{{ card.description }}</p>
                 </div>
             </div>
         </div>
@@ -210,10 +165,13 @@
         </div>
     </div>
     <div class="container-fluid" *ngIf="partners.length > 0">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-lg-2 col-md-4 col-sm-6 col-6" *ngFor="let partner of partners">
                 <div class="partner-logo h-100">
-                    <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name" class="img-fluid">
+                     <a [attr.href]="partner.hospital_id ? '/hospital-detail/' + partner.hospital_id : '#/hospital-detail/'" class="btn">
+                        <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name"
+                            class="img-fluid">
+                    </a>
                     <!-- <p>{{ partner.name }}</p> -->
                 </div>
             </div>
@@ -251,7 +209,9 @@
                           </div>
               
                           <!-- Patient Description -->
-                          <p>{{ story.description | slice:0:200 }}...</p>
+                          <div class="feedback-detail">
+                            <p>{{ story.description | slice:0:200 }}...</p>
+                          </div>
                           <hr>
               
                           <!-- Profile Photo & Name -->

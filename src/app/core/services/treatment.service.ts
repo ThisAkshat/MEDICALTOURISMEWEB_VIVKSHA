@@ -23,6 +23,14 @@ export class TreatmentService {
       httpParams = httpParams.set('treatment_type', params.treatment_type.trim());
     }
 
+    if (params.featured_only) {
+      httpParams = httpParams.set('featured_only', 'true');
+    }
+
+    if (params.ayushman_only) {
+      httpParams = httpParams.set('ayushman_only', 'true');
+    }
+
     console.log('API Request URL:', '/api/v1/treatments?' + httpParams.toString());
     return this.apiService.get<Treatment[]>('/api/v1/treatments', httpParams);
   }
@@ -38,6 +46,11 @@ export class TreatmentService {
   /** ✅ Get single treatment by ID */
   getTreatmentById(id: number): Observable<Treatment> {
     return this.apiService.get<Treatment>(`/api/v1/treatments/${id}`);
+  }
+
+  /** ✅ Get Ayushman treatments specifically */
+  getAyushmanTreatments(params: Omit<TreatmentSearchParams, 'ayushman_only'> = {}): Observable<Treatment[]> {
+    return this.searchTreatments({ ...params, ayushman_only: true });
   }
 
   /** ✅ New universal search method (Doctors + Treatments + Hospitals) */

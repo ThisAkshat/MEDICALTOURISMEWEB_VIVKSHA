@@ -18,7 +18,7 @@ interface BookingRequest {
   medical_history_file: string;
   doctor_preference: string;
   hospital_preference: string;
-  consultation_fee: string; // ✅ added
+  consultation_fee: string;
   user_query: string;
   travel_assistant: boolean;
   stay_assistant: boolean;
@@ -33,8 +33,8 @@ interface BookingResponse extends BookingRequest {
   selector: 'app-doctor-details',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterModule, 
+    CommonModule,
+    RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
     ModalComponent
@@ -74,10 +74,17 @@ export class DoctorDetails implements OnInit {
     { value: 5, label: 'Emergency Consultation' }
   ];
 
+  timeSlotOptions: { value: string; label: string }[] = [];
+  dynamicTimeSlots: Record<string, string> = {};
+
+  // Dropdown states
   isTreatmentDropdownOpen = false;
   isBudgetDropdownOpen = false;
+  isTimeSlotDropdownOpen = false;
+
   selectedTreatmentLabel: string = '';
   selectedBudgetLabel: string = '';
+  selectedTimeSlotLabel: string = '';
 
   constructor(
     private doctorService: DoctorService,
@@ -91,15 +98,16 @@ export class DoctorDetails implements OnInit {
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       mobile_no: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
-      treatment_id: [null], // Hardcoded to null
+      treatment_id: [null],
       budget: [''],
+      consultation_fee: [''],
       doctor_preference: [''],
       hospital_preference: [''],
-      consultation_fee: [''], // ✅ added
+      preferred_time_slot: [''],  // ✅ Added time slot field
       medical_history_file: [''],
       user_query: [''],
-      travel_assistant: [false], // Hardcoded to false
-      stay_assistant: [false] // Hardcoded to false
+      travel_assistant: [false],
+      stay_assistant: [false]
     });
   }
 
@@ -107,11 +115,19 @@ export class DoctorDetails implements OnInit {
   toggleTreatmentDropdown(): void {
     this.isTreatmentDropdownOpen = !this.isTreatmentDropdownOpen;
     this.isBudgetDropdownOpen = false;
+    this.isTimeSlotDropdownOpen = false;
   }
 
   toggleBudgetDropdown(): void {
     this.isBudgetDropdownOpen = !this.isBudgetDropdownOpen;
     this.isTreatmentDropdownOpen = false;
+    this.isTimeSlotDropdownOpen = false;
+  }
+
+  toggleTimeSlotDropdown(): void {
+    this.isTimeSlotDropdownOpen = !this.isTimeSlotDropdownOpen;
+    this.isTreatmentDropdownOpen = false;
+    this.isBudgetDropdownOpen = false;
   }
 
   selectTreatment(service: { value: number; label: string }): void {
@@ -126,11 +142,34 @@ export class DoctorDetails implements OnInit {
     this.isBudgetDropdownOpen = false;
   }
 
+  selectTimeSlot(slot: { value: string; label: string }): void {
+    this.selectedTimeSlotLabel = slot.label;
+    this.consultationForm.patchValue({ preferred_time_slot: slot.value }); // ✅ Store selected time slot
+    this.isTimeSlotDropdownOpen = false;
+  }
+
+  // Select time slot from sidebar display
+  selectTimeSlotFromSidebar(slot: {day: string, time: string, isAvailable: boolean}): void {
+    if (!slot.isAvailable) {
+      return; // Don't allow selection of unavailable slots
+    }
+
+    const timeSlotValue = `${slot.day} - ${slot.time}`;
+    this.selectedTimeSlotLabel = timeSlotValue;
+    this.consultationForm.patchValue({ preferred_time_slot: timeSlotValue });
+    
+    console.log('🎯 Time slot selected from sidebar:', timeSlotValue);
+    
+    // Optional: Show a brief feedback message
+    // You could add a toast notification here if desired
+  }
+
   @HostListener('document:click', ['$event'])
   clickOutside(event: any): void {
     if (!event.target.closest('.custom-select-wrapper')) {
       this.isTreatmentDropdownOpen = false;
       this.isBudgetDropdownOpen = false;
+      this.isTimeSlotDropdownOpen = false;
     }
   }
 
@@ -145,9 +184,19 @@ export class DoctorDetails implements OnInit {
     this.doctorService.getDoctorById(id).subscribe({
       next: (data) => {
         this.doctor = data;
+        console.log('🔍 Doctor data loaded:', data);
+        console.log('🕒 Raw time_slots data:', data.time_slots);
+        console.log('🕒 Type of time_slots:', typeof data.time_slots);
+        
+        // Parse dynamic time slots from API
+        this.parseDynamicTimeSlots(data.time_slots);
+        
         if (data.hospital_id) {
+          console.log('🏥 Fetching hospital name for hospital_id:', data.hospital_id);
           this.fetchHospitalName(data.hospital_id);
           this.fetchRelatedDoctors(data.hospital_id, id);
+        } else {
+          console.warn('⚠️ No hospital_id found for doctor:', data.name);
         }
       },
       error: (err) => console.error(err)
@@ -158,8 +207,12 @@ export class DoctorDetails implements OnInit {
     this.hospitalService.getHospitalById(hospitalId).subscribe({
       next: (hospital: Hospital) => {
         this.hospitalName = hospital.name;
+        console.log('🏥 Primary hospital name fetched:', this.hospitalName);
       },
-      error: (err) => console.error('Error fetching hospital', err)
+      error: (err) => {
+        console.error('❌ Error fetching hospital:', err);
+        this.hospitalName = 'Hospital information unavailable';
+      }
     });
   }
 
@@ -197,6 +250,106 @@ export class DoctorDetails implements OnInit {
     return faqs;
   }
 
+  // Parse dynamic time slots from API
+  parseDynamicTimeSlots(timeSlotsData: string | object): void {
+    try {
+      if (timeSlotsData) {
+        // Handle both string and object formats
+        if (typeof timeSlotsData === 'string') {
+          this.dynamicTimeSlots = this.doctorService.parseTimeSlots(timeSlotsData);
+        } else {
+          // If it's already an object, use it directly
+          this.dynamicTimeSlots = timeSlotsData as Record<string, string>;
+        }
+        
+        console.log('📅 Parsed time slots:', this.dynamicTimeSlots);
+        
+        // Convert to dropdown options (only available slots)
+        this.timeSlotOptions = Object.entries(this.dynamicTimeSlots)
+          .filter(([day, time]) => time && time.toLowerCase() !== 'off')
+          .map(([day, time]) => ({
+            value: `${day} - ${time}`,
+            label: `${day} - ${time}`
+          }));
+        
+        console.log('🕐 Available time slot options for booking:', this.timeSlotOptions);
+        console.log('📋 Total available slots:', this.timeSlotOptions.length);
+      } else {
+        console.warn('⚠️ No time slots data available');
+        this.dynamicTimeSlots = {};
+        this.timeSlotOptions = [];
+      }
+    } catch (error) {
+      console.error('❌ Error parsing time slots:', error);
+      this.dynamicTimeSlots = {};
+      this.timeSlotOptions = [];
+    }
+  }
+
+  // Get formatted time slots for display
+  getFormattedTimeSlots(): Array<{day: string, time: string, isAvailable: boolean}> {
+    const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return daysOrder.map(day => {
+      const timeSlot = this.dynamicTimeSlots[day] || 'Closed';
+      return {
+        day,
+        time: timeSlot === 'Off' ? 'Closed' : timeSlot,
+        isAvailable: Boolean(timeSlot && timeSlot.toLowerCase() !== 'off')
+      };
+    });
+  }
+
+  // Get associated hospitals
+  getAssociatedHospitals(): any[] {
+    return this.doctor?.associated_hospitals || [];
+  }
+
+  // Helper method to get background color for time slot based on selection
+  getTimeSlotBackgroundColor(slot: {day: string, time: string, isAvailable: boolean}): string {
+    if (!slot.isAvailable) {
+      return 'transparent';
+    }
+    
+    const slotValue = `${slot.day} - ${slot.time}`;
+    if (this.selectedTimeSlotLabel === slotValue) {
+      return '#d4edda'; // Light green for selected
+    }
+    
+    return '#f8f9fa'; // Default light gray
+  }
+
+  // Helper method to get border color for time slot based on selection
+  getTimeSlotBorder(slot: {day: string, time: string, isAvailable: boolean}): string {
+    if (!slot.isAvailable) {
+      return 'none';
+    }
+    
+    const slotValue = `${slot.day} - ${slot.time}`;
+    if (this.selectedTimeSlotLabel === slotValue) {
+      return '2px solid #28a745'; // Green border for selected
+    }
+    
+    return '1px solid #e9ecef'; // Default border
+  }
+
+  // Handle hover effects for time slots
+  onTimeSlotHover(slot: {day: string, time: string, isAvailable: boolean}, event: any, isEntering: boolean): void {
+    if (!slot.isAvailable) {
+      return;
+    }
+
+    const slotValue = `${slot.day} - ${slot.time}`;
+    const isSelected = this.selectedTimeSlotLabel === slotValue;
+
+    if (isEntering) {
+      // Mouse enter
+      event.target.style.backgroundColor = isSelected ? '#c3e6cb' : '#e3f2fd';
+    } else {
+      // Mouse leave
+      event.target.style.backgroundColor = isSelected ? '#d4edda' : '#f8f9fa';
+    }
+  }
+
   toggleFaq(index: number): void {
     this.expandedFaqIndex = this.expandedFaqIndex === index ? null : index;
   }
@@ -215,7 +368,6 @@ export class DoctorDetails implements OnInit {
     this.resetForm();
   }
 
-  // ✅ UPDATED: Reset form (now includes consultation_fee)
   resetForm() {
     this.consultationForm.reset();
     this.isSubmitting = false;
@@ -224,16 +376,18 @@ export class DoctorDetails implements OnInit {
 
     this.selectedTreatmentLabel = '';
     this.selectedBudgetLabel = '';
-    this.selectedFile = null; // Clear selected file
+    this.selectedTimeSlotLabel = '';
+    this.selectedFile = null;
 
     this.consultationForm.patchValue({
-      travel_assistant: false, // Hardcoded to false
-      stay_assistant: false, // Hardcoded to false
-      treatment_id: null, // Hardcoded to null
+      travel_assistant: false,
+      stay_assistant: false,
+      treatment_id: null,
       budget: '',
       doctor_preference: this.doctor?.name || '',
       hospital_preference: this.hospitalName || '',
-      consultation_fee: this.doctor?.consultancy_fee ? `₹${this.doctor.consultancy_fee}` : '' // ✅ default fee
+      preferred_time_slot: '',  // ✅ Reset time slot
+      consultation_fee: this.doctor?.consultancy_fee ? `₹${this.doctor.consultancy_fee}` : ''
     });
   }
 
@@ -247,7 +401,6 @@ export class DoctorDetails implements OnInit {
 
   async onSubmit() {
     this.markFormGroupTouched();
-
     if (this.consultationForm.invalid) {
       this.submitError = 'Please fill in all required fields correctly.';
       return;
@@ -258,25 +411,20 @@ export class DoctorDetails implements OnInit {
 
     try {
       const formData = this.consultationForm.value;
-
-      // Create FormData for multipart/form-data
       const multipartFormData = new FormData();
-      
-      // Append all the form fields
       multipartFormData.append('first_name', formData.first_name);
       multipartFormData.append('last_name', formData.last_name);
       multipartFormData.append('email', formData.email);
       multipartFormData.append('mobile_no', formData.mobile_no);
-      multipartFormData.append('treatment_id', ''); // Hardcoded to null/empty
+      multipartFormData.append('treatment_id', '');
       multipartFormData.append('budget', formData.budget || `₹${this.doctor?.consultancy_fee || ''}`);
       multipartFormData.append('doctor_preference', formData.doctor_preference || (this.doctor?.name || ''));
       multipartFormData.append('hospital_preference', formData.hospital_preference || (this.hospitalName || ''));
+      multipartFormData.append('preferred_time_slot', formData.preferred_time_slot || '');  // ✅ Added time slot
       multipartFormData.append('user_query', formData.user_query || 'Consultation booking request');
-      multipartFormData.append('travel_assistant', 'false'); // Hardcoded to false
-      multipartFormData.append('stay_assistant', 'false'); // Hardcoded to false
-      multipartFormData.append('personal_assistant', 'false'); // Add missing field
-      
-      // Append file if selected, otherwise append empty string
+      multipartFormData.append('travel_assistant', 'false');
+      multipartFormData.append('stay_assistant', 'false');
+      multipartFormData.append('personal_assistant', 'false');
       if (this.selectedFile) {
         multipartFormData.append('medical_history_file', this.selectedFile);
       } else {
@@ -286,20 +434,12 @@ export class DoctorDetails implements OnInit {
       const response = await this.http.post<BookingResponse>(
         `${this.baseUrl}/api/v1/bookings`,
         multipartFormData,
-        {
-          headers: {
-            'accept': 'application/json'
-            // Don't set Content-Type for FormData - browser will set it automatically with boundary
-          }
-        }
+        { headers: { 'accept': 'application/json' } }
       ).toPromise();
 
       console.log('Consultation booked successfully:', response);
       this.submitSuccess = true;
-
-      setTimeout(() => {
-        this.closeModal();
-      }, 2000);
+      setTimeout(() => this.closeModal(), 2000);
 
     } catch (error: any) {
       console.error('Error booking consultation:', error);

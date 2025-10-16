@@ -30,29 +30,31 @@
             </div>
         </div>
         <div class="row">
-                        <div class="col-lg-4">
-                <div class="detail-doctors recent-post">
-                    <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
-                        <h4>Recent Event</h4>
-                    </div>
-                    
-                    <!-- Dynamic recent offers -->
-                    <div class="dtl-doctor-list d-flex align-items-center" *ngFor="let offer of recentOffers">
-                        <div class="dtl-doctor-img">
-                            <img [src]="getOfferImageUrl(offer)" class="img-fluid">
+            <div class="col-lg-4">
+                <div class="blog-category-main">
+                    <div class="detail-doctors recent-post">
+                        <div class="dtl-doctor-head d-flex align-items-center justify-content-between">
+                            <h4>Recent Event</h4>
                         </div>
-                        <div class="dtl-doctor-info">
-                            <p>
-                                <a [routerLink]="['/attractions-detail', offer.id]" class="text-decoration-none">
-                                    {{ offer.name }}
-                                </a>
-                            </p>
+
+                        <!-- Dynamic recent offers -->
+                        <div class="dtl-doctor-list d-flex align-items-center" *ngFor="let offer of recentOffers">
+                            <div class="dtl-doctor-img">
+                                <img [src]="getOfferImageUrl(offer)" class="img-fluid">
+                            </div>
+                            <div class="dtl-doctor-info">
+                                <p>
+                                    <a [routerLink]="['/attractions-detail', offer.id]" class="text-decoration-none">
+                                        {{ offer.name }}
+                                    </a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Fallback message if no recent offers -->
-                    <div class="dtl-doctor-info" *ngIf="recentOffers.length === 0">
-                        <p class="text-muted">No recent offers available</p>
+
+                        <!-- Fallback message if no recent offers -->
+                        <div class="dtl-doctor-info" *ngIf="recentOffers.length === 0">
+                            <p class="text-muted">No recent offers available</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,11 +82,9 @@
                 <div class="blog-card" *ngFor="let offer of offers">
                     <!-- Featured Image -->
                     <div class="blog-dtl-img position-relative">
-                        <img [src]="getOfferImageUrl(offer)" 
-                             [alt]="offer.name" 
-                             class="w-100 img-fluid rounded-4"
-                             (error)="$event.target.src='assets/images/attractions1.png'"/>
-                        
+                        <img [src]="getOfferImageUrl(offer)" [alt]="offer.name" class="w-100 img-fluid rounded-4"
+                            (error)="$event.target.src='assets/images/attractions1.png'" />
+
                         <!-- Discount Badge -->
                         <div class="position-absolute top-0 end-0 m-3">
                             <span class="badge bg-danger fs-6 px-3 py-2">
@@ -96,7 +96,7 @@
                     <div class="blog-card-dtl">
                         <!-- Title -->
                         <h4>{{ offer.name }}</h4>
-                        
+
                         <!-- Offer Details -->
                         <!-- <div class="offer-meta mb-3">
                             <div class="d-flex align-items-center mb-2" *ngIf="offer.location">

@@ -23,6 +23,7 @@ export class HeroSection implements OnInit, OnDestroy {
 
   /** ✅ Banner */
   banner: Banner | null = null;
+  baseUrl = 'http://165.22.223.163:8000';
 
   /** Treatment search */
   locations: string[] = [];

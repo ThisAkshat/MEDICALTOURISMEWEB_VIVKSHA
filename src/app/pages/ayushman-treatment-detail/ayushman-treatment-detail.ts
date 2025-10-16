@@ -14,7 +14,7 @@ import { ModalComponent } from '@core/modal/modal.component';
 
 
 @Component({
-  selector: 'app-treatment-detail',
+  selector: 'app-ayushman-treatment-detail',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,10 +22,10 @@ import { ModalComponent } from '@core/modal/modal.component';
     HttpClientModule,
     ModalComponent   // ✅ standalone modal imported
   ],
-  templateUrl: './treatment-detail.html',
-  styleUrls: ['./treatment-detail.css']
+  templateUrl: './ayushman-treatment-detail.html',
+  styleUrls: ['./ayushman-treatment-detail.css']
 })
-export class TreatmentDetail implements OnInit {
+export class AyushmanTreatmentDetail implements OnInit {
   treatment?: Treatment;
   loading = true;
   baseUrl = 'http://165.22.223.163:8000';
@@ -460,32 +460,6 @@ export class TreatmentDetail implements OnInit {
     }
 
     return [];
-  }
-
-  // Method to get includes as an array for line-by-line display
-  getIncludesList(): string[] {
-    if (!this.treatment?.Includes) {
-      return [];
-    }
-
-    // Split by various delimiters including \r\n and clean up
-    return this.treatment.Includes
-      .split(/[\r\n]+/) // Split by carriage return and newline
-      .map(item => item.trim())
-      .filter(item => item.length > 0);
-  }
-
-  // Method to get excludes as an array for line-by-line display
-  getExcludesList(): string[] {
-    if (!this.treatment?.excludes) {
-      return [];
-    }
-
-    // Split by various delimiters including \r\n and clean up
-    return this.treatment.excludes
-      .split(/[\r\n]+/) // Split by carriage return and newline
-      .map(item => item.trim())
-      .filter(item => item.length > 0);
   }
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ export interface BookingRequest {
   medical_history_file: string;
   doctor_preference: string;
   hospital_preference: string;
+  preferred_time_slot: string;  // ✅ Added time slot field
   user_query: string;
   travel_assistant: boolean;
   stay_assistant: boolean;
@@ -44,6 +45,7 @@ export class BookingService {
     formData.append('budget', data.budget || '');
     formData.append('doctor_preference', data.doctor_preference || '');
     formData.append('hospital_preference', data.hospital_preference || '');
+    formData.append('preferred_time_slot', data.preferred_time_slot || '');  // ✅ Added time slot
     formData.append('user_query', data.user_query || '');
     formData.append('travel_assistant', data.travel_assistant.toString());
     formData.append('stay_assistant', data.stay_assistant.toString());

@@ -24,9 +24,8 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="main-head text-center mbc-50">
-                    <h2>Contact Us</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
-                        the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    <h2>{{ contactInfo?.heading || 'Contact Us' }}</h2>
+                    <p>{{ contactInfo?.description || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer' }}</p>
                 </div>
             </div>
         </div>
@@ -36,7 +35,7 @@
                     <img [src]="'assets/images/call.svg'" />
                     <div class="contact-info">
                         <h5>Call Now</h5>
-                        <p class="mb-0">+91 98XXX XXX25</p>
+                        <p class="mb-0">{{ contactInfo?.phone_no || '+91 98XXX XXX25' }}</p>
                     </div>
                 </div>
             </div>
@@ -45,7 +44,7 @@
                     <img [src]="'assets/images/email.svg'" />
                     <div class="contact-info">
                         <h5>Send Email</h5>
-                        <p class="mb-0">example85@gmail.com</p>
+                        <p class="mb-0">{{ contactInfo?.email || 'example85@gmail.com' }}</p>
                     </div>
                 </div>
             </div>
@@ -54,7 +53,7 @@
                     <img [src]="'assets/images/location-contact.svg'" />
                     <div class="contact-info">
                         <h5>Address</h5>
-                        <p class="mb-0">85/4, lorem, Ipsum is simply dummy text</p>
+                        <p class="mb-0">{{ contactInfo?.address || '85/4, lorem, Ipsum is simply dummy text' }}</p>
                     </div>
                 </div>
             </div>

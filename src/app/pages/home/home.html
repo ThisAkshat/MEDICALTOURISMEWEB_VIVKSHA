@@ -306,18 +306,20 @@
                     <div class="main-head text-center mbc-50">
                         <h2>Our Partner Hospital</h2>
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br>Lorem Ipsum
-                            has
-                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                            has been the industry's standard dummy text ever since the 1500s, when an unknown printer
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid" *ngIf="partners.length > 0">
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-2 col-md-4 col-sm-6 col-6" *ngFor="let partner of partners">
                     <div class="partner-logo h-100">
-                        <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name"
-                            class="img-fluid">
+                        <a [attr.href]="partner.hospital_id ? '/hospital-detail/' + partner.hospital_id : '#/hospital-detail/'" class="btn">
+                            <img [src]="partnerService.getFullLogoUrl(partner.logo_url)" [alt]="partner.name"
+                                class="img-fluid">
+                        </a>
                         <!-- <p>{{ partner.name }}</p> -->
                     </div>
                 </div>
@@ -355,7 +357,9 @@
                                     </div>
 
                                     <!-- Patient Description -->
-                                    <p>{{ story.description | slice:0:200 }}...</p>
+                                    <div class="feedback-detail">
+                                        <p>{{ story.description | slice:0:200 }}...</p>
+                                    </div>
                                     <hr>
 
                                     <!-- Profile Photo & Name -->

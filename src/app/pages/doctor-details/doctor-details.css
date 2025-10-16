@@ -55,9 +55,9 @@
     padding: 15px;
     font-size: 16px;
     color: #0e0e0e;
-    border: none;
-    box-shadow: none;
     border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    box-shadow: none;
 }
 
 .book-package-form form input::placeholder {
@@ -91,22 +91,23 @@
 }
 
 /* ========================================
-   CUSTOM DROPDOWN STYLES (EXACT FROM TREATMENT FILTER)
+   CUSTOM DROPDOWN STYLES (REUSABLE)
    ======================================== */
 
 /* Custom Select Wrapper */
-.book-package-form .custom-select-wrapper {
+.custom-select-wrapper {
   position: relative;
   display: inline-block;
   min-width: 200px;
   width: 100%;
+  margin-bottom: 15px;
 }
 
 /* Form Select Button */
-.book-package-form .form-select {
+.form-select {
   position: relative;
   background-color: #fff;
-  color: #333;
+  color: #0e0e0e;
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -120,13 +121,11 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  opacity: 1;
 }
 
-.book-package-form .form-select:hover {
-  border-color: #007bff;
-}
 
-.book-package-form .form-select span:first-child {
+.form-select span:first-child {
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -134,7 +133,7 @@
 }
 
 /* Arrow */
-.book-package-form .form-select::after {
+.form-select::after {
   content: '';
   position: absolute;
   right: 12px;
@@ -147,20 +146,17 @@
   pointer-events: none;
 }
 
-.book-package-form .form-select.open::after {
+.form-select.open::after {
   transform: rotate(180deg);
 }
 
-.book-package-form .form-select.placeholder span {
+/* Placeholder text color */
+.form-select.placeholder span {
   color: #AEAEAE;
-}
-.book-package-form .form-select.placeholder
-{
-    opacity: 1 !important;
 }
 
 /* Dropdown Container */
-.book-package-form .select-dropdown {
+.select-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -176,7 +172,7 @@
 }
 
 /* Dropdown Options */
-.book-package-form .select-option {
+.select-option {
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s;
@@ -184,57 +180,71 @@
   color: #333;
 }
 
-.book-package-form .select-option:hover {
+.select-option:hover {
   background-color: #007bff;
   color: #fff;
 }
 
-.book-package-form .select-option.selected {
+.select-option.selected {
   background-color: #e7f3ff;
   color: #007bff;
 }
 
-.book-package-form .select-option:first-child {
+/* Rounded corners for first and last options */
+.select-option:first-child {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
 
-.book-package-form .select-option:last-child {
+.select-option:last-child {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
 }
 
 /* Scrollbar styling */
-.book-package-form .select-dropdown::-webkit-scrollbar {
+.select-dropdown::-webkit-scrollbar {
   width: 6px;
 }
 
-.book-package-form .select-dropdown::-webkit-scrollbar-track {
+.select-dropdown::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.book-package-form .select-dropdown::-webkit-scrollbar-thumb {
+.select-dropdown::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 3px;
 }
 
-.book-package-form .select-dropdown::-webkit-scrollbar-thumb:hover {
+.select-dropdown::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
 /* Invalid state styling */
-.book-package-form .form-select.is-invalid {
+.form-select.is-invalid {
   border-color: #dc3545;
 }
 
-.book-package-form .form-select.is-invalid::after {
+.form-select.is-invalid::after {
   border-top-color: #dc3545;
 }
 
 /* Invalid feedback */
-.book-package-form .invalid-feedback {
+.invalid-feedback {
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
   color: #dc3545;
+}
+.associated-hospitals
+{
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+@media screen and (max-width: 767px)
+{
+  .row.time-row
+  {
+    flex-direction: column-reverse;
+  }
 }

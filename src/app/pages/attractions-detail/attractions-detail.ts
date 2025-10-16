@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from 'src/app/core/services/offer.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-attractions-detail',
@@ -11,11 +12,12 @@ import { OfferService } from 'src/app/core/services/offer.service';
   templateUrl: './attractions-detail.html',
   styleUrls: ['./attractions-detail.css']
 })
-export class AttractionsDetail implements OnInit {
+export class AttractionsDetail implements OnInit, OnDestroy {
   offer: any;
   recentOffers: any[] = [];
   loading = true;
   error = '';
+  private routeSubscription: Subscription = new Subscription();
 
   constructor(
     private offerService: OfferService, 
@@ -24,22 +26,34 @@ export class AttractionsDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id')) || 1;
+    // Subscribe to route parameter changes
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id')) || 1;
+      this.loadOfferDetails(id);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
+  }
+
+  private loadOfferDetails(id: number): void {
+    this.loading = true;
+    this.error = '';
     
     // Load specific offer details
     this.offerService.getOfferById(id).subscribe({
       next: (data) => {
         this.offer = data;
         this.loading = false;
+        // Load recent offers after current offer is loaded
+        this.loadRecentOffers();
       },
       error: () => {
         this.error = 'Failed to load offer details.';
         this.loading = false;
       }
     });
-
-    // Load recent offers for sidebar
-    this.loadRecentOffers();
   }
 
   getPrimaryImage(offer: any): string {

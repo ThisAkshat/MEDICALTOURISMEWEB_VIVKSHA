@@ -24,7 +24,7 @@
         <div class="main-head text-center mbc-50">
           <!-- <h2>Our Surgical Treatments Plan</h2> -->
           <!-- <h2 *ngIf="filteredTreatments">Treatments for {{ treatmentName }}</h2> -->
-           <h2>Our Surgical Treatments Plan</h2>
+           <h2>Our Ayushman Treatment Plan</h2>
           <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
@@ -107,13 +107,13 @@
     <div class="row">
       <div *ngIf="loading" class="col-12 text-center py-4">
         <div class="spinner-border spinner-border-lg" role="status">
-          <span class="visually-hidden">Loading non-Ayushman treatments...</span>
+          <span class="visually-hidden">Loading Ayushman treatments...</span>
         </div>
-        <p class="mt-2 mb-0">Loading treatments...</p>
+        <p class="mt-2 mb-0">Loading Ayushman treatments...</p>
       </div>
 
-      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let t of nonAyushmanTreatments; trackBy: trackByTreatmentId">
-        <div class="user-card" *ngIf="!loading && t.is_ayushman === false">
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let t of ayushmanTreatments; trackBy: trackByTreatmentId">
+        <div class="user-card" *ngIf="!loading">
           <div class="card-inner">
             <div class="user-card-img">
               <img *ngIf="t.images && t.images.length > 0" [src]="baseUrl + t.images[0].url"
@@ -123,6 +123,10 @@
             </div>
             <div class="user-card-content">
               <h5 class="card-title">{{ t.name }}</h5>
+              <!-- Ayushman Badge -->
+              <div class="ayushman-badge mb-2" *ngIf="t.is_ayushman">
+                <span class="badge bg-success">✓ Ayushman Eligible</span>
+              </div>
               <div class="user-card-description">
                 <p>{{ t.short_description }}</p>
               </div>
@@ -173,11 +177,11 @@
       </div>
 
       <!-- No Results -->
-      <div *ngIf="!loading && nonAyushmanTreatments.length === 0" class="alert alert-info mt-3 col-12">
+      <div *ngIf="!loading && ayushmanTreatments.length === 0" class="alert alert-info mt-3 col-12">
         <div class="text-center">
-          <h5>No Non-Ayushman Treatments Found</h5>
-          <p class="mb-0">No treatments matching your selected filters are available outside the Ayushman Bharat scheme.</p>
-          <small class="text-muted">Try adjusting your location or treatment type filters, or check our Ayushman treatments section.</small>
+          <h5>No Ayushman Eligible Treatments Found</h5>
+          <p class="mb-0">No treatments matching your selected filters are available under the Ayushman Bharat scheme.</p>
+          <small class="text-muted">Try adjusting your location or treatment type filters.</small>
         </div>
       </div>
     </div>

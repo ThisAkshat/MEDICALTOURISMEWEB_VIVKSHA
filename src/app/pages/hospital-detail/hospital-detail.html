@@ -3,9 +3,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="inner-baner-dtl position-relative text-center">
-                    <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[1].url"
+                    <img *ngIf="hospital.images && hospital.images.length > 1" [src]="baseUrl + hospital.images[1].url"
                         class="w-100 img-fluid rounded-5 banner-img" [alt]="hospital.name" />
-                    <!-- <img [src]="'assets/images/associate-hospital.png'" class="w-100 img-fluid rounded-5" /> -->
+                    <img *ngIf="!hospital.images || hospital.images.length <= 1" [src]="'assets/images/associate-hospital.png'"
+                        class="w-100 img-fluid rounded-5 banner-img" [alt]="hospital.name" />
                     <div class="inner-heading">
                         <h2>{{ hospital.name }}</h2>
                         <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
@@ -27,7 +28,9 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="detail-image">
-                    <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[0].url"
+                    <img *ngIf="hospital.images && hospital.images.length > 0" [src]="baseUrl + hospital.images[0].url"
+                        class="img-fluid w-100" [alt]="hospital.name" />
+                    <img *ngIf="!hospital.images || hospital.images.length === 0" [src]="'assets/images/associate-hospital.png'"
                         class="img-fluid w-100" [alt]="hospital.name" />
                 </div>
             </div>
@@ -39,7 +42,7 @@
                         <p class="mb-0">{{ hospital.location }}</p>
                     </div>
                     <div class="detail-description">
-                        <p>{{ hospital.description }}</p>
+                        <p class="mb-0">{{ hospital.description }}</p>
                     </div>
                 </div>
             </div>
@@ -51,8 +54,7 @@
                         <h2>Lorem ipsum is simply dummy text</h2>
                     </div>
                     <p class="mb-0">Cras vel bibendum nisl. Sed tincidunt purus nec vehicula aliquet. Vestibulum gravida
-                        molestie
-                        lectus, ut facilisis nisl ultrices eu. Ut sed nunc quis metus egestas fringilla sed at arcu.
+                        molestie lectus, ut facilisis nisl ultrices eu. Ut sed nunc quis metus egestas fringilla sed at arcu.
                         Aenean vel varius orci. Morbi sed augue at odio mattis vehicula. Quisque nisl dui, vehicula vel
                         lacinia congue, pellentesque eget dolor. Aliquam ullamcorper tempus risus ut luctus. Curabitur
                         nec nisi cursus, semper turpis in, bibendum risus. Aenean ac diam a nulla tincidunt lobortis a
@@ -112,11 +114,15 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6 col-md-6">
-                <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[2].url"
+                <img *ngIf="hospital.images && hospital.images.length > 2" [src]="baseUrl + hospital.images[2].url"
+                    class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
+                <img *ngIf="!hospital.images || hospital.images.length <= 2" [src]="'assets/images/associate-hospital.png'"
                     class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
             </div>
             <div class="col-lg-6 col-md-6">
-                <img *ngIf="hospital.images && hospital.images.length" [src]="baseUrl + hospital.images[3].url"
+                <img *ngIf="hospital.images && hospital.images.length > 3" [src]="baseUrl + hospital.images[3].url"
+                    class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
+                <img *ngIf="!hospital.images || hospital.images.length <= 3" [src]="'assets/images/associate-hospital.png'"
                     class="img-fluid w-100 rounded-4" [alt]="hospital.name" />
             </div>
         </div>
@@ -193,9 +199,9 @@
                     </div>
 
                     <!-- Debug info (remove in production) -->
-                    <div *ngIf="!loadingDoctors" class="mt-2" style="font-size: 12px; color: #666;">
+                    <!-- <div *ngIf="!loadingDoctors" class="mt-2" style="font-size: 12px; color: #666;">
                         <small>Debug: {{ hospitalDoctors.length }} doctors loaded</small>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

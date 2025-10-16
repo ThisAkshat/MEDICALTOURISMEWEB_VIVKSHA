@@ -862,16 +862,8 @@
 }
 .tret-filter h4
 {
-    color: #151515;
+    color: #464646;
     font-family: var(--primary-font);
-}
-.tret-filter-main .form-select
-{
-    opacity: 1;
-}
-.tret-filter-main .form-select.placeholder span
-{
-    color: #aeaeae !important;
 }
 .filter-option select
 {
@@ -985,7 +977,6 @@
 {
     height: 100%;
     min-height: 370px;
-    max-height: 660px;
     object-fit: cover;
 }
 /* responsive start */
@@ -1276,12 +1267,7 @@
     }
     .main-head h2
     {
-        font-size: 24px;
-    }
-    .tret-filter-main .form-select,
-    .custom-select-wrapper
-    {
-        width: 100%;
+        font-size: 26px;
     }
     .main-head p
     {
@@ -1390,18 +1376,8 @@
     }
     .inner-heading h2
     {
-        font-size: 20px;
+        font-size: 22px;
         margin-bottom: 0px;
-    }
-    .detail-image img
-    {
-        height: 100%;
-        min-height: 210px;
-        max-height: 210px;
-    }
-    .facility-item
-    {
-        justify-content: flex-start !important;
     }
     .inner-baner-dtl ul.breadcumb li a
     {
@@ -1412,9 +1388,6 @@
         margin-bottom: 0px;
         gap: 0.5rem !important;
         padding-left: 0px !important;
-        flex-wrap: wrap;
-        line-height: 10px;
-        margin-top: 10px;
     }
     .inner-baner-dtl img
     {
@@ -1579,12 +1552,8 @@
     }
     .dtl-doctor-head h4
     {
-        font-size: 20px;
+        font-size: 22px;
         margin-bottom: 0px;
-    }
-    .dtl-doctor-head a
-    {
-        font-size: 16px;
     }
     .dtl-doctor-head
     {
@@ -1668,18 +1637,5 @@
     .main-content
     {
         padding-top: 60px;
-    }
-    .book-package-form form input,
-    .book-package-form form textarea,
-    .book-package-form form .form-select,
-    .book-package-form form input,
-    .book-package-form form textarea
-    {
-        padding: 10px !important;
-        font-size: 14px !important;
-    }
-    .book-package-form form label
-    {
-        font-size: 14px;
     }
 }

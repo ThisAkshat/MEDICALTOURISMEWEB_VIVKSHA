@@ -6,7 +6,15 @@ export interface Partner {
   id: number;
   name: string;
   logo_url: string;
+  website_url: string | null;
+  description: string | null;
+  location: string | null;
+  position: number;
   is_active: boolean;
+  hospital_id: number | null;
+  created_at: string;
+  updated_at: string;
+  hospital: any | null;
 }
 
 @Injectable({

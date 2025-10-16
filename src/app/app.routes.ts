@@ -47,8 +47,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/hospital-detail/hospital-detail').then(m => m.HospitalDetail)
   },
   {
+    path: 'ayushman-treatment',
+    loadComponent: () => import('./pages/ayushman-treatment/ayushman-treatment').then(m => m.AyushmanTreatment)
+  },
+  {
     path: 'treatment-detail/:id',
     loadComponent: () => import('./pages/treatment-detail/treatment-detail').then(m => m.TreatmentDetail)
+  },
+  {
+    path: 'ayushman-treatment-detail',
+    loadComponent: () => import('./pages/ayushman-treatment-detail/ayushman-treatment-detail').then(m => m.AyushmanTreatmentDetail)
   },
   {
     path: 'blog',

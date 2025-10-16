@@ -13,7 +13,10 @@ export interface Treatment {
   doctor_id: number | null;
   other_doctor_name?: string | null;
   location: string;
-  features: any | null;
+  features: string | null;
+  is_ayushman: boolean;
+  Includes: string | null;
+  excludes: string | null;
   is_featured: boolean;
   created_at: string;
   images?: TreatmentImage[];
@@ -29,6 +32,7 @@ export interface Treatment {
   faq5_question?: string | null;
   faq5_answer?: string | null;
 }
+
 export interface TreatmentImage {
   id: number;
   owner_type?: string | null;
@@ -46,4 +50,5 @@ export interface TreatmentSearchParams {
   location?: string;
   treatment_type?: string;
   featured_only?: boolean;
+  ayushman_only?: boolean;
 }

@@ -47,7 +47,26 @@
                         <div class="col-lg-12">
                             <div class="detail-location doctor-feture-lst d-flex align-items-center card-location">
                                 <img src="assets/images/hospital.svg">
-                                <p class="mb-0" *ngIf="hospitalName">{{ hospitalName }}</p>
+                                <div class="hospital-info">
+                                    <!-- Show primary hospital and associated hospitals -->
+                                    <p class="mb-0">
+                                        <!-- Primary hospital -->
+                                        <span *ngIf="hospitalName">{{ hospitalName }}</span>
+                                        
+                                        <!-- Associated hospitals (if any) -->
+                                        <span *ngIf="getAssociatedHospitals().length > 0">
+                                            <span *ngIf="hospitalName">, </span>
+                                            <span *ngFor="let hospital of getAssociatedHospitals(); let last = last">
+                                                {{ hospital.name }}{{ !last ? ', ' : '' }}
+                                            </span>
+                                        </span>
+                                        
+                                        <!-- Fallback if no hospital info -->
+                                        <span *ngIf="!hospitalName && getAssociatedHospitals().length === 0" class="text-muted">
+                                            Hospital information not available
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -244,6 +263,32 @@
                                         Pre-selected hospital: {{ hospitalName }}
                                     </small>
                                 </div>
+                                
+                                <!-- Time Slot Selection -->
+                                <div class="mb-3">
+                                    <label for="time_slot" class="form-label">Preferred Time Slot</label>
+                                    <div class="custom-select-wrapper mb-0">
+                                        <div class="form-select" [class.open]="isTimeSlotDropdownOpen"
+                                            [class.placeholder]="!selectedTimeSlotLabel" (click)="toggleTimeSlotDropdown()">
+                                            <span>{{ selectedTimeSlotLabel || 'Select Time Slot' }}</span>
+                                        </div>
+                                        <div *ngIf="isTimeSlotDropdownOpen" class="select-dropdown">
+                                            <div *ngFor="let slot of timeSlotOptions" (click)="selectTimeSlot(slot)"
+                                                class="select-option"
+                                                [class.selected]="selectedTimeSlotLabel === slot.label">
+                                                {{ slot.label }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <small class="form-text text-muted" *ngIf="timeSlotOptions.length === 0">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        No available time slots for this doctor
+                                    </small>
+                                    <small class="form-text text-muted" *ngIf="timeSlotOptions.length > 0 && !selectedTimeSlotLabel">
+                                        <i class="fas fa-clock me-1"></i>
+                                        {{ timeSlotOptions.length }} time slot(s) available - Click on a time slot above or select from dropdown
+                                    </small> -->
+                                </div>
 
                                 <!-- Medical History File -->
                                 <div class="mb-3">
@@ -312,13 +357,35 @@
         </div>
 
         <!-- Doctor Long Description -->
-        <div class="row">
-            <div class="col-lg-12">
+        <div class="row time-row">
+            <div class="col-lg-8">
                 <div class="detail-info">
                     <div class="dtl-head">
                         <h2>About Dr. {{ doctor.name }}</h2>
                     </div>
                     <p class="mb-0">{{ doctor.long_description }}</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="detail-info">
+                    <div class="detail-location doctor-time">
+                        <h4>Available Time Slots</h4>
+                        <ul>
+                            <li *ngFor="let slot of getFormattedTimeSlots()" 
+                                [class.unavailable]="!slot.isAvailable"
+                                [class.clickable-slot]="slot.isAvailable"
+                                [title]="slot.isAvailable ? 'Click to select this time slot for booking' : 'Not available'">
+                                <span>{{ slot.day }}</span>
+                                <span [class.text-muted]="!slot.isAvailable" class="ms-2">{{ slot.time }}</span>
+                            </li>
+                        </ul>
+
+                        <!-- No time slots available message -->
+                        <div *ngIf="getFormattedTimeSlots().length === 0" class="text-muted">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Time slots information not available
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -459,7 +526,7 @@
 
                     <!-- Dynamic related doctors list -->
                     <div *ngFor="let relatedDoctor of relatedDoctors"
-                        class="dtl-doctor-list d-flex align-items-start flex-column flex-sm-row mb-3"
+                        class="dtl-doctor-list d-flex align-items-start flex-sm-row"
                         [routerLink]="['/doctor', relatedDoctor.id]" style="cursor: pointer;">
                         <div class="dtl-doctor-img mb-2 mb-sm-0 flex-shrink-0">
                             <img *ngIf="relatedDoctor.profile_photo" [src]="baseUrl + relatedDoctor.profile_photo"
