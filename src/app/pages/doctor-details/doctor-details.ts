@@ -76,6 +76,7 @@ export class DoctorDetails implements OnInit {
 
   timeSlotOptions: { value: string; label: string }[] = [];
   dynamicTimeSlots: Record<string, string> = {};
+  dynamicFaqsList: { question: string; answer: string }[] = [];
 
   // Dropdown states
   isTreatmentDropdownOpen = false;
@@ -184,6 +185,8 @@ export class DoctorDetails implements OnInit {
     this.doctorService.getDoctorById(id).subscribe({
       next: (data) => {
         this.doctor = data;
+        // build and cache sanitized FAQ list for template use
+        this.dynamicFaqsList = this.getDynamicFaqs();
         console.log('🔍 Doctor data loaded:', data);
         console.log('🕒 Raw time_slots data:', data.time_slots);
         console.log('🕒 Type of time_slots:', typeof data.time_slots);
@@ -235,15 +238,21 @@ export class DoctorDetails implements OnInit {
   getDynamicFaqs(): { question: string; answer: string }[] {
     if (!this.doctor) return [];
     const faqs: { question: string; answer: string }[] = [];
+    // Check numbered faq fields and trim values to avoid whitespace-only entries
     for (let i = 1; i <= 5; i++) {
-      const q = (this.doctor as any)[`faq${i}_question`];
-      const a = (this.doctor as any)[`faq${i}_answer`];
+      const rawQ = (this.doctor as any)[`faq${i}_question`];
+      const rawA = (this.doctor as any)[`faq${i}_answer`];
+      const q = (rawQ || '').toString().trim();
+      const a = (rawA || '').toString().trim();
       if (q && a) faqs.push({ question: q, answer: a });
     }
+    // If there's an array of faqs, sanitize those too
     if (Array.isArray(this.doctor.faqs)) {
       this.doctor.faqs.forEach((faq: any) => {
-        if (faq.question && faq.answer) {
-          faqs.push({ question: faq.question, answer: faq.answer });
+        const q = (faq?.question || '').toString().trim();
+        const a = (faq?.answer || '').toString().trim();
+        if (q && a) {
+          faqs.push({ question: q, answer: a });
         }
       });
     }
@@ -302,6 +311,14 @@ export class DoctorDetails implements OnInit {
   // Get associated hospitals
   getAssociatedHospitals(): any[] {
     return this.doctor?.associated_hospitals || [];
+  }
+
+  // Return awards split by comma or newlines (\r, \n) safely
+  getAwards(): string[] {
+    const raw = this.doctor?.awards;
+    if (!raw || typeof raw !== 'string') return [];
+    // Split by comma or CR/LF combinations and trim empty entries
+    return raw.split(/[\r\n]+/).map(a => a.trim()).filter(a => a.length > 0);
   }
 
   // Helper method to get background color for time slot based on selection

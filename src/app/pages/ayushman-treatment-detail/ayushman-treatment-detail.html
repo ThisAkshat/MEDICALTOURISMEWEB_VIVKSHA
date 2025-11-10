@@ -37,20 +37,42 @@
             <div class="col-lg-6">
                 <div class="dtl-info hospital-info treatment-info">
                     <h2 class="section-title">{{ treatment.name }}</h2>
+                    
+                    <!-- Ayushman Badge -->
+                    <div class="ayushman-badge mb-3" *ngIf="treatment.is_ayushman">
+                        <span class="badge bg-success fs-6 px-2 py-2 fw-normal">
+                            <i class="fas fa-check-circle me-1"></i> Ayushman Bharat Eligible
+                        </span>
+                    </div>
+                    
                     <div class="detail-description">
                         <p>{{ treatment.short_description }}</p>
                     </div>
                     <!-- <p><strong>Type:</strong> {{ treatment.treatment_type }}</p> -->
-                    <div class="detail-location d-flex align-items-center card-location">
+                    <!-- <div class="detail-location d-flex align-items-center card-location">
                         <img [src]="'assets/images/card-location.svg'">
                         <p class="mb-0">{{ treatment.location }}</p>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="detail-location d-flex align-items-center card-location">
+                                <img [src]="'assets/images/card-location.svg'">
+                                <p class="mb-0">{{ treatment.location }}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div  *ngIf="hospitalName" class="detail-location d-flex align-items-center card-location">
+                                <img [src]="'assets/images/hospital.svg'">
+                                <p class="mb-0">{{ hospitalName }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-location d-flex align-items-center card-location">
+                        <img [src]="'assets/images/designation.svg'">
+                        <p class="mb-0"><span *ngFor="let doctor of (treatment?.associated_doctors?.length ? treatment.associated_doctors : relatedDoctors)">{{doctor.name }}, &nbsp;</span></p>
                     </div>
                     <!-- <p><strong>Rating:</strong> ⭐ {{ treatment.rating }}</p> -->
-                    <div class="treatment-price">
-                        <p *ngIf="treatment.price_exact"><strong>Price:</strong> ₹{{ treatment.price_exact | number }}
-                        </p>
-                    </div>
-                    <div class="book-package">
+                    <div class="book-package my-4">
                         <button (click)="openModal()" class="btn-default">Book Package Now <i
                                 class="fa-solid fa-arrow-up"></i></button>
                     </div>
@@ -150,34 +172,19 @@
                                         placeholder="{{ treatment.name }}" readonly>
                                 </div>
 
-
-                                <!-- Budget Preference - Custom Dropdown -->
-                                <div class="mb-3">
-                                    <div class="custom-select-wrapper">
-                                        <label for="Budget" class="form-label">Budget Preference<span class="text-danger">*</span></label>
-                                        <div class="form-select" [class.open]="isBudgetDropdownOpen"
-                                            [class.placeholder]="!selectedBudgetLabel"
-                                            [class.is-invalid]="isFieldInvalid('budget')"
-                                            (click)="toggleBudgetDropdown()">
-                                            <span>{{ selectedBudgetLabel || 'Budget Preference*' }}</span>
+                                <!-- Ayushman Information -->
+                                <div class="mb-3" *ngIf="treatment.is_ayushman">
+                                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <div>
+                                            <strong>Ayushman Bharat Eligible:</strong> This treatment is covered under the Ayushman Bharat scheme. 
+                                            Please bring your Ayushman card and valid ID for verification.
                                         </div>
-
-                                        <div class="select-dropdown" *ngIf="isBudgetDropdownOpen">
-                                            <div class="select-option" (click)="selectBudget({ value: '', label: '' })">
-                                                Budget Preference*
-                                            </div>
-                                            <div class="select-option" *ngFor="let budget of budgetOptions"
-                                                [class.selected]="bookingForm.get('budget')?.value === budget.value"
-                                                (click)="selectBudget(budget)">
-                                                {{ budget.label }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="invalid-feedback" *ngIf="isFieldInvalid('budget')"
-                                        [style.display]="isFieldInvalid('budget') ? 'block' : 'none'">
-                                        {{ getFieldError('budget') }}
                                     </div>
                                 </div>
+
+
+                                <!-- Budget Preference - Custom Dropdown -->
 
                                 <!-- Doctor Preference -->
                                 <div class="mb-3">
@@ -297,48 +304,8 @@
         </div>
     </div>
 </section>
-<section class="tret-feature ptc-60" *ngIf="treatment">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div *ngIf="treatment.features" class="treatment-features">
-                    <div class="dtl-head">
-                        <h2>Package Inclusion:</h2>
-                    </div>
-                    <div class="dtl-features-list">
-                        <ul class="features-list list-unstyled mb-0">
-                            <li *ngFor="let feature of getFeaturesList()">
-                                <img src="assets/images/features-check.svg">
-                                <span>{{ feature }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="tret-feature ptc-60" *ngIf="treatment">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div *ngIf="treatment.features" class="treatment-features">
-                    <div class="dtl-head">
-                        <h2>Package Exclusion:</h2>
-                    </div>
-                    <div class="dtl-features-list">
-                        <ul class="features-list list-unstyled mb-0">
-                            <li *ngFor="let feature of getFeaturesList()">
-                                <img src="assets/images/features-check.svg">
-                                <span>{{ feature }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
+
 
 <section class="dtl-center-image ptc-60" *ngIf="treatment">
     <div class="container">
@@ -407,8 +374,8 @@
                         <p class="mt-2 mb-0">Loading related doctors...</p>
                     </div>
 
-                    <!-- Dynamic doctor list -->
-                    <div *ngFor="let doctor of relatedDoctors" class="dtl-doctor-list d-flex align-items-center">
+                    <!-- Preferred: associated_doctors from treatment API, fallback to relatedDoctors -->
+                    <div *ngFor="let doctor of (treatment?.associated_doctors ?? relatedDoctors)" class="dtl-doctor-list d-flex align-items-center">
                         <div class="dtl-doctor-img">
                             <img *ngIf="doctor.profile_photo" [src]="baseUrl + doctor.profile_photo" [alt]="doctor.name"
                                 class="img-fluid">
@@ -420,14 +387,13 @@
                                 <li>{{ doctor.designation || doctor.specialization }}</li>
                                 <li *ngIf="doctor.experience_years">{{ doctor.experience_years }} Years of Experience
                                 </li>
-                                <li *ngIf="!doctor.experience_years && doctor.consultancy_fee">Consultation Fee: ₹{{
-                                    doctor.consultancy_fee | number }}</li>
+                                <li *ngIf="!doctor.experience_years && doctor.consultancy_fee">Consultation Fee: ₹{{ doctor.consultancy_fee | number }}</li>
                             </ul>
                         </div>
                     </div>
 
-                    <!-- No doctors found -->
-                    <div *ngIf="!loadingDoctors && relatedDoctors.length === 0" class="text-center py-3">
+                    <!-- No doctors found when both sources empty -->
+                    <div *ngIf="!loadingDoctors && ((treatment?.associated_doctors?.length ?? relatedDoctors.length) === 0)" class="text-center py-3">
                         <p class="mb-0 text-muted">No related doctors found for this treatment.</p>
                     </div>
                 </div>

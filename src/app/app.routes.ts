@@ -55,7 +55,7 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/treatment-detail/treatment-detail').then(m => m.TreatmentDetail)
   },
   {
-    path: 'ayushman-treatment-detail',
+    path: 'ayushman-treatment-detail/:id',
     loadComponent: () => import('./pages/ayushman-treatment-detail/ayushman-treatment-detail').then(m => m.AyushmanTreatmentDetail)
   },
   {

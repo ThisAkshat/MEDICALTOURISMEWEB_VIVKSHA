@@ -146,7 +146,7 @@
         margin-top: 25px;
         border-radius: 20px;
         background-image: initial;
-        background-color: #676767;
+        background-color: #f6fbff;
     }
     .about-feture-info-main
     {
@@ -156,6 +156,14 @@
     {
         margin: 10px 0px;
     }
+    .about-feture-inner h5
+    {
+        color: #151515;
+    }
+    .about-feture-inner p
+    {
+        color: #212529;
+    }
 }
 @media screen and (max-width: 767px)
 {
@@ -163,7 +171,7 @@
     {
         position: initial;
         background-image: initial;
-        background-color: #6b6b6b;
+        background-color: #f6fbff;
         border-radius: 15px;
         margin-top: 20px;
     }
@@ -182,7 +190,12 @@
     .about-feture-inner h5
     {
         font-size: 18px;
+        color: #151515;
         margin-bottom: 0px;
+    }
+    .about-feture-inner p
+    {
+        color: #212529;
     }
     .about-feture-dtl
     {

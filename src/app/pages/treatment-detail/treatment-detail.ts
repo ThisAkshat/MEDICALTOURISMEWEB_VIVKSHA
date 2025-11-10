@@ -8,6 +8,8 @@ import { DoctorService } from 'src/app/core/services/doctors.service';
 import { BookingService, BookingRequest, BookingResponse } from 'src/app/core/services/booking.service';
 import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { Doctor } from 'src/app/core/services/doctors.service';
+import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
+
 
 // Import the standalone ModalComponent
 import { ModalComponent } from '@core/modal/modal.component';
@@ -70,6 +72,7 @@ export class TreatmentDetail implements OnInit {
     private route: ActivatedRoute,
     private treatmentService: TreatmentService,
     private doctorService: DoctorService,
+    private hospitalService: HospitalService,
     private bookingService: BookingService,
     private fb: FormBuilder,
     private http: HttpClient,
@@ -92,7 +95,7 @@ export class TreatmentDetail implements OnInit {
       personal_assistant: [false] // New field for Personal Nursing Assistant
     });
   }
-
+  hospitalName: string = '';
   // ✅ NEW: Toggle dropdowns
   toggleTreatmentDropdown(): void {
     this.isTreatmentDropdownOpen = !this.isTreatmentDropdownOpen;
@@ -449,7 +452,7 @@ export class TreatmentDetail implements OnInit {
     if (typeof this.treatment.features === 'string') {
       // Split by various delimiters and clean up
       return this.treatment.features
-        .split(/[,;|\n\r]/) // Split by comma, semicolon, pipe, or newlines
+        .split(/[;|\n\r]/) // Split by semicolon, pipe, or newlines
         .map(feature => feature.trim())
         .filter(feature => feature.length > 0);
     }
@@ -488,27 +491,65 @@ export class TreatmentDetail implements OnInit {
       .filter(item => item.length > 0);
   }
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.treatmentService.getTreatmentById(id).subscribe({
-        next: (res) => {
-          this.treatment = res;
-          this.loading = false;
+  // ngOnInit(): void {
+  //   const id = Number(this.route.snapshot.paramMap.get('id'));
+  //   if (id) {
+  //     this.treatmentService.getTreatmentById(id).subscribe({
+  //       next: (res) => {
+  //         this.treatment = res;
+  //         this.loading = false;
 
-          // Load related doctors based on treatment name
-          if (this.treatment?.name) {
-            this.loadRelatedDoctors(this.treatment.name);
-          }
-        },
-        error: (err) => {
-          console.error('Error loading treatment:', err);
-          this.loading = false;
+  //         // Load related doctors based on treatment name
+  //         if (this.treatment?.name) {
+  //           this.loadRelatedDoctors(this.treatment.name);
+  //         }
+  //       },
+  //       error: (err) => {
+  //         console.error('Error loading treatment:', err);
+  //         this.loading = false;
+  //       }
+  //     });
+  //   } else {
+  //     console.warn('No treatment ID found in route');
+  //     this.loading = false;
+  //   }
+  // }
+  ngOnInit(): void {
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  if (id) {
+    this.treatmentService.getTreatmentById(id).subscribe({
+      next: (res) => {
+        this.treatment = res;
+        this.loading = false;
+
+        // ✅ Fetch hospital name by ID
+        if (this.treatment?.hospital_id) {
+          this.hospitalService.getHospitalById(this.treatment.hospital_id).subscribe({
+            next: (hospital) => {
+              this.hospitalName = hospital.name;
+              console.log('Hospital name:', this.hospitalName);
+            },
+            error: (err) => {
+              console.error('Error fetching hospital:', err);
+              this.hospitalName = this.treatment?.other_hospital_name || 'Unknown Hospital';
+            }
+          });
         }
-      });
-    } else {
-      console.warn('No treatment ID found in route');
-      this.loading = false;
-    }
+
+        // ✅ Load related doctors
+        if (this.treatment?.name) {
+          this.loadRelatedDoctors(this.treatment.name);
+        }
+      },
+      error: (err) => {
+        console.error('Error loading treatment:', err);
+        this.loading = false;
+      }
+    });
+  } else {
+    console.warn('No treatment ID found in route');
+    this.loading = false;
   }
+  }
+
 }

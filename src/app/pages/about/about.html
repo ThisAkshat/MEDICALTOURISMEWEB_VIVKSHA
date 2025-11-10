@@ -7,11 +7,12 @@
                     <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
                     <div class="inner-heading">
                         <h2>{{ banner.title }}</h2>
-                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
+                        <ul class="breadcumb d-flex justify-content-center align-items-center gap-3 ps-0">
                             <li><a routerLink="/">Home</a></li>
                             <li><img src="assets/images/breadcumb.svg" /></li>
                             <li><a routerLink="/about">{{ banner.name }}</a></li>
                         </ul>
+                        
                     </div>
                 </div>
             </div>
@@ -50,7 +51,7 @@
                         <img [src]="'assets/images/vision.svg'">
                         <div class="vision-inner">
                             <h4>Our Vision</h4>
-                            <p class="mb-0">{{ aboutUsData?.vision || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since.' }}</p>
+                            <p class="mb-0">{{ aboutUsData?.vision || 'To be a trusted leader in health tourism by connecting patients worldwide with the best medical care and personalized support for a seamless healing journey.' }}</p>
                         </div>
                     </div>
                     <div class="vision-main d-flex align-items-center">
@@ -117,7 +118,7 @@
                                     <div class="about-feture-dtl d-flex align-items-center">
                                         <img [src]="'assets/images/happy-patient.svg'">
                                         <div class="about-feture-inner">
-                                            <h5>2500+ Happy Patient</h5>
+                                            <h5>10000+ Happy Patient</h5>
                                             <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and
                                                 typesetting.</p>
                                         </div>
@@ -134,7 +135,7 @@
 <section class="about-option ptc-80">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 <div class="main-head text-center mbc-50">
                     <h2>{{ aboutUsData?.feature_title || 'Professionals dedicated to your health' }}</h2>
                     <p>{{ aboutUsData?.feature_desc || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer' }}</p>
@@ -144,7 +145,7 @@
         <div class="row">
             <div class="col-lg-4" *ngFor="let card of aboutUsData?.featured_cards; let i = index">
                 <div class="about-option-inner">
-                    <img [src]="'assets/images/' + (i === 0 ? 'equipment' : i === 1 ? 'highly-doctor' : 'treatment') + '.svg'">
+                    <img [src]="'assets/images/' + (i === 0 ? 'about-packages' : i === 1 ? 'about-hospital' : 'treatment') + '.svg'">
                     <h6>{{ card.heading }}</h6>
                     <p class="mb-0">{{ card.description }}</p>
                 </div>
@@ -155,11 +156,11 @@
 <section class="we-offer ptc-80">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 <div class="main-head text-center mbc-50">
                     <h2>Our Partner Hospital</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                        been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                    <p>11 Health Tourism collaborates with the best hospitals in India, offering advanced medical care and trusted treatment options.
+                        These partner hospitals are recognized for quality and patient satisfaction. They are equipped with leading technology and expert doctors to meet diverse healthcare needs.</p>
                 </div>
             </div>
         </div>
@@ -181,11 +182,10 @@
 <section class="we-offer ptc-80">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-9">
+                <div class="col-lg-10">
                     <div class="main-head text-center mbc-50">
                         <h2>Patient Stories Of Care And Recovery</h2>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                            been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                        <p>At 11 Health Tourism, patient stories highlight healing journeys through trusted hospitals and advanced medical care in India. These real experiences showcase expert treatments and compassionate support during medical tourism. They inspire confidence in affordable healthcare and personalized patient care.</p>
                     </div>
                 </div>
             </div>

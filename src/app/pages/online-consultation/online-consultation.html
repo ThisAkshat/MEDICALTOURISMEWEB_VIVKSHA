@@ -26,11 +26,7 @@
             <div class="col-lg-9">
                 <div class="main-head text-center mbc-50">
                     <h2>Medical Procedure</h2>
-                    <p>Get expert guidance from the comfort of your home. Our online consultation service helps you
-                        understand medical procedures in detail—what they involve, the preparation required, recovery
-                        expectations, and possible alternatives. Whether you are exploring treatment options, seeking a
-                        second opinion, or preparing for surgery, we provide clear, reliable, and personalized
-                        information to support your healthcare decisions.</p>
+                    <p>Connect with top doctors online for expert medical advice and personalized health tourism services.</p>
                 </div>
             </div>
         </div>
@@ -87,8 +83,8 @@
             <div *ngFor="let d of doctors" class="col-lg-4 col-md-6 mb-4">
                 <div class="user-card">
                     <div class="user-card-img">
-                        <img *ngIf="d.profile_photo?.length" [src]="'http://165.22.223.163:8000' + d.profile_photo"
-                            [alt]="d.name" class="card-img-top img-fluid" />
+                        <!-- <img *ngIf="d.profile_photo?.length" [src]="'http://165.22.223.163:8000' + d.profile_photo" [alt]="d.name" class="card-img-top img-fluid" /> -->
+                        <img [src]="d.profile_photo ? ('http://165.22.223.163:8000' + d.profile_photo) : 'assets/images/our-doctors.png'" [alt]="d.name" class="card-img-top img-fluid" />
                     </div>
                     <div class="user-card-content doctors-card-info">
                         <h5 class="card-title">{{ d.name }}</h5>

@@ -336,6 +336,16 @@
 .navbar-expand-lg .navbar-nav .user-btn .dropdown-menu {
   right: 0;
 }
+.navbar a.navbar-brand
+{
+  padding: 0px;
+  margin: 0px;
+  margin-left: 10px;
+}
+.navbar a.navbar-brand img
+{
+  max-width: 115px;
+}
 
 @media (max-width: 991px) {
   .navbar-collapse {
@@ -402,7 +412,14 @@
     font-size: 14px;
     padding: 6px 10px !important;
   }
-
+  .navbar a.navbar-brand
+  {
+    margin-left: 5px;
+  }
+  .navbar a.navbar-brand img 
+  {
+    max-width: 105px;
+  }
   .head-searchbar .hidden-search-box {
     width: 95%;
     right: 3%;

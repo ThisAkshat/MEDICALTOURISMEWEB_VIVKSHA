@@ -30,7 +30,8 @@ export class Treatments implements OnInit {
   selectedTreatmentType: string = '';
 
   // Dropdown data
-  availableLocations: string[] = [];
+  // availableLocations is a list of { key: normalized, label: display }
+  availableLocations: Array<{ key: string; label: string }> = [];
   availableTreatmentTypes: string[] = [];
 
   // Dropdown open/close states
@@ -64,14 +65,25 @@ export class Treatments implements OnInit {
       next: (data) => {
         console.log('✅ All treatments loaded:', data);
         
-        // Filter out Ayushman treatments - only show non-Ayushman treatments
-        const nonAyushmanTreatments = data.filter(t => t.is_ayushman === false);
-        console.log(`🔍 Filtered ${nonAyushmanTreatments.length}/${data.length} non-Ayushman treatments`);
-        
-        this.treatments = nonAyushmanTreatments.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
+        // Keep all treatments (including Ayushman ones)
+        this.treatments = data.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
 
-        this.availableLocations = Array.from(new Set(this.treatments.map(t => t.location).filter(Boolean)));
-        this.availableTreatmentTypes = Array.from(new Set(this.treatments.map(t => t.treatment_type).filter(Boolean)));
+  // Build normalized, deduped location list (display labels + keys) by splitting comma-separated parts
+  const locationMap = new Map<string, string>();
+  this.treatments.forEach(t => {
+    const raw = (t.location || '').toString();
+    const parts = raw.split(',').map(p => p.trim()).filter(Boolean);
+    parts.forEach(part => {
+      const key = this.normalizeLocation(part);
+      if (!key) return;
+      if (!locationMap.has(key)) {
+        const label = part.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+        locationMap.set(key, label || key);
+      }
+    });
+  });
+  this.availableLocations = Array.from(locationMap.entries()).map(([key, label]) => ({ key, label }));
+  this.availableTreatmentTypes = Array.from(new Set(this.treatments.map(t => t.treatment_type).filter(Boolean)));
 
         this.filteredTreatments = [...this.treatments];
         this.loading = false;
@@ -117,13 +129,36 @@ export class Treatments implements OnInit {
 
   applyFilters(): void {
     this.filteredTreatments = this.treatments.filter(t => {
-      const locationMatch = this.selectedLocation ? t.location === this.selectedLocation : true;
+  const locationParts = (t.location || '').toString().split(',').map(p => this.normalizeLocation(p.trim())).filter(Boolean);
+  const locationMatch = this.selectedLocation ? locationParts.includes(this.selectedLocation) : true;
       const treatmentMatch = this.selectedTreatmentType ? t.treatment_type === this.selectedTreatmentType : true;
-      const nonAyushmanMatch = t.is_ayushman === false; // Ensure only non-Ayushman treatments
-      return locationMatch && treatmentMatch && nonAyushmanMatch;
+      return locationMatch && treatmentMatch;
     });
     
     console.log(`🔍 Filtered ${this.filteredTreatments.length} non-Ayushman treatments after applying filters`);
+  }
+
+  // Normalize location strings to a canonical key used for deduplication and matching
+  normalizeLocation(input: string | null | undefined): string {
+    if (!input) return '';
+    let s = input.toString().trim().toLowerCase();
+    // remove parenthetical content
+    s = s.replace(/\(.*\)/g, '');
+    // trim common country/state suffixes (simple list)
+    s = s.replace(/,?\s*(india|republic of india)$/i, '');
+    s = s.replace(/,?\s*(maharashtra|madhya pradesh|madhya pradesh|mp|maharastra|gujarat|punjab|uttar pradesh|up|karnataka|delhi|tamil nadu|andhra pradesh|andhra|telangana|kerala|rajasthan|goa|odisha|west bengal|west bengal|wb|chhattisgarh|jharkhand|himachal pradesh|sikkim|manipur|nagaland|assam|meghalaya|mizoram|tripura|uttarakhand)\.?$/i, '');
+    // remove any commas and extra punctuation
+    s = s.replace(/[^a-z0-9 ]+/g, ' ');
+    s = s.replace(/\s+/g, ' ').trim();
+    return s;
+  }
+
+  getLocationLabel(key: string): string {
+    if (!key) return '';
+    const found = this.availableLocations.find(a => a.key === key);
+    if (found) return found.label;
+    // fallback: title-case the key
+    return key.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   }
 
   getStars(rating: number | null): ('full' | 'half' | 'empty')[] {
@@ -151,7 +186,7 @@ export class Treatments implements OnInit {
 
   // Get only non-Ayushman treatments for display
   get nonAyushmanTreatments(): Treatment[] {
-    return this.filteredTreatments.filter(t => t.is_ayushman === false);
+    return this.filteredTreatments;
   }
 
   // TrackBy function for better performance in *ngFor

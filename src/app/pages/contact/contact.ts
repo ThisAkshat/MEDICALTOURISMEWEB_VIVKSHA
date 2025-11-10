@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
 import { ContactService, ContactInfo } from 'src/app/core/services/contact.service';
@@ -31,7 +32,8 @@ export class ContactComponent implements OnInit {
     private http: HttpClient,
     private treatmentService: TreatmentService,
     private bannerService: BannerService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private sanitizer: DomSanitizer
   ) {
     this.contactForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -92,6 +94,22 @@ export class ContactComponent implements OnInit {
       next: (types) => this.treatmentTypes = types,
       error: (err) => console.error('Error loading treatment types ❌', err)
     });
+  }
+
+  // ✅ NEW: Generate dynamic Google Maps embed URL with pin pointer
+  getMapUrl(): SafeResourceUrl {
+    let mapUrl: string;
+    
+    if (this.contactInfo?.address) {
+      const encodedAddress = encodeURIComponent(this.contactInfo.address);
+      // Simple Google Maps search URL - automatically shows red pin marker for the searched address
+      mapUrl = `https://maps.google.com/maps?width=100%25&height=400&hl=en&q=${encodedAddress}&t=&z=15&ie=UTF8&iwloc=B&output=embed`;
+    } else {
+      // Fallback to default Indore location with pin marker (original embed URL already has marker)
+      mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14717.094017012312!2d75.88652043885348!3d22.755229057468668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af403406fb%3A0x5b50834b117f8bab!2sVijay%20Nagar%2C%20Scheme%20No%2054%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1758971607856!5m2!1sen!2sin";
+    }
+    
+    return this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
   }
 
   onSubmit() {

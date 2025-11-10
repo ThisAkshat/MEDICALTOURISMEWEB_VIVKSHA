@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">
-      <span class="text-primary-custom">Logo</span>
+      <img [src]="'assets/images/logo.png'">
     </a>
     <div class="mob-head d-flex align-items-center">
       <div class="search-box-mob" #mobileSearchContainer>
@@ -83,10 +83,10 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
           <a class="nav-link" routerLink="/" routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}">Home</a>
+            [routerLinkActiveOptions]="{exact: true}" (click)="closeNavbar()">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+          <a class="nav-link" routerLink="/about" routerLinkActive="active" (click)="closeNavbar()">About</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="treatmentsDropdown" role="button" data-bs-toggle="dropdown"
@@ -95,17 +95,17 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="treatmentsDropdown">
             <li>
-              <a class="dropdown-item" routerLink="/treatments" routerLinkActive="active">
+              <a class="dropdown-item" routerLink="/treatments" routerLinkActive="active" (click)="closeNavbar()">
                 Surgical Treatment Plan
               </a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/online-consultation" routerLinkActive="active">
+              <a class="dropdown-item" routerLink="/online-consultation" routerLinkActive="active" (click)="closeNavbar()">
                 Online Consultation
               </a>
             </li>
             <li>
-              <a class="dropdown-item" routerLink="/ayushman-treatment" routerLinkActive="active">
+              <a class="dropdown-item" routerLink="/ayushman-treatment" routerLinkActive="active" (click)="closeNavbar()">
                 Ayushman Treatment Plan
               </a>
             </li>
@@ -115,16 +115,16 @@
         <li class="nav-item">
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/associate-hospital" routerLinkActive="active">Associate Hospitals</a>
+          <a class="nav-link" routerLink="/associate-hospital" routerLinkActive="active" (click)="closeNavbar()">Associate Hospitals</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/doctors" routerLinkActive="active">Our Doctors</a>
+          <a class="nav-link" routerLink="/doctors" routerLinkActive="active" (click)="closeNavbar()">Our Doctors</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/blog" routerLinkActive="active">Articles</a>
+          <a class="nav-link" routerLink="/blog" routerLinkActive="active" (click)="closeNavbar()">Articles</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact Us</a>
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active" (click)="closeNavbar()">Contact Us</a>
         </li>
         <li class="nav-item search-box" #desktopSearchContainer>
           <div class="head-searchbar">
@@ -199,7 +199,7 @@
 
         <!-- Login Button (when not authenticated) -->
         <li class="nav-item" *ngIf="!isAuthenticated">
-          <a class="nav-link" routerLink="/login" routerLinkActive="active" class="btn-default login-btn ms-3">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active" class="btn-default login-btn ms-3" (click)="closeNavbar()">
             <i class="ms-0 fa-regular fa-circle-user"></i> Login
           </a>
         </li>

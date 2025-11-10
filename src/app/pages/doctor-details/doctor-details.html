@@ -5,7 +5,7 @@
             <div class="col-lg-12">
                 <div class="inner-baner-dtl position-relative text-center">
                     <!-- Banner Image -->
-                    <img *ngIf="doctor.images && doctor.images.length" [src]="baseUrl + doctor.images[0].url"
+                    <img [src]="(doctor.images && doctor.images.length) ? (baseUrl + doctor.images[0].url) : 'assets/images/our-doctors.png'"
                         class="w-100 img-fluid rounded-5 banner-img" [alt]="doctor.name || 'Doctor image'" />
                     <div class="inner-heading">
                         <h2>{{ doctor.name }}</h2>
@@ -30,7 +30,7 @@
             <!-- Main Image -->
             <div class="col-lg-6">
                 <div class="detail-image">
-                    <img *ngIf="doctor.images && doctor.images.length" [src]="baseUrl + doctor.profile_photo"
+                    <img [src]="doctor.profile_photo ? (baseUrl + doctor.profile_photo) : 'assets/images/our-doctors.png'"
                         class="img-fluid w-100 rounded-4" [alt]="doctor.name || 'Doctor image'" />
                 </div>
             </div>
@@ -96,7 +96,7 @@
                     </div>
                     <div class="doctor-skill">
                         <ul class="ps-0">
-                            <li *ngFor="let skill of doctor.skills.split('\n')">
+                            <li *ngFor="let skill of (doctor.skills?.split(',') || [])">
                                 <!-- <img [src]="featureIcon" alt="feature icon" /> -->
                                 <span>{{ skill.trim() }}</span>
                             </li>
@@ -236,7 +236,7 @@
                                 <div class="mb-3">
                                     <label for="consultation_fee" class="form-label">Consultation Fees</label>
                                     <input type="text" class="form-control" formControlName="consultation_fee" readonly>
-                                    <small class="form-text text-muted" *ngIf="doctor?.consultancy_fee">
+                                    <small class="form-text text-muted" *ngIf="doctor.consultancy_fee">
                                         <i class="fas fa-info-circle me-1"></i>
                                         Default consultation fee: ₹{{ doctor.consultancy_fee }}
                                     </small>
@@ -404,7 +404,7 @@
             <div class="col-lg-12">
                 <div class="dtl-features-list">
                     <ul class="list-unstyled mb-0">
-                        <li *ngFor="let quli of doctor.qualifications.split('\n')">
+                        <li *ngFor="let quli of (doctor.qualifications?.split('\n') || [])">
                             <img [src]="'assets/images/features-check.svg'">
                             <span>{{ quli.trim() }}</span>
                         </li>
@@ -427,7 +427,7 @@
             <div class="col-lg-12">
                 <div class="dtl-features-list">
                     <ul class="list-unstyled mb-0">
-                        <li *ngFor="let hig of doctor.highlights.split('\n')">
+                        <li *ngFor="let hig of (doctor.highlights?.split('\r\n') || [])">
                             <img [src]="'assets/images/features-check.svg'">
                             <span>{{ hig.trim() }}</span>
                         </li>
@@ -438,7 +438,7 @@
     </div>
 </section>
 
-<section class="facilities ptc-60" *ngIf="doctor">
+<section class="facilities ptc-60" *ngIf="getAwards().length > 0">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -451,9 +451,9 @@
             <div class="col-lg-12">
                 <div class="dtl-features-list">
                     <ul class="list-unstyled mb-0">
-                        <li *ngFor="let award of doctor.awards.split(',')">
+                        <li *ngFor="let award of getAwards()">
                             <img [src]="'assets/images/features-check.svg'">
-                            <span>{{ award.trim() }}</span>
+                            <span>{{ award }}</span>
                         </li>
                     </ul>
                 </div>
@@ -463,15 +463,15 @@
 </section>
 
 <!-- Additional Images -->
-<section class="dtl-center-image ptc-60" *ngIf="doctor && doctor.images">
+<section class="dtl-center-image ptc-60" *ngIf="doctor && (doctor.images.length || 0) > 1">
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-6" *ngIf="doctor.images.length > 1">
-                <img *ngIf="doctor.images && doctor.images.length" [src]="baseUrl + doctor.images[1].url"
+            <div class="col-lg-6 col-md-6" *ngIf="(doctor.images.length || 0) > 1">
+                <img [src]="(doctor.images && doctor.images.length > 1) ? (baseUrl + doctor.images[1].url) : 'assets/images/our-doctors.png'"
                     class="img-fluid w-100 rounded-4" [alt]="doctor.name || 'Doctor image'" />
             </div>
-            <div class="col-lg-6 col-md-6" *ngIf="doctor.images.length > 2">
-                <img *ngIf="doctor.images && doctor.images.length" [src]="baseUrl + doctor.images[2].url"
+            <div class="col-lg-6 col-md-6" *ngIf="(doctor.images.length || 0) > 2">
+                <img [src]="(doctor.images && doctor.images.length > 2) ? (baseUrl + doctor.images[2].url) : 'assets/images/our-doctors.png'"
                     class="img-fluid w-100 rounded-4" [alt]="doctor.name || 'Doctor image'" />
             </div>
         </div>
@@ -529,10 +529,8 @@
                         class="dtl-doctor-list d-flex align-items-start flex-sm-row"
                         [routerLink]="['/doctor', relatedDoctor.id]" style="cursor: pointer;">
                         <div class="dtl-doctor-img mb-2 mb-sm-0 flex-shrink-0">
-                            <img *ngIf="relatedDoctor.profile_photo" [src]="baseUrl + relatedDoctor.profile_photo"
+                            <img [src]="relatedDoctor.profile_photo ? (baseUrl + relatedDoctor.profile_photo) : 'assets/images/our-doctors.png'"
                                 [alt]="relatedDoctor.name" class="img-fluid">
-                            <img *ngIf="!relatedDoctor.profile_photo" [src]="'assets/images/dtl-doctor.png'"
-                                class="img-fluid">
                         </div>
                         <div class="dtl-doctor-info w-100">
                             <p class="mb-1 fw-semibold">{{ relatedDoctor.name }}</p>

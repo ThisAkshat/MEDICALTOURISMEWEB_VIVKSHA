@@ -112,6 +112,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  // ✅ NEW: Close navbar when navigation link is clicked (for responsive mode)
+  closeNavbar() {
+    this.isMenuOpen = false;
+  }
+
   toggleMobileSearchBox() {
     this.showMobileSearchBox = !this.showMobileSearchBox;
     this.mobileSearchResults = null;
@@ -136,11 +141,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.showUserDropdown = false;
+    this.closeNavbar(); // ✅ Close navbar when logging out
     this.router.navigate(['/']);
   }
 
   navigateToProfile() {
     this.showUserDropdown = false;
+    this.closeNavbar(); // ✅ Close navbar when navigating to profile
     this.router.navigate(['/dashboard']);
   }
 
@@ -168,6 +175,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
       this.showMobileSearchBox = false;
       this.mobileSearchResults = null;
+      this.closeNavbar(); // ✅ Close navbar when navigating to search results
     }
   }
 
@@ -187,6 +195,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   navigateToMobileSearchResults(): void {
+    this.closeNavbar(); // ✅ Close navbar when navigating to search results
     this.onMobileSearchSubmit();
   }
 
@@ -202,6 +211,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   selectMobileSearchResult(type: string, id: number): void {
     this.showMobileSearchBox = false;
     this.mobileSearchResults = null;
+    this.closeNavbar(); // ✅ Close navbar when navigating
     
     switch (type) {
       case 'doctor':

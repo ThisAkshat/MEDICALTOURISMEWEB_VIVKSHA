@@ -26,7 +26,7 @@ export class Home implements OnInit {
   loadingHospitals = true;
 
   patientsCount = 0;
-  patientsTarget = 2500;
+  patientsTarget = 10000;
   awardsCount = 0;
   awardsTarget = 25;
 

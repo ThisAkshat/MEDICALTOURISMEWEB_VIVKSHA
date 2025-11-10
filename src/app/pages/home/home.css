@@ -33,6 +33,33 @@
     height: 100%;
     max-height: 355px;
 }
+.home-about .about-details p
+{
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.home-about .about-details h2
+{
+  font-size: 34px;
+}
+.home-about .about-details
+{
+  padding-left: 10px;
+}
+.web-info .info-detail p span
+{
+  font-weight: 600;
+}
+.web-info-img
+{
+  height: 100%;
+}
+.web-info-img img
+{
+  height: 100%;
+  max-height: 400px;
+  object-fit: cover;
+}
 
 @media screen and (max-width: 767px) {
   .we-offer .offer-box img.home-offer-img {
@@ -43,5 +70,9 @@
 
   .partner-logo {
     margin-bottom: 15px;
+  }
+  .counter
+  {
+    width: 100%;
   }
 }

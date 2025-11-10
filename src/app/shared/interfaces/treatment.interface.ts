@@ -1,3 +1,5 @@
+import { Doctor } from 'src/app/core/services/doctors.service';
+
 export interface Treatment {
   id: number;
   name: string;
@@ -31,6 +33,8 @@ export interface Treatment {
   faq4_answer?: string | null;
   faq5_question?: string | null;
   faq5_answer?: string | null;
+  // Associated doctors returned by the API
+  associated_doctors?: Doctor[];
 }
 
 export interface TreatmentImage {

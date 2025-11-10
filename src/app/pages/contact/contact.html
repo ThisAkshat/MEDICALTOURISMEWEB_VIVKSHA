@@ -17,15 +17,15 @@
         </div>
     </div>
 </section>
-
-
 <section class="contact-detail ptc-80">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <div class="main-head text-center mbc-50">
                     <h2>{{ contactInfo?.heading || 'Contact Us' }}</h2>
-                    <p>{{ contactInfo?.description || 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer' }}</p>
+                    <p>{{ contactInfo?.description || 'Lorem Ipsum is simply dummy text of the printing and typesetting
+                        industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an
+                        unknown printer' }}</p>
                 </div>
             </div>
         </div>
@@ -71,13 +71,13 @@
                 <div class="contact-form-inner">
                     <div *ngIf="!isSubmitted">
                         <h5>Get in touch with us</h5>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-                            been the industry's.</p>
+                        <p>Reach out to 11 Health Tourism for any questions about your medical journey or travel plans. Our team is ready to help with appointments, information, and guidance. You can contact us by phone, email, or by filling out our message form below.</p>
                         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                                        <label for="firstName" class="form-label">First Name<span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control" placeholder="First Name"
                                             formControlName="firstName" />
                                         <div class="text-danger"
@@ -88,7 +88,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+                                        <label for="lastName" class="form-label">Last Name<span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control" placeholder="Last Name"
                                             formControlName="lastName" />
                                         <div class="text-danger"
@@ -101,7 +102,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email Id<span class="text-danger">*</span></label>
+                                        <label for="email" class="form-label">Email Id<span
+                                                class="text-danger">*</span></label>
                                         <input type="email" class="form-control" placeholder="Enter Email Id"
                                             formControlName="email" />
                                         <div class="text-danger"
@@ -112,7 +114,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="mobile" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                        <label for="mobile" class="form-label">Mobile Number<span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control" placeholder="Enter Mobile Number"
                                             formControlName="mobile" />
                                         <div class="text-danger"
@@ -136,7 +139,8 @@
                             </div> -->
                             <div class="mb-3">
                                 <div class="custom-select-wrapper">
-                                    <label for="selectedDepartment" class="form-label">Select Treatment<span class="text-danger">*</span></label>
+                                    <label for="selectedDepartment" class="form-label">Select Treatment<span
+                                            class="text-danger">*</span></label>
                                     <div class="form-select" [class.open]="isDepartmentDropdownOpen"
                                         [class.placeholder]="!selectedDepartmentLabel"
                                         [class.is-invalid]="contactForm.get('department')?.touched && contactForm.get('department')?.invalid"
@@ -193,9 +197,7 @@
 <section class="contact-map ptc-80">
     <div class="container">
         <div class="col-lg-12">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14717.094017012312!2d75.88652043885348!3d22.755229057468668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af403406fb%3A0x5b50834b117f8bab!2sVijay%20Nagar%2C%20Scheme%20No%2054%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1758971607856!5m2!1sen!2sin"
-                width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
+            <iframe [src]="getMapUrl()" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>

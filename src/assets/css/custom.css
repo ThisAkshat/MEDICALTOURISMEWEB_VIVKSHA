@@ -64,7 +64,7 @@
     font-size: 18px;
     font-weight: 500 !important;
     margin-bottom: 0px;
-    line-height: 23px;
+    line-height: 26px;
 }
 
 .banner-offer img {
@@ -118,7 +118,7 @@
 .offer-info h4 {
     color: var(--secondary-color);
     font-family: var(--primary-font);
-    font-size: 22px;
+    font-size: 20px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -259,6 +259,7 @@
 
 .counter {
     gap: 18px;
+    width: 50%;
 }
 
 .counters-main {
@@ -402,6 +403,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 15px;
+    object-position: top;
 }
 
 .card-location img {
@@ -689,8 +691,7 @@
 .contact-inner
 {
     box-shadow: rgb(99 99 99 / 12%) 0px 2px 8px 0px;
-    padding: 30px 40px;
-    justify-content: center;
+    padding: 15px;
     height: 100%;
     border-radius: 10px;
 }
@@ -815,9 +816,9 @@
 }
 .contact-form img
 {
-    max-height: 587px;
     object-fit: cover;
-    min-height: 685px;
+    min-height: 587px;
+    height: 100%;
 }
 .blog-card-dtl .blog-dtl ul
 {
@@ -985,7 +986,7 @@
 {
     height: 100%;
     min-height: 370px;
-    max-height: 660px;
+    max-height: 650px;
     object-fit: cover;
 }
 /* responsive start */
@@ -1259,11 +1260,15 @@
     .contact-form-inner h5
     {
         font-size: 22px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+    }
+    .contact-map iframe
+    {
+        border-radius: 15px;
     }
     .contact-form img
     {
-        min-height: 390px;
+        min-height: 360px;
     }
     .about-details h2
     {
@@ -1416,10 +1421,16 @@
         line-height: 10px;
         margin-top: 10px;
     }
-    .inner-baner-dtl img
+    .inner-baner-dtl .breadcumb li img
     {
         width: 8px;
+        min-height: initial;
         border-radius: 15px !important;
+    }
+    .inner-baner-dtl img
+    {
+        min-height: 140px;
+        object-fit: cover;
     }
     .inner-heading
     {
@@ -1611,10 +1622,20 @@
     }
     .contact-inner
     {
-        padding: 25px 30px;
+        padding: 18px 13px;
         margin-bottom: 20px;
         height: auto;
         justify-content: flex-start;
+    }
+    .contact-inner img
+    {
+        width: 48px !important;
+        margin-right: 10px !important;
+    }
+    .contact-inner h5
+    {
+        font-size: 18px !important;
+        margin-bottom: 3px;
     }
     .contact-form-inner
     {
@@ -1659,7 +1680,7 @@
     }
     .custom-dropdown
     {
-        width: 100%;
+        width: 100% !important;
     }
     .navbar .collapse li.dropdown ul.dropdown-menu
     {

@@ -8,6 +8,7 @@ import { DoctorService } from 'src/app/core/services/doctors.service';
 import { BookingService, BookingRequest, BookingResponse } from 'src/app/core/services/booking.service';
 import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { Doctor } from 'src/app/core/services/doctors.service';
+import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
 
 // Import the standalone ModalComponent
 import { ModalComponent } from '@core/modal/modal.component';
@@ -70,6 +71,7 @@ export class AyushmanTreatmentDetail implements OnInit {
     private route: ActivatedRoute,
     private treatmentService: TreatmentService,
     private doctorService: DoctorService,
+    private hospitalService: HospitalService,
     private bookingService: BookingService,
     private fb: FormBuilder,
     private http: HttpClient,
@@ -92,7 +94,7 @@ export class AyushmanTreatmentDetail implements OnInit {
       personal_assistant: [false] // New field for Personal Nursing Assistant
     });
   }
-
+ hospitalName: string = '';
   // ✅ NEW: Toggle dropdowns
   toggleTreatmentDropdown(): void {
     this.isTreatmentDropdownOpen = !this.isTreatmentDropdownOpen;
@@ -112,11 +114,11 @@ export class AyushmanTreatmentDetail implements OnInit {
   }
 
   // ✅ NEW: Select budget
-  selectBudget(budget: { value: string; label: string }): void {
-    this.bookingForm.patchValue({ budget: budget.value });
-    this.selectedBudgetLabel = budget.label;
-    this.isBudgetDropdownOpen = false;
-  }
+  // selectBudget(budget: { value: string; label: string }): void {
+  //   this.bookingForm.patchValue({ budget: budget.value });
+  //   this.selectedBudgetLabel = budget.label;
+  //   this.isBudgetDropdownOpen = false;
+  // }
 
   // ✅ NEW: Close dropdowns when clicking outside
   @HostListener('document:click', ['$event'])
@@ -236,7 +238,7 @@ export class AyushmanTreatmentDetail implements OnInit {
         email: formData.email,
         mobile_no: formData.mobile_no,
         treatment_id: this.treatment?.id || null, // Use actual treatment ID or null
-        budget: formData.budget || (this.treatment?.price_exact ? this.treatment.price_exact.toString() : ''),
+        budget: formData.budget,
         medical_history_file: formData.medical_history_file || '',
         doctor_preference: formData.doctor_preference || '',
         hospital_preference: formData.hospital_preference || '',
@@ -245,6 +247,9 @@ export class AyushmanTreatmentDetail implements OnInit {
         travel_assistant: formData.travel_assistant || false,
         stay_assistant: formData.stay_assistant || false,
         personal_assistant: formData.personal_assistant || false
+        ,
+        // Mark this booking as an Ayushman treatment booking
+        is_ayushman_treatment: true
       };
 
       console.log('Sending booking request:', bookingRequest);
@@ -463,26 +468,40 @@ export class AyushmanTreatmentDetail implements OnInit {
   }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.treatmentService.getTreatmentById(id).subscribe({
-        next: (res) => {
-          this.treatment = res;
-          this.loading = false;
+  const id = Number(this.route.snapshot.paramMap.get('id'));
+  if (id) {
+    this.treatmentService.getTreatmentById(id).subscribe({
+      next: (res) => {
+        this.treatment = res;
+        this.loading = false;
 
-          // Load related doctors based on treatment name
-          if (this.treatment?.name) {
-            this.loadRelatedDoctors(this.treatment.name);
-          }
-        },
-        error: (err) => {
-          console.error('Error loading treatment:', err);
-          this.loading = false;
+        // ✅ Fetch hospital name by ID
+        if (this.treatment?.hospital_id) {
+          this.hospitalService.getHospitalById(this.treatment.hospital_id).subscribe({
+            next: (hospital) => {
+              this.hospitalName = hospital.name;
+              console.log('Hospital name:', this.hospitalName);
+            },
+            error: (err) => {
+              console.error('Error fetching hospital:', err);
+              this.hospitalName = this.treatment?.other_hospital_name || 'Unknown Hospital';
+            }
+          });
         }
-      });
-    } else {
-      console.warn('No treatment ID found in route');
-      this.loading = false;
-    }
+
+        // ✅ Load related doctors
+        if (this.treatment?.name) {
+          this.loadRelatedDoctors(this.treatment.name);
+        }
+      },
+      error: (err) => {
+        console.error('Error loading treatment:', err);
+        this.loading = false;
+      }
+    });
+  } else {
+    console.warn('No treatment ID found in route');
+    this.loading = false;
+  }
   }
 }

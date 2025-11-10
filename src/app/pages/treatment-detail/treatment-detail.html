@@ -37,21 +37,30 @@
             <div class="col-lg-6">
                 <div class="dtl-info hospital-info treatment-info">
                     <h2 class="section-title">{{ treatment.name }}</h2>
-                    
+
                     <!-- Ayushman Badge -->
-                    <div class="ayushman-badge mb-3" *ngIf="treatment.is_ayushman">
-                        <span class="badge bg-success fs-6 px-2 py-2 fw-normal">
-                            <i class="fas fa-check-circle me-1"></i> Ayushman Bharat Eligible
-                        </span>
-                    </div>
-                    
+
                     <div class="detail-description">
                         <p>{{ treatment.short_description }}</p>
                     </div>
                     <!-- <p><strong>Type:</strong> {{ treatment.treatment_type }}</p> -->
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="detail-location d-flex align-items-center card-location">
+                                <img [src]="'assets/images/card-location.svg'">
+                                <p class="mb-0">{{ treatment.location }}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div  *ngIf="hospitalName" class="detail-location d-flex align-items-center card-location">
+                                <img [src]="'assets/images/hospital.svg'">
+                                <p class="mb-0">{{ hospitalName }}</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="detail-location d-flex align-items-center card-location">
-                        <img [src]="'assets/images/card-location.svg'">
-                        <p class="mb-0">{{ treatment.location }}</p>
+                        <img [src]="'assets/images/designation.svg'">
+                        <p class="mb-0"><span *ngFor="let doctor of (treatment?.associated_doctors?.length ? treatment.associated_doctors : relatedDoctors)">{{doctor.name }}, &nbsp;</span></p>
                     </div>
                     <!-- <p><strong>Rating:</strong> ⭐ {{ treatment.rating }}</p> -->
                     <div class="treatment-price">
@@ -81,7 +90,8 @@
 
                                 <!-- First Name -->
                                 <div class="mb-3">
-                                    <label for="first_name" class="form-label">First Name<span class="text-danger">*</span></label>
+                                    <label for="first_name" class="form-label">First Name<span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control"
                                         [class.is-invalid]="isFieldInvalid('first_name')" placeholder="First Name"
                                         formControlName="first_name">
@@ -92,7 +102,8 @@
 
                                 <!-- Last Name -->
                                 <div class="mb-3">
-                                    <label for="last_name" class="form-label">Last Name<span class="text-danger">*</span></label>
+                                    <label for="last_name" class="form-label">Last Name<span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control"
                                         [class.is-invalid]="isFieldInvalid('last_name')" placeholder="Last Name"
                                         formControlName="last_name">
@@ -103,7 +114,8 @@
 
                                 <!-- Email -->
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email Id<span class="text-danger">*</span></label>
+                                    <label for="email" class="form-label">Email Id<span
+                                            class="text-danger">*</span></label>
                                     <input type="email" class="form-control"
                                         [class.is-invalid]="isFieldInvalid('email')" placeholder="Enter Email Id"
                                         formControlName="email">
@@ -114,7 +126,8 @@
 
                                 <!-- Mobile Number -->
                                 <div class="mb-3">
-                                    <label for="mobile_no" class="form-label">Mobile Number<span class="text-danger">*</span></label>
+                                    <label for="mobile_no" class="form-label">Mobile Number<span
+                                            class="text-danger">*</span></label>
                                     <input type="tel" class="form-control"
                                         [class.is-invalid]="isFieldInvalid('mobile_no')"
                                         placeholder="Enter Mobile Number*" formControlName="mobile_no">
@@ -158,22 +171,13 @@
                                         placeholder="{{ treatment.name }}" readonly>
                                 </div>
 
-                                <!-- Ayushman Information -->
-                                <div class="mb-3" *ngIf="treatment.is_ayushman">
-                                    <div class="alert alert-info d-flex align-items-center" role="alert">
-                                        <i class="fas fa-info-circle me-2"></i>
-                                        <div>
-                                            <strong>Ayushman Bharat Eligible:</strong> This treatment is covered under the Ayushman Bharat scheme. 
-                                            Please bring your Ayushman card and valid ID for verification.
-                                        </div>
-                                    </div>
-                                </div>
 
 
                                 <!-- Budget Preference - Custom Dropdown -->
                                 <div class="mb-3">
                                     <div class="custom-select-wrapper">
-                                        <label for="Budget" class="form-label">Budget Preference<span class="text-danger">*</span></label>
+                                        <label for="Budget" class="form-label">Budget Preference<span
+                                                class="text-danger">*</span></label>
                                         <div class="form-select" [class.open]="isBudgetDropdownOpen"
                                             [class.placeholder]="!selectedBudgetLabel"
                                             [class.is-invalid]="isFieldInvalid('budget')"
@@ -247,7 +251,7 @@
                                 </div>
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="personal_assistant"
-                                     formControlName="personal_assistant">
+                                        formControlName="personal_assistant">
                                     <label class="form-check-label">
                                         Do You Need A Personal Nursing Assistant?
                                     </label>
@@ -295,7 +299,7 @@
         </div>
     </div>
 </section>
-<section class="tret-feature ptc-60" *ngIf="treatment">
+<section class="tret-feature ptc-60" *ngIf="treatment && treatment.features">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -426,8 +430,9 @@
                         <p class="mt-2 mb-0">Loading related doctors...</p>
                     </div>
 
-                    <!-- Dynamic doctor list -->
-                    <div *ngFor="let doctor of relatedDoctors" class="dtl-doctor-list d-flex align-items-center">
+                    <!-- Preferred: associated_doctors from treatment API, fallback to relatedDoctors -->
+                    <div *ngFor="let doctor of (treatment?.associated_doctors ?? relatedDoctors)"
+                        class="dtl-doctor-list d-flex align-items-center">
                         <div class="dtl-doctor-img">
                             <img *ngIf="doctor.profile_photo" [src]="baseUrl + doctor.profile_photo" [alt]="doctor.name"
                                 class="img-fluid">
@@ -445,8 +450,9 @@
                         </div>
                     </div>
 
-                    <!-- No doctors found -->
-                    <div *ngIf="!loadingDoctors && relatedDoctors.length === 0" class="text-center py-3">
+                    <!-- No doctors found when both sources empty -->
+                    <div *ngIf="!loadingDoctors && ((treatment?.associated_doctors?.length ?? relatedDoctors.length) === 0)"
+                        class="text-center py-3">
                         <p class="mb-0 text-muted">No related doctors found for this treatment.</p>
                     </div>
                 </div>

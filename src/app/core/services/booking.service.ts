@@ -17,6 +17,8 @@ export interface BookingRequest {
   travel_assistant: boolean;
   stay_assistant: boolean;
   personal_assistant: boolean;
+  // New boolean flag to indicate if this is an Ayushman treatment (optional)
+  is_ayushman_treatment?: boolean;
 }
 
 export interface BookingResponse extends BookingRequest {
@@ -50,6 +52,9 @@ export class BookingService {
     formData.append('travel_assistant', data.travel_assistant.toString());
     formData.append('stay_assistant', data.stay_assistant.toString());
     formData.append('personal_assistant', data.personal_assistant.toString());
+  // Map new boolean flag for Ayushman treatments (default to false when not provided)
+    const isAyushman = !!data.is_ayushman_treatment;
+    formData.append('is_ayushman_treatment', isAyushman.toString());
     
     // Append file if provided, otherwise append empty string
     if (file) {
