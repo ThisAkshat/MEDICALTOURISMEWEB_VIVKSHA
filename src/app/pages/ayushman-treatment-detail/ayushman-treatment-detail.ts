@@ -29,7 +29,7 @@ import { ModalComponent } from '@core/modal/modal.component';
 export class AyushmanTreatmentDetail implements OnInit {
   treatment?: Treatment;
   loading = true;
-  baseUrl = 'http://165.22.223.163:8000';
+  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
   showModal = false;
   expandedFaqIndex: number | null = null; // Track which FAQ is expanded
   bookingForm: FormGroup;

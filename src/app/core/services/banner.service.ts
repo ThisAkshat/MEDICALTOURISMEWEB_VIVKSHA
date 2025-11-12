@@ -20,7 +20,7 @@ export interface Banner {
   providedIn: 'root'
 })
 export class BannerService {
-  private apiUrl = 'http://165.22.223.163:8000/api/v1/banners?active_only=false';
+  private apiUrl = 'https://www.portal.cureonmedicaltourism.com//api/v1/banners?active_only=false';
 
   constructor(private http: HttpClient) {}
 

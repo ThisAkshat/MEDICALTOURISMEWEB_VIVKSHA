@@ -18,7 +18,7 @@ export interface ContactInfo {
   providedIn: 'root'
 })
 export class ContactService {
-  private apiUrl = 'http://165.22.223.163:8000/api/v1/contact-us';
+  private apiUrl = 'https://www.portal.cureonmedicaltourism.com//api/v1/contact-us';
 
   constructor(private http: HttpClient) {}
 

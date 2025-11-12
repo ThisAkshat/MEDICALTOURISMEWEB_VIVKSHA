@@ -54,7 +54,7 @@ export class Attractions implements OnInit {
   loading = true;
   offersLoaded = false;
   blogsLoaded = false;
-  baseUrl = 'http://165.22.223.163:8000';
+  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
 
   constructor(private http: HttpClient) {}
 

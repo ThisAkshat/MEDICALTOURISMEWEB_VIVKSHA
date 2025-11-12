@@ -30,7 +30,7 @@ export interface BookingResponse extends BookingRequest {
   providedIn: 'root'
 })
 export class BookingService {
-  private baseUrl = 'http://165.22.223.163:8000';
+  private baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
   private apiUrl = `${this.baseUrl}/api/v1/bookings`;
 
   constructor(private http: HttpClient) {}

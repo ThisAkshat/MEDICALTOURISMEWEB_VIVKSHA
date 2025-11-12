@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://165.22.223.163:8000',
+  apiUrl: 'https://www.portal.cureonmedicaltourism.com/',
   defaultLanguage: 'en',
   supportedLanguages: ['en', 'es', 'fr'],
   apiEndpoints: {

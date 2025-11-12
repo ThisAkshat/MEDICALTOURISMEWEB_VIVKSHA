@@ -238,7 +238,7 @@
                                 <div class="card-inner">
                                     <div class="user-card-img">
                                         <img *ngIf="h.images?.length"
-                                            [src]="'http://165.22.223.163:8000' + h.images[0].url" [alt]="h.name"
+                                            [src]="'https://www.portal.cureonmedicaltourism.com/' + h.images[0].url" [alt]="h.name"
                                             class="card-img-top img-fluid" />
                                     </div>
                                     <div class="user-card-content">
@@ -377,7 +377,7 @@
 
                                     <!-- Profile Photo & Name -->
                                     <div class="feedback-profile d-flex align-items-center">
-                                        <img [src]="'http://165.22.223.163:8000' + story.profile_photo"
+                                        <img [src]="'https://www.portal.cureonmedicaltourism.com/' + story.profile_photo"
                                             alt="{{ story.patient_name }}" class="me-2 rounded-circle" width="50"
                                             height="50">
                                         <h6 class="mb-0">{{ story.patient_name }}</h6>

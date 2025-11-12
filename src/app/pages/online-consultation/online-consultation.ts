@@ -39,7 +39,7 @@ export class OnlineConsultation implements OnInit {
   loading = true;
   showModal = false;
   selectedDoctor: Doctor | null = null;
-  baseUrl = 'http://165.22.223.163:8000';
+  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
   selectedFile: File | null = null;
 
   // ✅ Banner

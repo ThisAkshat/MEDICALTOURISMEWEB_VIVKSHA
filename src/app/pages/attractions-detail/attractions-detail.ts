@@ -90,7 +90,7 @@ export class AttractionsDetail implements OnInit, OnDestroy {
   getOfferImageUrl(offer: any): string {
     const primary = offer.images?.find((img: any) => img.is_primary);
     const imageUrl = primary ? primary.url : offer.images?.[0]?.url || '';
-    return imageUrl ? `http://165.22.223.163:8000${imageUrl}` : 'assets/images/attractions1.png';
+    return imageUrl ? `https://www.portal.cureonmedicaltourism.com/${imageUrl}` : 'assets/images/attractions1.png';
   }
 
   // Navigate to contact page

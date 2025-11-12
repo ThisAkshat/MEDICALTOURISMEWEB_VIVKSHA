@@ -91,13 +91,13 @@ export class SearchResultsComponent implements OnInit {
       // First try to find the primary image
       const primaryImage = hospital.images.find((img: any) => img.is_primary === true);
       if (primaryImage) {
-        return `http://165.22.223.163:8000${primaryImage.url}`;
+        return `https://www.portal.cureonmedicaltourism.com/${primaryImage.url}`;
       }
       
       // If no primary image, use the first image
       const firstImage = hospital.images[0];
       if (firstImage) {
-        return `http://165.22.223.163:8000${firstImage.url}`;
+        return `https://www.portal.cureonmedicaltourism.com/${firstImage.url}`;
       }
     }
     
@@ -113,7 +113,7 @@ export class SearchResultsComponent implements OnInit {
         return doctor.profile_photo;
       }
       // If it's a relative path, prepend the base URL
-      return `http://165.22.223.163:8000${doctor.profile_photo.startsWith('/') ? '' : '/'}${doctor.profile_photo}`;
+      return `https://www.portal.cureonmedicaltourism.com/${doctor.profile_photo.startsWith('/') ? '' : '/'}${doctor.profile_photo}`;
     }
     
     // Fallback to default doctor image

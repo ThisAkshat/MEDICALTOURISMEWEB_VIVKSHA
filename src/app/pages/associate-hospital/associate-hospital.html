@@ -3,7 +3,7 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="inner-baner-dtl position-relative text-center">
-            <img [src]="'http://165.22.223.163:8000' + banner.image_url" class="w-100 img-fluid rounded-5" />
+            <img [src]="'https://www.portal.cureonmedicaltourism.com/' + banner.image_url" class="w-100 img-fluid rounded-5" />
             <div class="inner-heading">
               <h2>{{ banner.title }}</h2>
               <ul class="breadcumb d-flex justify-content-center align-items-center gap-3">
@@ -35,7 +35,7 @@
                 <div class="user-card hospital-card">
                     <div class="card-inner">
                         <div class="user-card-img">
-                            <img *ngIf="h.images?.length" [src]="'http://165.22.223.163:8000' + h.images[0].url"
+                            <img *ngIf="h.images?.length" [src]="'https://www.portal.cureonmedicaltourism.com/' + h.images[0].url"
                                 [alt]="h.name" class="card-img-top img-fluid" />
                             <img *ngIf="!h.images?.length" src="assets/images/our-doctors.png"
                                 [alt]="h.name" class="card-img-top img-fluid" />
