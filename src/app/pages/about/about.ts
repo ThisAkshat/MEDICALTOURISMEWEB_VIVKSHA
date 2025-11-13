@@ -100,7 +100,7 @@ export class AboutComponent implements OnInit {
   // Get about us image URL safely
   getAboutUsImageUrl(): string {
     if (this.aboutUsData?.images && this.aboutUsData.images.length > 0 && this.aboutUsData.images[0]?.url) {
-      return 'https://www.portal.cureonmedicaltourism.com/' + this.aboutUsData.images[0].url;
+      return 'https://portal.cureonmedicaltourism.com' + this.aboutUsData.images[0].url;
     }
     return 'assets/images/about1.png';
   }
@@ -108,7 +108,7 @@ export class AboutComponent implements OnInit {
   // Get about us vision image URL safely (second image)
   getAboutUsVisionImageUrl(): string {
     if (this.aboutUsData?.images && this.aboutUsData.images.length > 1 && this.aboutUsData.images[1]?.url) {
-      return 'https://www.portal.cureonmedicaltourism.com/' + this.aboutUsData.images[1].url;
+      return 'https://portal.cureonmedicaltourism.com' + this.aboutUsData.images[1].url;
     }
     return 'assets/images/about-vision.png';
   }

@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                 <div class="inner-baner-dtl position-relative text-center">
                     <!-- 🔹 Use dynamic banner image -->
-                    <img [src]="'https://www.portal.cureonmedicaltourism.com/' + banner.image_url" class="w-100 img-fluid rounded-5" />
+                    <img [src]="'https://portal.cureonmedicaltourism.com' + banner.image_url" class="w-100 img-fluid rounded-5" />
                     <div class="inner-heading">
                         <!-- 🔹 Use dynamic title -->
                         <h2>{{ banner.title }}</h2>
@@ -83,8 +83,8 @@
             <div *ngFor="let d of doctors" class="col-lg-4 col-md-6 mb-4">
                 <div class="user-card">
                     <div class="user-card-img">
-                        <!-- <img *ngIf="d.profile_photo?.length" [src]="'https://www.portal.cureonmedicaltourism.com/' + d.profile_photo" [alt]="d.name" class="card-img-top img-fluid" /> -->
-                        <img [src]="d.profile_photo ? ('https://www.portal.cureonmedicaltourism.com/' + d.profile_photo) : 'assets/images/our-doctors.png'" [alt]="d.name" class="card-img-top img-fluid" />
+                        <!-- <img *ngIf="d.profile_photo?.length" [src]="'https://portal.cureonmedicaltourism.com' + d.profile_photo" [alt]="d.name" class="card-img-top img-fluid" /> -->
+                        <img [src]="d.profile_photo ? ('https://portal.cureonmedicaltourism.com' + d.profile_photo) : 'assets/images/our-doctors.png'" [alt]="d.name" class="card-img-top img-fluid" />
                     </div>
                     <div class="user-card-content doctors-card-info">
                         <h5 class="card-title">{{ d.name }}</h5>
@@ -159,7 +159,7 @@
                 <h6 class="mb-2">Selected Doctor:</h6>
                 <div class="d-flex align-items-center">
                     <img *ngIf="selectedDoctor.profile_photo?.length" 
-                         [src]="'https://www.portal.cureonmedicaltourism.com/' + selectedDoctor.profile_photo"
+                         [src]="'https://portal.cureonmedicaltourism.com' + selectedDoctor.profile_photo"
                          [alt]="selectedDoctor.name" 
                          class="rounded-circle me-3" 
                          style="width: 50px; height: 50px; object-fit: cover;" />

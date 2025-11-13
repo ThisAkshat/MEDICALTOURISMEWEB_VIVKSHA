@@ -48,7 +48,7 @@ export class DoctorDetails implements OnInit {
   relatedDoctors: Doctor[] = [];
   loadingRelatedDoctors = false;
   showModal = false;
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  baseUrl = 'https://portal.cureonmedicaltourism.com';
   consultationForm: FormGroup;
   isSubmitting = false;
   submitSuccess = false;

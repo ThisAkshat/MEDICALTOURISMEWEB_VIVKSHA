@@ -21,7 +21,7 @@ export interface PatientStory {
   providedIn: 'root'
 })
 export class PatientStoryService {
-  private apiUrl = 'https://www.portal.cureonmedicaltourism.com//api/v1/stories?active_only=true&featured_only=false&limit=10';
+  private apiUrl = 'https://portal.cureonmedicaltourism.com/api/v1/stories?active_only=true&featured_only=false&limit=10';
 
   constructor(private http: HttpClient) {}
 

@@ -49,7 +49,7 @@ export class BlogComponent implements OnInit {
   categories: string[] = [];
   recentPosts: Blog[] = [];
   selectedCategory: string | null = null; // Track selected category
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/'; // API base URL
+  baseUrl = 'https://portal.cureonmedicaltourism.com'; // API base URL
   banner: Banner | null = null;           // 🔹 Blog banner
 
   constructor(

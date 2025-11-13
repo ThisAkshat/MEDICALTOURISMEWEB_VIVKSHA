@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="inner-baner-dtl position-relative text-center">
-          <img [src]="'https://www.portal.cureonmedicaltourism.com/' + banner.image_url" class="w-100 img-fluid rounded-5" />
+          <img [src]="'https://portal.cureonmedicaltourism.com' + banner.image_url" class="w-100 img-fluid rounded-5" />
           <div class="inner-heading">
             <h2>{{ banner.title }}</h2>
             <ul class="breadcumb d-flex justify-content-center align-items-center gap-3 ps-0">
@@ -79,7 +79,7 @@
       <div *ngFor="let d of doctors" class="col-lg-4 col-md-6 mb-4">
         <div class="user-card">
           <div class="user-card-img"> 
-            <img [src]="d.profile_photo ? ('https://www.portal.cureonmedicaltourism.com/' + d.profile_photo) : 'assets/images/our-doctors.png'" [alt]="d.name" class="card-img-top img-fluid" />
+            <img [src]="d.profile_photo ? ('https://portal.cureonmedicaltourism.com' + d.profile_photo) : 'assets/images/our-doctors.png'" [alt]="d.name" class="card-img-top img-fluid" />
             <!-- <img class="card-img-top img-fluid" [src]="'https://static.vecteezy.com/system/resources/thumbnails/030/928/115/small_2x/handsome-indian-doctor-generate-ai-photo.jpg'" [alt]="d.name" /> -->
           </div>
           <div class="user-card-content doctors-card-info">

@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://www.portal.cureonmedicaltourism.com/',
+  apiUrl: 'https://portal.cureonmedicaltourism.com',
   defaultLanguage: 'en',
   supportedLanguages: ['en', 'es', 'fr'],
   apiEndpoints: {

@@ -20,7 +20,7 @@ export class Treatments implements OnInit {
   treatments: Treatment[] = [];
   filteredTreatments: Treatment[] = [];
   loading = true;
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  baseUrl = 'https://portal.cureonmedicaltourism.com';
 
   // Banner
   banner: Banner | undefined;

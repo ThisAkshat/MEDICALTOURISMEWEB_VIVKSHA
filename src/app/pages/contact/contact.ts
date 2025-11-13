@@ -124,7 +124,7 @@ export class ContactComponent implements OnInit {
         service_type: this.contactForm.value.department
       };
 
-      this.http.post('https://www.portal.cureonmedicaltourism.com//api/v1/contact', payload).subscribe({
+      this.http.post('https://portal.cureonmedicaltourism.com/api/v1/contact', payload).subscribe({
         next: (res) => {
           console.log('Form Submitted ✅', res);
           this.isSubmitted = true;

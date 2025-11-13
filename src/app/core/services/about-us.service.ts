@@ -48,7 +48,7 @@ export interface AboutUs {
   providedIn: 'root'
 })
 export class AboutUsService {
-  private apiUrl = 'https://www.portal.cureonmedicaltourism.com//api/v1/about-us';
+  private apiUrl = 'https://portal.cureonmedicaltourism.com/api/v1/about-us';
 
   constructor(private http: HttpClient) {}
 
@@ -57,7 +57,7 @@ export class AboutUsService {
   }
 
   getAboutUsImageUrl(imagePath: string): string {
-    return `https://www.portal.cureonmedicaltourism.com/${imagePath}`;
+    return `https://portal.cureonmedicaltourism.com${imagePath}`;
   }
 
   getPrimaryImage(aboutUs: AboutUs): AboutUsImage | null {

@@ -59,7 +59,7 @@ export class BlogDetailComponent implements OnInit {
   allBlogs: Blog[] = [];
   categories: string[] = [];
   recentPosts: Blog[] = [];
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  baseUrl = 'https://portal.cureonmedicaltourism.com';
   banner: Banner | null = null; // 🔹 Blog Detail banner
 
   constructor(

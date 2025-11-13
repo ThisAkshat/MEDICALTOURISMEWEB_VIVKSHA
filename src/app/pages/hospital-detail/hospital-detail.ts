@@ -14,7 +14,7 @@ import { Doctor } from 'src/app/core/services/doctors.service';
 })
 export class HospitalDetail implements OnInit {
   hospital: Hospital | null = null;
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  baseUrl = 'https://portal.cureonmedicaltourism.com';
   
   // Doctor-related properties
   hospitalDoctors: Doctor[] = [];

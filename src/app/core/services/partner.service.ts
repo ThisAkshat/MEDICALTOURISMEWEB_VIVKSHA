@@ -21,7 +21,7 @@ export interface Partner {
   providedIn: 'root'
 })
 export class PartnerService {
-  private baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  private baseUrl = 'https://portal.cureonmedicaltourism.com';
 
   constructor(private http: HttpClient) {}
 

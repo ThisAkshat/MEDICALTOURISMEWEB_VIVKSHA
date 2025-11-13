@@ -23,7 +23,7 @@ export class HeroSection implements OnInit, OnDestroy {
 
   /** ✅ Banner */
   banner: Banner | null = null;
-  baseUrl = 'https://www.portal.cureonmedicaltourism.com/';
+  baseUrl = 'https://portal.cureonmedicaltourism.com';
 
   /** Treatment search */
   locations: string[] = [];

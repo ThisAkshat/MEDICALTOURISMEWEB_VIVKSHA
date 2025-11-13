@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OfferService {
-  private baseUrl = 'https://www.portal.cureonmedicaltourism.com//api/v1/offers';
+  private baseUrl = 'https://portal.cureonmedicaltourism.com/api/v1/offers';
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +25,6 @@ export class OfferService {
   getOfferImageUrl(offer: any): string {
     const primaryImage = offer.images?.find((img: any) => img.is_primary);
     const imageUrl = primaryImage ? primaryImage.url : offer.images?.[0]?.url || '';
-    return imageUrl ? `https://www.portal.cureonmedicaltourism.com/${imageUrl}` : 'assets/images/offer1.png';
+    return imageUrl ? `https://portal.cureonmedicaltourism.com${imageUrl}` : 'assets/images/offer1.png';
   }
 }
