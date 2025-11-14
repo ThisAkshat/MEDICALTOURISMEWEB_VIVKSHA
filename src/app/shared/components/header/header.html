@@ -208,12 +208,12 @@
         <li class="nav-item dropdown user-dropdown-container" *ngIf="isAuthenticated">
           <a class="nav-link dropdown-toggle d-flex align-items-center btn-default user-btn" href="#" role="button" 
              (click)="toggleUserDropdown()" [class.show]="showUserDropdown">
-            <div class="user-avatar me-2">
+            <div class="user-avatar login-icn me-2">
               <i class="fa-solid fa-circle-user fa-lg"></i>
             </div>
             <span class="user-name d-none d-md-inline">{{ currentUser?.name || 'User' }}</span>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" [class.show]="showUserDropdown">
+          <ul class="dropdown-menu dropdown-menu-end login-dropdown-menu" [class.show]="showUserDropdown">
             <li class="dropdown-header">
               <div class="d-flex align-items-center">
                 <i class="fa-solid fa-circle-user fa-2x text-primary me-2"></i>
