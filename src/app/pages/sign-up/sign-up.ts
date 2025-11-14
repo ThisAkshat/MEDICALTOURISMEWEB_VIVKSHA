@@ -63,7 +63,16 @@ export class SignUp implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = error.error?.message || 'Signup failed. Please try again.';
+          // Handle different error response formats
+          if (error.error?.detail) {
+            this.errorMessage = error.error.detail;
+          } else if (error.error?.message) {
+            this.errorMessage = error.error.message;
+          } else if (typeof error.error === 'string') {
+            this.errorMessage = error.error;
+          } else {
+            this.errorMessage = 'Signup failed. Please try again.';
+          }
           console.error('Signup error:', error);
         }
       });
