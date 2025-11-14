@@ -80,7 +80,10 @@ export class Login implements OnInit {
       const { email, password } = this.loginForm.value;
 
       this.authService.login(email, password).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('✅ Login response received:', response);
+          console.log('🔑 Token from response:', response.access_token);
+          console.log('📦 Checking localStorage:', localStorage.getItem('auth_token'));
           this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },

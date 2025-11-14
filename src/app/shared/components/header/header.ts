@@ -33,7 +33,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Authentication state
   currentUser: User | null = null;
-  isAuthenticated = false;
+  private _isAuthenticated = false;
+
+  get isAuthenticated(): boolean {
+    // Always check token first to prevent flash
+    return this._isAuthenticated || !!this.authService.getToken();
+  }
 
   @ViewChild('mobileSearchContainer') mobileSearchContainer!: ElementRef;
   @ViewChild('desktopSearchContainer') desktopSearchContainer!: ElementRef;
@@ -42,18 +47,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private treatmentService: TreatmentService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    // Initialize auth state immediately to prevent flash
+    this._isAuthenticated = this.authService.isAuthenticated();
+    console.log('🏗️ Header constructor - isAuthenticated:', this._isAuthenticated);
+  }
 
   ngOnInit(): void {
-    // Subscribe to authentication state
+    //console.log('🚀 Header ngOnInit - loading user data');
+    
+    // Load user data if token exists
+    if (this.authService.getToken()) {
+      this.authService.loadStoredUser();
+    }
+    
+    // Subscribe to authentication state changes
     const authSub = this.authService.currentUser$.subscribe(user => {
+      console.log('👤 User state changed:', user);
       this.currentUser = user;
-      this.isAuthenticated = !!user;
+      this._isAuthenticated = !!user || this.authService.isAuthenticated();
     });
     this.subscription.add(authSub);
-
-    // Check initial authentication state
-    this.isAuthenticated = this.authService.isAuthenticated();
 
     // Debounce search input for mobile
     const mobileSearchSub = this.mobileSearchSubject
@@ -140,6 +154,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
+    this._isAuthenticated = false;
     this.showUserDropdown = false;
     this.closeNavbar(); // ✅ Close navbar when logging out
     this.router.navigate(['/']);
