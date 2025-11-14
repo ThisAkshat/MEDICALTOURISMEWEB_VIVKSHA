@@ -1,4 +1,4 @@
-# Medical Tourism Frontend Deployment Guide
+# CureOn Medical Tourism Frontend Deployment Guide
 
 ## Quick Setup (On your Ubuntu server)
 

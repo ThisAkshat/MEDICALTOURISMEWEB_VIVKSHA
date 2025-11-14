@@ -34,7 +34,7 @@ app.get('*', function(req, res, next) {
 
 const port = process.env.PORT || 9050;
 app.listen(port, function() {
-  console.log('Medical Tourism server running on http://localhost:' + port);
+  console.log('CureOn Medical Tourism server running on http://localhost:' + port);
   console.log('Serving files from: ' + distPath);
   console.log('Test these URLs:');
   console.log('   - http://localhost:' + port);

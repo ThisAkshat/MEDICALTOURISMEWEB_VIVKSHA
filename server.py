@@ -68,7 +68,7 @@ def main():
     
     # Create server
     with socketserver.TCPServer(("", PORT), AngularHTTPRequestHandler) as httpd:
-        print(f"Medical Tourism server running on http://localhost:{PORT}")
+        print(f"CureOn Medical Tourism server running on http://localhost:{PORT}")
         print(f"Serving files from: {DIRECTORY}")
         print(f"Test these URLs:")
         print(f"   - http://localhost:{PORT}")

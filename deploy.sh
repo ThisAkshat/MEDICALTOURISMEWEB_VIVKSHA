@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Deploying Medical Tourism Frontend..."
+echo "🚀 Deploying CureOn Medical Tourism Frontend..."
 
 # Check if Node.js is installed
 if ! command -v node &> /dev/null; then
