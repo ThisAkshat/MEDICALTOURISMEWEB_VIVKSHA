@@ -55,7 +55,7 @@ export class HeroSection implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('HeroSection ngOnInit called');
+    //console.log('HeroSection ngOnInit called');
 
     this.loadBannerBasedOnRoute();
     this.loadLocations();
@@ -145,13 +145,13 @@ export class HeroSection implements OnInit, OnDestroy {
     else if (currentPath.includes('attractions')) pageName = 'Attractions';
     else if (currentPath.includes('associate-hospital')) pageName = 'Associate Hospital';
 
-    console.log('Fetching banner for:', pageName);
+    //console.log('Fetching banner for:', pageName);
 
     this.bannerService.getBannerByName(pageName).subscribe({
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('Banner loaded:', banner);
+          //console.log('Banner loaded:', banner);
         } else {
           console.warn(`Banner not found for ${pageName}, using fallback.`);
         }

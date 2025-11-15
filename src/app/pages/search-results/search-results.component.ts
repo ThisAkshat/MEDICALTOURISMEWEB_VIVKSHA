@@ -121,7 +121,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   onImageError(event: any): void {
-    console.log('Image failed to load:', event.target.src);
+    //console.log('Image failed to load:', event.target.src);
     // Set fallback image on error - use appropriate default based on context
     if (event.target.src.includes('hospital')) {
       event.target.src = 'assets/images/hospital-default.png';

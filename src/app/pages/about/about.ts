@@ -55,7 +55,7 @@ export class AboutComponent implements OnInit {
       next: (res) => {
         if (res && res.length > 0) {
           this.aboutUsData = res[0]; // Get the first active about us record
-          console.log('✅ About Us data loaded:', this.aboutUsData);
+          //console.log('✅ About Us data loaded:', this.aboutUsData);
         }
       },
       error: (err) => console.error('❌ Failed to load about us data:', err)

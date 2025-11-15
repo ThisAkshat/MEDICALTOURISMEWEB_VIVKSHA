@@ -59,7 +59,7 @@ export class Attractions implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    console.log('🚀 Attractions component initialized');
+    //console.log('🚀 Attractions component initialized');
     this.loadOffers();
     // Load blogs after a short delay to avoid overwhelming the API
     setTimeout(() => this.loadBlogs(), 500);
@@ -75,12 +75,12 @@ export class Attractions implements OnInit {
     ];
     
     const apiUrl = possibleUrls[0]; // Start with your working curl URL
-    console.log('🔗 Fetching offers from:', apiUrl);
+    //console.log('🔗 Fetching offers from:', apiUrl);
     
     this.http.get<any>(apiUrl)
       .subscribe({
         next: (data) => {
-          console.log('📦 Raw API response:', data);
+          //console.log('📦 Raw API response:', data);
           
           // Handle different response formats
           if (Array.isArray(data)) {
@@ -97,7 +97,7 @@ export class Attractions implements OnInit {
           this.extractRecentOffers();
           this.offersLoaded = true;
           this.checkLoadingComplete();
-          console.log('✅ Offers loaded successfully:', this.offers.length, 'items');
+          //console.log('✅ Offers loaded successfully:', this.offers.length, 'items');
         },
         error: (err) => {
           console.error('❌ Error loading offers:', err);
@@ -106,7 +106,7 @@ export class Attractions implements OnInit {
           
           // If first URL fails, try the second one
           if (apiUrl === possibleUrls[0]) {
-            console.log('🔄 Trying alternative endpoint:', possibleUrls[1]);
+            //console.log('🔄 Trying alternative endpoint:', possibleUrls[1]);
             this.tryAlternativeOfferEndpoint(possibleUrls[1]);
           } else {
             this.offers = [];
@@ -121,16 +121,16 @@ export class Attractions implements OnInit {
     this.http.get<any>(url)
       .subscribe({
         next: (data) => {
-          console.log('📦 Alternative API response:', data);
+          //console.log('📦 Alternative API response:', data);
           this.offers = Array.isArray(data) ? data : (data?.data || []);
           this.extractRecentOffers();
           this.offersLoaded = true;
           this.checkLoadingComplete();
-          console.log('✅ Offers loaded from alternative endpoint:', this.offers.length, 'items');
+          //console.log('✅ Offers loaded from alternative endpoint:', this.offers.length, 'items');
         },
         error: (err) => {
           console.error('❌ Alternative endpoint also failed:', err);
-          console.log('🔄 Using fallback static data for testing');
+          //console.log('🔄 Using fallback static data for testing');
           
           // Fallback static data based on your API response
           this.offers = [
@@ -197,17 +197,17 @@ export class Attractions implements OnInit {
 
   loadBlogs(): void {
     const blogUrl = `${this.baseUrl}/api/v1/blogs?skip=0&limit=6&published_only=true&featured_only=false`;
-    console.log('🔗 Fetching blogs from:', blogUrl);
+    //console.log('🔗 Fetching blogs from:', blogUrl);
     
     this.http.get<Blog[]>(blogUrl)
       .subscribe({
         next: (data) => {
-          console.log('📰 Raw blog response:', data);
+          //console.log('📰 Raw blog response:', data);
           this.blogs = Array.isArray(data) ? data : [];
           this.extractRecentPosts();
           this.blogsLoaded = true;
           this.checkLoadingComplete();
-          console.log('✅ Blogs loaded successfully:', this.blogs.length, 'items');
+          //console.log('✅ Blogs loaded successfully:', this.blogs.length, 'items');
         },
         error: (err) => {
           console.error('❌ Error loading blogs:', err);
@@ -220,18 +220,18 @@ export class Attractions implements OnInit {
   }
 
   private checkLoadingComplete(): void {
-    console.log('🔄 Checking loading complete - Offers loaded:', this.offersLoaded, 'Blogs loaded:', this.blogsLoaded);
+    //console.log('🔄 Checking loading complete - Offers loaded:', this.offersLoaded, 'Blogs loaded:', this.blogsLoaded);
     
     // Set loading to false when both API calls are complete OR when offers are loaded (prioritize offers)
     if (this.offersLoaded && this.blogsLoaded) {
       this.loading = false;
-      console.log('✅ All content loaded. Offers:', this.offers.length, 'Blogs:', this.blogs.length);
+      //console.log('✅ All content loaded. Offers:', this.offers.length, 'Blogs:', this.blogs.length);
     } else if (this.offersLoaded) {
       // If offers are loaded but blogs are taking time, show offers first
       setTimeout(() => {
         if (!this.blogsLoaded) {
           this.loading = false;
-          console.log('⚡ Showing offers first. Offers:', this.offers.length);
+          //console.log('⚡ Showing offers first. Offers:', this.offers.length);
         }
       }, 2000);
     }

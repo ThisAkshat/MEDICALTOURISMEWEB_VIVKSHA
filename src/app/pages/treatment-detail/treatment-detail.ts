@@ -216,7 +216,7 @@ export class TreatmentDetail implements OnInit {
 
       this.selectedFile = file;
       this.submitError = ''; // Clear any previous errors
-      console.log('File selected:', file.name, file.size, file.type);
+      //console.log('File selected:', file.name, file.size, file.type);
     }
   }
 
@@ -250,12 +250,12 @@ export class TreatmentDetail implements OnInit {
         personal_assistant: formData.personal_assistant || false
       };
 
-      console.log('Sending booking request:', bookingRequest);
-      console.log('Selected file:', this.selectedFile);
+      //console.log('Sending booking request:', bookingRequest);
+      //console.log('Selected file:', this.selectedFile);
 
       const response = await this.bookingService.createBooking(bookingRequest, this.selectedFile || undefined).toPromise();
 
-      console.log('Booking created successfully:', response);
+      //console.log('Booking created successfully:', response);
       
       // Always show success message if we reach this point (no error thrown)
       this.submitSuccess = true;
@@ -264,14 +264,14 @@ export class TreatmentDetail implements OnInit {
       // Force Angular change detection to update the UI
       this.cdr.detectChanges();
       
-      console.log('Success flag set to:', this.submitSuccess);
-      console.log('Error message cleared:', this.submitError);
-      console.log('Change detection triggered');
+      //console.log('Success flag set to:', this.submitSuccess);
+      //console.log('Error message cleared:', this.submitError);
+      //console.log('Change detection triggered');
 
       // Store the booking response for future reference
       if (response) {
-        console.log('Booking ID:', response.id);
-        console.log('Created at:', response.created_at);
+        //console.log('Booking ID:', response.id);
+        //console.log('Created at:', response.created_at);
       }
 
       // Close modal after 4 seconds to show success message longer
@@ -322,12 +322,12 @@ export class TreatmentDetail implements OnInit {
   // Load related doctors based on treatment name
   loadRelatedDoctors(treatmentName: string) {
     this.loadingDoctors = true;
-    console.log('Searching for doctors with treatment name:', treatmentName);
+    //console.log('Searching for doctors with treatment name:', treatmentName);
 
     // First try: Search using full treatment name
     this.doctorService.searchDoctors(0, 10, treatmentName).subscribe({
       next: (doctors) => {
-        console.log('Search results for full name:', doctors);
+        //console.log('Search results for full name:', doctors);
 
         if (doctors.length > 0) {
           this.relatedDoctors = doctors.slice(0, 3); // Limit to 3 doctors
@@ -349,13 +349,13 @@ export class TreatmentDetail implements OnInit {
   private searchByKeywords(treatmentName: string) {
     // Extract potential medical keywords
     const keywords = this.extractMedicalKeywords(treatmentName);
-    console.log('Extracted keywords:', keywords);
+    //console.log('Extracted keywords:', keywords);
 
     if (keywords.length > 0) {
       // Try searching with the first keyword
       this.doctorService.searchDoctors(0, 10, keywords[0]).subscribe({
         next: (doctors) => {
-          console.log('Search results for keyword:', keywords[0], doctors);
+          //console.log('Search results for keyword:', keywords[0], doctors);
 
           if (doctors.length > 0) {
             this.relatedDoctors = doctors.slice(0, 3);
@@ -383,7 +383,7 @@ export class TreatmentDetail implements OnInit {
   private searchWithSecondKeyword(keyword: string) {
     this.doctorService.searchDoctors(0, 10, keyword).subscribe({
       next: (doctors) => {
-        console.log('Search results for second keyword:', keyword, doctors);
+        //console.log('Search results for second keyword:', keyword, doctors);
         this.relatedDoctors = doctors.length > 0 ? doctors.slice(0, 3) : [];
         if (this.relatedDoctors.length === 0) {
           this.getFallbackDoctors();
@@ -400,10 +400,10 @@ export class TreatmentDetail implements OnInit {
 
   // Get any available doctors as fallback
   private getFallbackDoctors() {
-    console.log('Using fallback: getting any available doctors');
+    //console.log('Using fallback: getting any available doctors');
     this.doctorService.getDoctors(0, 3).subscribe({
       next: (doctors) => {
-        console.log('Fallback doctors:', doctors);
+        //console.log('Fallback doctors:', doctors);
         this.relatedDoctors = doctors.slice(0, 3);
         this.loadingDoctors = false;
       },
@@ -527,7 +527,7 @@ export class TreatmentDetail implements OnInit {
           this.hospitalService.getHospitalById(this.treatment.hospital_id).subscribe({
             next: (hospital) => {
               this.hospitalName = hospital.name;
-              console.log('Hospital name:', this.hospitalName);
+              //console.log('Hospital name:', this.hospitalName);
             },
             error: (err) => {
               console.error('Error fetching hospital:', err);

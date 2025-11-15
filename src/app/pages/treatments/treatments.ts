@@ -63,7 +63,7 @@ export class Treatments implements OnInit {
 
     this.treatmentService.searchTreatments(requestPayload).subscribe({
       next: (data) => {
-        console.log('✅ All treatments loaded:', data);
+        //console.log('✅ All treatments loaded:', data);
         
         // Keep all treatments (including Ayushman ones)
         this.treatments = data.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
@@ -88,7 +88,7 @@ export class Treatments implements OnInit {
         this.filteredTreatments = [...this.treatments];
         this.loading = false;
         
-        console.log(`📊 Loaded ${this.treatments.length} non-Ayushman treatments`);
+        //console.log(`📊 Loaded ${this.treatments.length} non-Ayushman treatments`);
       },
       error: (err) => {
         console.error('Error fetching treatments:', err);
@@ -135,7 +135,7 @@ export class Treatments implements OnInit {
       return locationMatch && treatmentMatch;
     });
     
-    console.log(`🔍 Filtered ${this.filteredTreatments.length} non-Ayushman treatments after applying filters`);
+    //console.log(`🔍 Filtered ${this.filteredTreatments.length} non-Ayushman treatments after applying filters`);
   }
 
   // Normalize location strings to a canonical key used for deduplication and matching

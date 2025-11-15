@@ -9,7 +9,7 @@ const distPath = path.join(__dirname, 'dist', 'medical-tourism', 'browser');
 // Check if build directory exists
 if (!fs.existsSync(distPath)) {
   console.error('Build directory not found:', distPath);
-  console.log('Please run "npm run build" first');
+  //console.log('Please run "npm run build" first');
   process.exit(1);
 }
 
@@ -34,12 +34,12 @@ app.get('*', function(req, res, next) {
 
 const port = process.env.PORT || 9050;
 app.listen(port, function() {
-  console.log('CureOn Medical Tourism server running on http://localhost:' + port);
-  console.log('Serving files from: ' + distPath);
-  console.log('Test these URLs:');
-  console.log('   - http://localhost:' + port);
-  console.log('   - http://localhost:' + port + '/doctors');
-  console.log('   - http://localhost:' + port + '/treatments/surgical-treatment');
-  console.log('   - http://localhost:' + port + '/about');
-  console.log('   - http://localhost:' + port + '/contact');
+  //console.log('CureOn Medical Tourism server running on http://localhost:' + port);
+  //console.log('Serving files from: ' + distPath);
+  //console.log('Test these URLs:');
+  //console.log('   - http://localhost:' + port);
+  //console.log('   - http://localhost:' + port + '/doctors');
+  //console.log('   - http://localhost:' + port + '/treatments/surgical-treatment');
+  //console.log('   - http://localhost:' + port + '/about');
+  //console.log('   - http://localhost:' + port + '/contact');
 });

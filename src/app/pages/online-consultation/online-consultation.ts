@@ -102,14 +102,14 @@ export class OnlineConsultation implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('✅ Online Consultation component initialized');
+    //console.log('✅ Online Consultation component initialized');
 
     // 🔹 Load Online Consultation Banner
     this.bannerService.getBannerByTitle('Online Consultation').subscribe({
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Banner loaded:', this.banner);
+          //console.log('✅ Banner loaded:', this.banner);
           this.cdr.detectChanges();
         }
       },
@@ -259,7 +259,7 @@ export class OnlineConsultation implements OnInit {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      console.log('File selected:', file.name, file.size, file.type);
+      //console.log('File selected:', file.name, file.size, file.type);
     }
   }
 
@@ -305,7 +305,7 @@ export class OnlineConsultation implements OnInit {
         { headers: { 'accept': 'application/json' } }
       ).toPromise();
 
-      console.log('✅ Booking created:', response);
+      //console.log('✅ Booking created:', response);
       this.submitSuccess = true;
       setTimeout(() => this.closeModal(), 2000);
     } catch (error: any) {

@@ -89,7 +89,7 @@ export class SignUp implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Sign Up banner loaded:', this.banner);
+          //console.log('✅ Sign Up banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading sign up banner:', err)

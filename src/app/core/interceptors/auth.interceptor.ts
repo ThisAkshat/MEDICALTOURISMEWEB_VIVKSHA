@@ -7,7 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
 
-  console.log('🔐 Auth Interceptor called for:', req.url);
+  //console.log('🔐 Auth Interceptor called for:', req.url);
 
   // Prepare headers object
   const headers: { [key: string]: string } = {
@@ -17,11 +17,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   // Add authorization header if token exists
   if (token) {
-    console.log('🎫 Token found, adding Authorization header');
-    console.log('🔑 Token (first 50 chars):', token.substring(0, 50) + '...');
+    //console.log('🎫 Token found, adding Authorization header');
+    //console.log('🔑 Token (first 50 chars):', token.substring(0, 50) + '...');
     headers['Authorization'] = `Bearer ${token}`;
   } else {
-    console.log('📭 No token available');
+    //console.log('📭 No token available');
   }
 
   // Clone the request with all headers
@@ -29,7 +29,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     setHeaders: headers
   });
 
-  console.log('📤 Request headers:', modifiedReq.headers.keys());
+  //console.log('📤 Request headers:', modifiedReq.headers.keys());
 
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -46,18 +46,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           case 401:
             // Only auto-logout for 401 if it's NOT the /auth/me endpoint
             if (!req.url.includes('/auth/me')) {
-              console.log('🚪 401 error - logging out user');
+              //console.log('🚪 401 error - logging out user');
               authService.logout();
             } else {
-              console.log('⚠️ 401 error on /auth/me - token validation failed');
+              //console.log('⚠️ 401 error on /auth/me - token validation failed');
             }
             break;
           case 403:
             // Don't auto-logout on 403 for /auth/me
             if (req.url.includes('/auth/me')) {
-              console.log('⚠️ 403 Forbidden on /auth/me - possible email verification required');
+              //console.log('⚠️ 403 Forbidden on /auth/me - possible email verification required');
             } else {
-              console.log('⚠️ 403 Forbidden - access denied');
+              //console.log('⚠️ 403 Forbidden - access denied');
             }
             break;
         }

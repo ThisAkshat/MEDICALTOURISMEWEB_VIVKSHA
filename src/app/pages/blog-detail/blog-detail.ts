@@ -93,7 +93,7 @@ export class BlogDetailComponent implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Blog Detail banner loaded:', this.banner);
+          //console.log('✅ Blog Detail banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading blog detail banner:', err)

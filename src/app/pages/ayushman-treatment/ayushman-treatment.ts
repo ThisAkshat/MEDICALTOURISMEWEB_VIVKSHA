@@ -63,11 +63,11 @@ export class AyushmanTreatment implements OnInit {
 
     this.treatmentService.getAyushmanTreatments(requestPayload).subscribe({
       next: (data) => {
-        console.log(' Ayushman treatments loaded:', data);
+        //console.log(' Ayushman treatments loaded:', data);
         
         // Verify all treatments have is_ayushman: true
         const ayushmanCount = data.filter(t => t.is_ayushman === true).length;
-        console.log(` Verification: ${ayushmanCount}/${data.length} treatments have is_ayushman: true`);
+        //console.log(` Verification: ${ayushmanCount}/${data.length} treatments have is_ayushman: true`);
         
         this.treatments = data.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
 
@@ -91,7 +91,7 @@ export class AyushmanTreatment implements OnInit {
         this.filteredTreatments = [...this.treatments];
         this.loading = false;
         
-        console.log(` Loaded ${this.treatments.length} Ayushman treatments`);
+        //console.log(` Loaded ${this.treatments.length} Ayushman treatments`);
       },
       error: (err) => {
         console.error('Error fetching Ayushman treatments:', err);
@@ -139,7 +139,7 @@ export class AyushmanTreatment implements OnInit {
       return locationMatch && treatmentMatch && ayushmanMatch;
     });
     
-    console.log(`🔍 Filtered ${this.filteredTreatments.length} Ayushman treatments after applying filters`);
+    //console.log(`🔍 Filtered ${this.filteredTreatments.length} Ayushman treatments after applying filters`);
   }
 
   // Get only Ayushman treatments for display

@@ -48,7 +48,7 @@ export class Doctors implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Doctors banner loaded:', this.banner);
+          //console.log('✅ Doctors banner loaded:', this.banner);
           this.cdr.detectChanges();
         }
       },

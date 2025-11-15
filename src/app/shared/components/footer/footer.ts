@@ -42,7 +42,7 @@ export class Footer {
 
   subscribe() {
     if (this.email) {
-      console.log('Subscribed with:', this.email);
+      //console.log('Subscribed with:', this.email);
       alert(`Thank you for subscribing, ${this.email}!`);
       this.email = '';
     } else {

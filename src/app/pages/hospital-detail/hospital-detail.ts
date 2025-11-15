@@ -43,7 +43,7 @@ export class HospitalDetail implements OnInit {
       const id = +idParam;
       this.hospitalService.getHospitalById(id).subscribe({
         next: (data: Hospital) => {
-          console.log('✅ Full hospital details:', data); // 👈 logs everything
+          //console.log('✅ Full hospital details:', data); // 👈 logs everything
           this.hospital = data;
           
           // Load doctors for this hospital
@@ -59,18 +59,18 @@ export class HospitalDetail implements OnInit {
   // Load doctors for the specific hospital
   loadHospitalDoctors(hospitalId: number): void {
     this.loadingDoctors = true;
-    console.log('Loading doctors for hospital ID:', hospitalId);
+    //console.log('Loading doctors for hospital ID:', hospitalId);
     
     this.doctorService.getDoctorsByHospital(hospitalId, 0, 10).subscribe({
       next: (doctors) => {
-        console.log('Hospital doctors loaded:', doctors);
-        console.log('Number of doctors found:', doctors.length);
+        //console.log('Hospital doctors loaded:', doctors);
+        //console.log('Number of doctors found:', doctors.length);
         
         if (doctors.length > 0) {
           this.hospitalDoctors = doctors.slice(0, 3); // Limit to 3 for display
-          console.log('Displaying doctors:', this.hospitalDoctors);
+          //console.log('Displaying doctors:', this.hospitalDoctors);
         } else {
-          console.log('No doctors found for hospital ID:', hospitalId);
+          //console.log('No doctors found for hospital ID:', hospitalId);
           // Fallback: Try to get any doctors as a backup
           this.getFallbackDoctors();
           return;
@@ -88,10 +88,10 @@ export class HospitalDetail implements OnInit {
 
   // Fallback method to get any available doctors
   private getFallbackDoctors(): void {
-    console.log('Loading fallback doctors...');
+    //console.log('Loading fallback doctors...');
     this.doctorService.getDoctors(0, 3).subscribe({
       next: (doctors) => {
-        console.log('Fallback doctors loaded:', doctors);
+        //console.log('Fallback doctors loaded:', doctors);
         this.hospitalDoctors = doctors.slice(0, 3);
         this.loadingDoctors = false;
       },

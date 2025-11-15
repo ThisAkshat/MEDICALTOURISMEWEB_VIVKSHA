@@ -26,12 +26,12 @@ export class ApiInterceptor implements HttpInterceptor {
 
     // Add authorization header if token exists
     if (token) {
-      console.log('🔐 Adding token to request:', request.url);
-      console.log('🎫 Token (first 50 chars):', token.substring(0, 50) + '...');
+      //console.log('🔐 Adding token to request:', request.url);
+      //console.log('🎫 Token (first 50 chars):', token.substring(0, 50) + '...');
       headers['Authorization'] = `Bearer ${token}`;
-      console.log('✅ Authorization header will be added');
+      //console.log('✅ Authorization header will be added');
     } else {
-      console.log('📭 No token available for request:', request.url);
+      //console.log('📭 No token available for request:', request.url);
     }
 
     // Clone the request with all headers at once
@@ -39,7 +39,7 @@ export class ApiInterceptor implements HttpInterceptor {
       setHeaders: headers
     });
 
-    console.log('📤 Final request headers:', modifiedRequest.headers.keys());
+    //console.log('📤 Final request headers:', modifiedRequest.headers.keys());
 
     return next.handle(modifiedRequest).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -57,18 +57,18 @@ export class ApiInterceptor implements HttpInterceptor {
               // Only auto-logout for 401 if it's NOT the /auth/me endpoint
               // (Let the auth service handle /auth/me 401 explicitly)
               if (!request.url.includes('/auth/me')) {
-                console.log('🚪 401 error - logging out user');
+                //console.log('🚪 401 error - logging out user');
                 this.authService.logout();
               } else {
-                console.log('⚠️ 401 error on /auth/me - token validation failed');
+                //console.log('⚠️ 401 error on /auth/me - token validation failed');
               }
               break;
             case 403:
               // Don't auto-logout on 403 for /auth/me - might be email verification issue
               if (request.url.includes('/auth/me')) {
-                console.log('⚠️ 403 Forbidden on /auth/me - possible email verification required or permission issue');
+                //console.log('⚠️ 403 Forbidden on /auth/me - possible email verification required or permission issue');
               } else {
-                console.log('⚠️ 403 Forbidden - access denied');
+                //console.log('⚠️ 403 Forbidden - access denied');
               }
               break;
             case 404:

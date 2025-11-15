@@ -74,7 +74,7 @@ export class ContactComponent implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Contact banner loaded:', this.banner);
+          //console.log('✅ Contact banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading contact banner:', err)
@@ -84,7 +84,7 @@ export class ContactComponent implements OnInit {
     this.contactService.getContactInfo().subscribe({
       next: (contactInfo) => {
         this.contactInfo = contactInfo;
-        console.log('✅ Contact info loaded:', this.contactInfo);
+        //console.log('✅ Contact info loaded:', this.contactInfo);
       },
       error: (err) => console.error('❌ Error loading contact info:', err)
     });
@@ -126,7 +126,7 @@ export class ContactComponent implements OnInit {
 
       this.http.post('https://portal.cureonmedicaltourism.com/api/v1/contact', payload).subscribe({
         next: (res) => {
-          console.log('Form Submitted ✅', res);
+          //console.log('Form Submitted ✅', res);
           this.isSubmitted = true;
           this.contactForm.reset();
           // ✅ Reset dropdown label

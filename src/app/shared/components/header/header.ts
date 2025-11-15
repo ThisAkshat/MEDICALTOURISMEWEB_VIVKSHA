@@ -50,11 +50,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {
     // Initialize auth state immediately to prevent flash
     this._isAuthenticated = this.authService.isAuthenticated();
-    console.log('🏗️ Header constructor - isAuthenticated:', this._isAuthenticated);
+    //console.log('🏗️ Header constructor - isAuthenticated:', this._isAuthenticated);
   }
 
   ngOnInit(): void {
-    //console.log('🚀 Header ngOnInit - loading user data');
+    ////console.log('🚀 Header ngOnInit - loading user data');
     
     // Load user data if token exists
     if (this.authService.getToken()) {
@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     
     // Subscribe to authentication state changes
     const authSub = this.authService.currentUser$.subscribe(user => {
-      console.log('👤 User state changed:', user);
+      //console.log('👤 User state changed:', user);
       this.currentUser = user;
       this._isAuthenticated = !!user || this.authService.isAuthenticated();
     });

@@ -159,7 +159,7 @@ export class DoctorDetails implements OnInit {
     this.selectedTimeSlotLabel = timeSlotValue;
     this.consultationForm.patchValue({ preferred_time_slot: timeSlotValue });
     
-    console.log('🎯 Time slot selected from sidebar:', timeSlotValue);
+    //console.log('🎯 Time slot selected from sidebar:', timeSlotValue);
     
     // Optional: Show a brief feedback message
     // You could add a toast notification here if desired
@@ -187,15 +187,15 @@ export class DoctorDetails implements OnInit {
         this.doctor = data;
         // build and cache sanitized FAQ list for template use
         this.dynamicFaqsList = this.getDynamicFaqs();
-        console.log('🔍 Doctor data loaded:', data);
-        console.log('🕒 Raw time_slots data:', data.time_slots);
-        console.log('🕒 Type of time_slots:', typeof data.time_slots);
+        //console.log('🔍 Doctor data loaded:', data);
+        //console.log('🕒 Raw time_slots data:', data.time_slots);
+        //console.log('🕒 Type of time_slots:', typeof data.time_slots);
         
         // Parse dynamic time slots from API
         this.parseDynamicTimeSlots(data.time_slots);
         
         if (data.hospital_id) {
-          console.log('🏥 Fetching hospital name for hospital_id:', data.hospital_id);
+          //console.log('🏥 Fetching hospital name for hospital_id:', data.hospital_id);
           this.fetchHospitalName(data.hospital_id);
           this.fetchRelatedDoctors(data.hospital_id, id);
         } else {
@@ -210,7 +210,7 @@ export class DoctorDetails implements OnInit {
     this.hospitalService.getHospitalById(hospitalId).subscribe({
       next: (hospital: Hospital) => {
         this.hospitalName = hospital.name;
-        console.log('🏥 Primary hospital name fetched:', this.hospitalName);
+        //console.log('🏥 Primary hospital name fetched:', this.hospitalName);
       },
       error: (err) => {
         console.error('❌ Error fetching hospital:', err);
@@ -271,7 +271,7 @@ export class DoctorDetails implements OnInit {
           this.dynamicTimeSlots = timeSlotsData as Record<string, string>;
         }
         
-        console.log('📅 Parsed time slots:', this.dynamicTimeSlots);
+        //console.log('📅 Parsed time slots:', this.dynamicTimeSlots);
         
         // Convert to dropdown options (only available slots)
         this.timeSlotOptions = Object.entries(this.dynamicTimeSlots)
@@ -281,8 +281,8 @@ export class DoctorDetails implements OnInit {
             label: `${day} - ${time}`
           }));
         
-        console.log('🕐 Available time slot options for booking:', this.timeSlotOptions);
-        console.log('📋 Total available slots:', this.timeSlotOptions.length);
+        //console.log('🕐 Available time slot options for booking:', this.timeSlotOptions);
+        //console.log('📋 Total available slots:', this.timeSlotOptions.length);
       } else {
         console.warn('⚠️ No time slots data available');
         this.dynamicTimeSlots = {};
@@ -412,7 +412,7 @@ export class DoctorDetails implements OnInit {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      console.log('File selected:', file.name, file.size, file.type);
+      //console.log('File selected:', file.name, file.size, file.type);
     }
   }
 
@@ -454,7 +454,7 @@ export class DoctorDetails implements OnInit {
         { headers: { 'accept': 'application/json' } }
       ).toPromise();
 
-      console.log('Consultation booked successfully:', response);
+      //console.log('Consultation booked successfully:', response);
       this.submitSuccess = true;
       setTimeout(() => this.closeModal(), 2000);
 

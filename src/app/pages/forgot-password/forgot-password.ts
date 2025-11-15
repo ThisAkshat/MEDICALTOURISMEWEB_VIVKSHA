@@ -68,7 +68,7 @@ export class ForgotPassword implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Forgot Password banner loaded:', this.banner);
+          //console.log('✅ Forgot Password banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading forgot password banner:', err)

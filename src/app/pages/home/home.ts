@@ -154,7 +154,7 @@ export class Home implements OnInit {
   // Handle search result changes
   onSearchResultsChange(hasResults: boolean): void {
     this.hasSearchResults = hasResults;
-    console.log('Search results state changed:', hasResults);
+    //console.log('Search results state changed:', hasResults);
   }
 
   // Counter animation

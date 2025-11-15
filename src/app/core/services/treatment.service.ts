@@ -31,7 +31,7 @@ export class TreatmentService {
       httpParams = httpParams.set('ayushman_only', 'true');
     }
 
-    console.log('API Request URL:', '/api/v1/treatments?' + httpParams.toString());
+    //console.log('API Request URL:', '/api/v1/treatments?' + httpParams.toString());
     return this.apiService.get<Treatment[]>('/api/v1/treatments', httpParams);
   }
 
@@ -59,7 +59,7 @@ export class TreatmentService {
       .set('query', query.trim())
       .set('limit', limit.toString());
 
-    console.log('API Request URL:', '/api/v1/search?' + httpParams.toString());
+    //console.log('API Request URL:', '/api/v1/search?' + httpParams.toString());
     return this.apiService.get<any>('/api/v1/search', httpParams);
   }
 }

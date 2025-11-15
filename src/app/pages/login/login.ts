@@ -81,9 +81,9 @@ export class Login implements OnInit {
 
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log('✅ Login response received:', response);
-          console.log('🔑 Token from response:', response.access_token);
-          console.log('📦 Checking localStorage:', localStorage.getItem('auth_token'));
+          //console.log('✅ Login response received:', response);
+          //console.log('🔑 Token from response:', response.access_token);
+          //console.log('📦 Checking localStorage:', localStorage.getItem('auth_token'));
           this.isLoading = false;
           this.router.navigate(['/dashboard']);
         },
@@ -106,7 +106,7 @@ export class Login implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Login banner loaded:', this.banner);
+          //console.log('✅ Login banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading login banner:', err)

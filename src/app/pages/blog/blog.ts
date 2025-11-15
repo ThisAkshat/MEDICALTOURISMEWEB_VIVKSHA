@@ -64,7 +64,7 @@ export class BlogComponent implements OnInit {
       next: (banner) => {
         if (banner) {
           this.banner = banner;
-          console.log('✅ Blog banner loaded:', this.banner);
+          //console.log('✅ Blog banner loaded:', this.banner);
         }
       },
       error: (err) => console.error('❌ Error loading blog banner:', err)
@@ -124,13 +124,13 @@ export class BlogComponent implements OnInit {
       blog.category && blog.category.trim().toUpperCase() === category.toUpperCase()
     );
     
-    console.log(`Filtered blogs by category "${category}":`, this.blogs.length, 'results');
+    //console.log(`Filtered blogs by category "${category}":`, this.blogs.length, 'results');
   }
 
   // Method to show all blogs (clear filter)
   showAllBlogs(): void {
     this.selectedCategory = null;
     this.blogs = [...this.allBlogs];
-    console.log('Showing all blogs:', this.blogs.length, 'results');
+    //console.log('Showing all blogs:', this.blogs.length, 'results');
   }
 }
