@@ -205,8 +205,8 @@
         </li>
 
         <!-- User Profile Dropdown (when authenticated) -->
-        <li class="nav-item dropdown user-dropdown-container" *ngIf="isAuthenticated">
-          <a class="nav-link dropdown-toggle d-flex align-items-center btn-default user-btn" href="#" role="button" 
+        <li class="nav-item dropdown user-dropdown-container user-mbl" *ngIf="isAuthenticated">
+          <a class="nav-link usr-mbl-btn dropdown-toggle d-flex align-items-center btn-default user-btn" href="#" role="button" 
              (click)="toggleUserDropdown()" [class.show]="showUserDropdown">
             <div class="user-avatar login-icn me-2">
               <i class="fa-solid fa-circle-user fa-lg"></i>

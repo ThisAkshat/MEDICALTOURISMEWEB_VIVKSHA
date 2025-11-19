@@ -49,7 +49,7 @@
 }
 .book-package-modal .modal .modal-body
 {
-    max-height: 530px;
+    max-height: 510px;
     overflow-y: scroll;
 }
 .book-package-modal .modal-footer button

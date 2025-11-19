@@ -1626,6 +1626,21 @@
         margin-bottom: 20px;
         height: auto;
         justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+    .contact-inner .contact-info
+    {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .contact-inner .contact-info h5
+    {
+        font-size: 17px !important;
+        margin-bottom: 0px !important;
+    }
+    .contact-inner .contact-info p
+    {
+        font-size: 14px;
     }
     .contact-inner img
     {
@@ -1702,5 +1717,36 @@
     .book-package-form form label
     {
         font-size: 14px;
+    }
+    .tret-option-cehck
+    {
+        display: flex;
+        align-items: center;
+    }
+    .book-package-modal .modal-header h3
+    {
+        font-size: 20px !important;
+    }
+    .book-package-modal .modal .modal-header
+    {
+        padding: 13px 15px;
+    }
+    .book-package-modal .modal .modal-header .close-btn
+    {
+        height: 25px;
+        width: 25px;
+        font-size: 24px;
+    }
+    .footer-logo img
+    {
+        width: 140px;
+    }
+    .user-mbl
+    {
+        margin-top: 10px;
+    }
+    .user-mbl a.usr-mbl-btn
+    {
+        width: fit-content;
     }
 }
