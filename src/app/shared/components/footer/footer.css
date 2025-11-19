@@ -74,8 +74,10 @@
 {
     text-decoration: none;
     color: #fff;
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 12px;
+    font-size: 14px;
 }
 .footer-contact a i
 {
@@ -85,6 +87,12 @@
     padding: 7px;
     border-radius: 30px;
     margin-right: 10px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 .footer-news p
 {
