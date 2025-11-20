@@ -5,14 +5,30 @@ Allow: /
 # Sitemap location
 Sitemap: https://www.cureonmedicaltourism.com/sitemap.xml
 
-# Disallow admin and private areas
-Disallow: /admin/
+# Disallow authentication and private areas
+Disallow: /login
+Disallow: /sign-up
+Disallow: /forgot-password
 Disallow: /dashboard/
-Disallow: /api/
 
 # Allow search engines to crawl important pages
-Allow: /treatments/
-Allow: /doctors/
-Allow: /hospitals/
+Allow: /
 Allow: /about
 Allow: /contact
+Allow: /treatments/
+Allow: /treatment-detail/
+Allow: /doctors/
+Allow: /doctor-details/
+Allow: /associate-hospital
+Allow: /hospital-detail/
+Allow: /ayushman-treatment
+Allow: /ayushman-treatment-detail/
+Allow: /blog
+Allow: /blog-detail/
+Allow: /attractions
+Allow: /attractions-detail/
+Allow: /online-consultation
+Allow: /privacy-policy
+Allow: /terms-conditions
+Allow: /patient-agreement
+Allow: /refund-policy
