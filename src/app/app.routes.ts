@@ -94,6 +94,14 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/not-found/not-found').then(m => m.NotFound)
   },
   {
+    path: 'patient-agreement',
+    loadComponent: () => import('./pages/patient-agreement/patient-agreement').then(m => m.PatientAgreement)
+  },
+  {
+    path: 'refund-policy',
+    loadComponent: () => import('./pages/refund-policy/refund-policy').then(m => m.RefundPolicy)
+  },
+  {
     path: 'doctor-details/:id',
     loadComponent: () => import('./pages/doctor-details/doctor-details').then(m => m.DoctorDetails)
   },

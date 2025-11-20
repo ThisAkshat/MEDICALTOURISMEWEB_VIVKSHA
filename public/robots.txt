@@ -1,0 +1,18 @@
+# robots.txt for CureOn Medical Tourism
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.cureonmedicaltourism.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+
+# Allow search engines to crawl important pages
+Allow: /treatments/
+Allow: /doctors/
+Allow: /hospitals/
+Allow: /about
+Allow: /contact

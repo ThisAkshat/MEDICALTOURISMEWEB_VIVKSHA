@@ -13,11 +13,12 @@ import { FormsModule } from '@angular/forms';
 export class Footer {
   // List 1: Company Links
   footerlink1 = [
-    { label: 'Home', route: '/' },
     { label: 'About Us', route: '/about' },
     { label: 'Privacy Policy', route: '/privacy-policy' },
     { label: 'Terms And Conditions', route: '/terms-conditions' },
-    { label: 'Contact', route: '/contact' }
+    { label: 'Refund Policy', route: '/refund-policy' },
+    { label: 'Patient Agreement', route: '/patient-agreement' },
+    { label: 'Contact Us', route: '/contact' },
   ];
 
   // List 2: Services Links

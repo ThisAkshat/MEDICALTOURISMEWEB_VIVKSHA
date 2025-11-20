@@ -171,3 +171,8 @@
 .contact-form .form-select.is-invalid::after {
   border-top-color: #dc3545;
 }
+.contact-inner a
+{
+  text-decoration: none;
+  color: var(--info-color);
+}

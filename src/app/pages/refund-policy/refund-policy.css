@@ -1,0 +1,32 @@
+.refund-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+}
+
+.refund-table th,
+.refund-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+.refund-table th {
+  background: #f5f8ff;
+  font-weight: 600;
+}
+
+.refund-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.privacy-detail + .privacy-detail {
+  margin-top: 32px;
+}
+
+.privacy-detail ul {
+  padding-left: 20px;
+}

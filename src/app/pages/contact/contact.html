@@ -35,7 +35,11 @@
                     <img [src]="'assets/images/call.svg'" />
                     <div class="contact-info">
                         <h5>Call Now</h5>
-                        <p class="mb-0">{{ contactInfo?.phone_no || '+91 98XXX XXX25' }}</p>
+                        <p class="mb-0">
+                            <a [href]="'tel:'+(contactInfo?.phone_no || '+917415479551')">
+                                {{ contactInfo?.phone_no || '+91 7415479551' }}
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -44,7 +48,11 @@
                     <img [src]="'assets/images/email.svg'" />
                     <div class="contact-info">
                         <h5>Send Email</h5>
-                        <p class="mb-0">{{ contactInfo?.email || 'example85@gmail.com' }}</p>
+                        <p class="mb-0">
+                            <a [href]="'mailto:' + (contactInfo?.email || 'info@cureonmedicaltourism.com')">
+                                {{ contactInfo?.email || 'info@cureonmedicaltourism.com' }}
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -53,7 +61,7 @@
                     <img [src]="'assets/images/location-contact.svg'" />
                     <div class="contact-info">
                         <h5>Address</h5>
-                        <p class="mb-0">{{ contactInfo?.address || '85/4, lorem, Ipsum is simply dummy text' }}</p>
+                        <p class="mb-0">{{ contactInfo?.address || 'Flat No. 389, Phoenix Township, Dewas Naka, A.B. Road, Indore (M.P.) -453771' }}</p>
                     </div>
                 </div>
             </div>
