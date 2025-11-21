@@ -67,9 +67,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="detail-location d-flex align-items-center card-location">
+                    <div *ngIf="(treatment?.associated_doctors?.length ?? 0) > 0" class="detail-location d-flex align-items-center card-location">
                         <img [src]="'assets/images/designation.svg'">
-                        <p class="mb-0"><span *ngFor="let doctor of (treatment?.associated_doctors?.length ? treatment.associated_doctors : relatedDoctors)">{{doctor.name }}, &nbsp;</span></p>
+                        <p class="mb-0"><span *ngFor="let doctor of treatment?.associated_doctors">{{doctor.name }}, &nbsp;</span></p>
                     </div>
                     <!-- <p><strong>Rating:</strong> ⭐ {{ treatment.rating }}</p> -->
                     <div class="book-package my-4">
