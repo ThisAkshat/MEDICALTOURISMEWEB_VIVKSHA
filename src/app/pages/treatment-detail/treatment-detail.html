@@ -64,7 +64,8 @@
                     </div>
                     <!-- <p><strong>Rating:</strong> ⭐ {{ treatment.rating }}</p> -->
                     <div class="treatment-price">
-                        <p *ngIf="treatment.price_exact"><strong>Price:</strong> ₹{{ treatment.price_exact | number }}
+                        <p *ngIf="treatment.price_exact"><strong>Price:</strong> ₹{{ formatINR(treatment.price_exact) }} Onwards
+                             <!-- <small class="text-muted">&nbsp;({{ numberToWords(treatment.price_exact) }})</small>  -->
                         </p>
                     </div>
                     <div class="book-package">

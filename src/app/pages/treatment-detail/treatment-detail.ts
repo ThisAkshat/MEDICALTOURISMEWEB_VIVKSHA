@@ -465,6 +465,60 @@ export class TreatmentDetail implements OnInit {
     return [];
   }
 
+  // Format number in Indian currency grouping (e.g. 1,00,000)
+  formatINR(amount?: number): string {
+    if (amount == null) return '';
+    try {
+      return new Intl.NumberFormat('en-IN').format(amount);
+    } catch (e) {
+      return amount.toString();
+    }
+  }
+
+  // Convert number to words using Indian numbering (supports up to crores)
+  numberToWords(amount?: number): string {
+    if (amount == null) return '';
+    const n = Math.floor(amount);
+    if (n === 0) return 'Zero Rupees';
+
+    const ones = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
+    const tens = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+
+    const threeDigitToWords = (num: number) => {
+      let str = '';
+      if (num > 99) {
+        const h = Math.floor(num / 100);
+        str += ones[h] + ' Hundred';
+        num = num % 100;
+        if (num) str += ' ';
+      }
+      if (num > 0) {
+        if (num < 20) {
+          str += ones[num];
+        } else {
+          const t = Math.floor(num / 10);
+          const o = num % 10;
+          str += tens[t] + (o ? ' ' + ones[o] : '');
+        }
+      }
+      return str.trim();
+    };
+
+    const parts: string[] = [];
+    const crore = Math.floor(n / 10000000);
+    const lakh = Math.floor((n % 10000000) / 100000);
+    const thousand = Math.floor((n % 100000) / 1000);
+    const hundred_and_rest = n % 1000; // 0..999
+
+    if (crore) parts.push(threeDigitToWords(crore) + ' Crore');
+    if (lakh) parts.push(threeDigitToWords(lakh) + ' Lakh');
+    if (thousand) parts.push(threeDigitToWords(thousand) + ' Thousand');
+    if (hundred_and_rest) parts.push(threeDigitToWords(hundred_and_rest));
+
+    const words = parts.join(' ');
+    return words + ' Rupees';
+  }
+
   // Method to get includes as an array for line-by-line display
   getIncludesList(): string[] {
     if (!this.treatment?.Includes) {
