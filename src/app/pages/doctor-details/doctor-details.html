@@ -121,10 +121,20 @@
                             </div>
 
                             <!-- Error Message -->
-                            <!-- <div *ngIf="submitError" class="alert alert-danger" role="alert">
+                            <div *ngIf="submitError" class="alert alert-danger" role="alert">
                                 <i class="fas fa-exclamation-circle me-2"></i>
                                 {{ submitError }}
-                            </div> -->
+                            </div>
+
+                            <!-- Payment In Progress Message -->
+                            <div *ngIf="paymentInProgress" class="alert alert-info" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border spinner-border-sm me-2" role="status">
+                                        <span class="visually-hidden">Processing...</span>
+                                    </div>
+                                    <div>Processing your payment... Please complete the payment in the Razorpay window.</div>
+                                </div>
+                            </div>
 
                             <form [formGroup]="consultationForm" (ngSubmit)="onSubmit()" *ngIf="!submitSuccess">
 
@@ -233,13 +243,22 @@
                                         {{ getFieldError('budget') }}
                                     </div>
                                 </div> -->
+                                <!-- Consultation Fee Display -->
                                 <div class="mb-3">
-                                    <label for="consultation_fee" class="form-label">Consultation Fees</label>
-                                    <input type="text" class="form-control" formControlName="consultation_fee" readonly>
-                                    <small class="form-text text-muted" *ngIf="doctor.consultancy_fee">
+                                    <label for="amount" class="form-label">Consultation Fee<span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₹</span>
+                                        <input type="number" class="form-control" formControlName="amount" 
+                                               [class.is-invalid]="isFieldInvalid('amount')" 
+                                               placeholder="Enter consultation fee" min="1">
+                                    </div>
+                                    <small class="form-text text-muted" *ngIf="doctor?.consultancy_fee">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Default consultation fee: ₹{{ doctor.consultancy_fee }}
+                                        Standard consultation fee: ₹{{ doctor.consultancy_fee | number }}
                                     </small>
+                                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('amount')">
+                                        Consultation fee is required
+                                    </div>
                                 </div>
 
                                 <!-- Doctor Preference (Pre-filled) -->
@@ -333,19 +352,48 @@
                                     </p>
                                 </div>
 
+                                <!-- Payment Info Box -->
+                                <div class="alert alert-light border mb-3" *ngIf="consultationForm.get('amount')?.value">
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <p class="mb-0"><strong>₹ Total Amount:</strong></p>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="mb-0 text-primary">₹{{ consultationForm.get('amount')?.value | number:'1.0-0':'en-IN' }}</h5>
+                                            <small class="text-muted">Payment via Razorpay</small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Submit Button -->
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn-default custom-submit" [disabled]="isSubmitting">
-                                        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"
+                                    <button type="submit" class="btn-default custom-submit" 
+                                            [disabled]="isSubmitting || paymentInProgress || !razorpayLoaded">
+                                        <span *ngIf="isSubmitting || paymentInProgress" class="spinner-border spinner-border-sm me-2"
                                             role="status"></span>
-                                        {{ isSubmitting ? 'Booking...' : 'Send' }} <i class="fa-solid fa-arrow-up"></i>
+                                        <i class="fas fa-lock me-1" *ngIf="!isSubmitting && !paymentInProgress"></i>
+                                        {{ isSubmitting ? 'Processing...' : (paymentInProgress ? 'Payment in progress...' : 'Proceed to Payment') }}
+                                        <i class="fa-solid fa-arrow-up" *ngIf="!isSubmitting && !paymentInProgress"></i>
                                     </button>
+
+                                    <!-- Razorpay Loading Indicator -->
+                                    <div *ngIf="!razorpayLoaded" class="alert alert-warning mt-2 mb-0" role="alert">
+                                        <small><i class="fas fa-circle-notch fa-spin me-1"></i>Loading payment system...</small>
+                                    </div>
 
                                     <!-- Form validation summary -->
                                     <div *ngIf="consultationForm.invalid && consultationForm.touched"
                                         class="alert form-alert mt-2 mb-0" role="alert">
                                         <small><i class="fas fa-exclamation-triangle me-1"></i>Please fill in all
                                             required fields marked with *</small>
+                                    </div>
+
+                                    <!-- Payment Security Info -->
+                                    <div class="text-center mt-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-shield-alt me-1"></i>
+                                            Secure payment powered by <strong>Razorpay</strong>
+                                        </small>
                                     </div>
                                 </div>
 

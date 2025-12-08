@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -22,12 +22,41 @@ interface BookingRequest {
   user_query: string;
   travel_assistant: boolean;
   stay_assistant: boolean;
+  amount?: number;
 }
 
 interface BookingResponse extends BookingRequest {
   id: number;
   created_at: string;
+  razorpay_order_id?: string;
+  razorpay_payment_id?: string;
+  payment_status?: string;
 }
+
+interface RazorpayOrderResponse {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_no: string;
+  amount: number;
+  payment_status: string;
+  razorpay_order_id: string;
+  razorpay_key_id: string;
+  amount_in_paise: number;
+  currency: string;
+  created_at: string;
+  error?: string | null;
+}
+
+interface RazorpayPaymentResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+// Razorpay SDK types
+declare var Razorpay: any;
 
 @Component({
   selector: 'app-doctor-details',
@@ -55,6 +84,8 @@ export class DoctorDetails implements OnInit {
   submitError = '';
   expandedFaqIndex: number | null = null;
   selectedFile: File | null = null;
+  razorpayLoaded = false;
+  paymentInProgress = false;
 
   // Dropdown options
   budgetOptions = [
@@ -92,7 +123,8 @@ export class DoctorDetails implements OnInit {
     private hospitalService: HospitalService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private ngZone: NgZone
   ) {
     this.consultationForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -104,12 +136,34 @@ export class DoctorDetails implements OnInit {
       consultation_fee: [''],
       doctor_preference: [''],
       hospital_preference: [''],
-      preferred_time_slot: [''],  // ✅ Added time slot field
+      preferred_time_slot: [''],
       medical_history_file: [''],
       user_query: [''],
       travel_assistant: [false],
-      stay_assistant: [false]
+      stay_assistant: [false],
+      amount: [0, [Validators.required, Validators.min(1)]]
     });
+    this.loadRazorpayScript();
+  }
+
+  // Load Razorpay script dynamically
+  private loadRazorpayScript(): void {
+    if (typeof Razorpay !== 'undefined') {
+      this.razorpayLoaded = true;
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => {
+      this.razorpayLoaded = true;
+      console.log('✅ Razorpay script loaded');
+    };
+    script.onerror = () => {
+      console.error('❌ Failed to load Razorpay script');
+      this.submitError = 'Payment system unavailable. Please try again later.';
+    };
+    document.head.appendChild(script);
   }
 
   // Dropdown logic
@@ -181,21 +235,29 @@ export class DoctorDetails implements OnInit {
     }
   }
 
+  // Update amount when doctor data loads
+  private updateConsultationAmount(): void {
+    if (this.doctor?.consultancy_fee) {
+      this.consultationForm.patchValue({
+        amount: this.doctor.consultancy_fee
+      });
+    }
+  }
+
   fetchDoctor(id: number) {
     this.doctorService.getDoctorById(id).subscribe({
       next: (data) => {
         this.doctor = data;
         // build and cache sanitized FAQ list for template use
         this.dynamicFaqsList = this.getDynamicFaqs();
-        //console.log('🔍 Doctor data loaded:', data);
-        //console.log('🕒 Raw time_slots data:', data.time_slots);
-        //console.log('🕒 Type of time_slots:', typeof data.time_slots);
         
         // Parse dynamic time slots from API
         this.parseDynamicTimeSlots(data.time_slots);
         
+        // Update consultation amount
+        this.updateConsultationAmount();
+        
         if (data.hospital_id) {
-          //console.log('🏥 Fetching hospital name for hospital_id:', data.hospital_id);
           this.fetchHospitalName(data.hospital_id);
           this.fetchRelatedDoctors(data.hospital_id, id);
         } else {
@@ -390,6 +452,7 @@ export class DoctorDetails implements OnInit {
     this.isSubmitting = false;
     this.submitSuccess = false;
     this.submitError = '';
+    this.paymentInProgress = false;
 
     this.selectedTreatmentLabel = '';
     this.selectedBudgetLabel = '';
@@ -403,8 +466,9 @@ export class DoctorDetails implements OnInit {
       budget: '',
       doctor_preference: this.doctor?.name || '',
       hospital_preference: this.hospitalName || '',
-      preferred_time_slot: '',  // ✅ Reset time slot
-      consultation_fee: this.doctor?.consultancy_fee ? `₹${this.doctor.consultancy_fee}` : ''
+      preferred_time_slot: '',
+      consultation_fee: this.doctor?.consultancy_fee ? `₹${this.doctor.consultancy_fee}` : '',
+      amount: this.doctor?.consultancy_fee || 0
     });
   }
 
@@ -423,46 +487,181 @@ export class DoctorDetails implements OnInit {
       return;
     }
 
+    if (!this.razorpayLoaded) {
+      this.submitError = 'Payment system is loading. Please wait...';
+      return;
+    }
+
     this.isSubmitting = true;
     this.submitError = '';
 
     try {
       const formData = this.consultationForm.value;
       const multipartFormData = new FormData();
+      
       multipartFormData.append('first_name', formData.first_name);
       multipartFormData.append('last_name', formData.last_name);
       multipartFormData.append('email', formData.email);
       multipartFormData.append('mobile_no', formData.mobile_no);
       multipartFormData.append('treatment_id', '');
+      multipartFormData.append('amount', formData.amount?.toString() || this.doctor?.consultancy_fee?.toString() || '0');
       multipartFormData.append('budget', formData.budget || `₹${this.doctor?.consultancy_fee || ''}`);
       multipartFormData.append('doctor_preference', formData.doctor_preference || (this.doctor?.name || ''));
       multipartFormData.append('hospital_preference', formData.hospital_preference || (this.hospitalName || ''));
-      multipartFormData.append('preferred_time_slot', formData.preferred_time_slot || '');  // ✅ Added time slot
+      multipartFormData.append('preferred_time_slot', formData.preferred_time_slot || '');
       multipartFormData.append('user_query', formData.user_query || 'Consultation booking request');
       multipartFormData.append('travel_assistant', 'false');
       multipartFormData.append('stay_assistant', 'false');
       multipartFormData.append('personal_assistant', 'false');
+      
       if (this.selectedFile) {
         multipartFormData.append('medical_history_file', this.selectedFile);
       } else {
         multipartFormData.append('medical_history_file', '');
       }
 
-      const response = await this.http.post<BookingResponse>(
+      // Step 1: Create booking and get Razorpay order
+      const orderResponse = await this.http.post<RazorpayOrderResponse>(
         `${this.baseUrl}/api/v1/bookings`,
         multipartFormData,
         { headers: { 'accept': 'application/json' } }
       ).toPromise();
 
-      //console.log('Consultation booked successfully:', response);
-      this.submitSuccess = true;
-      setTimeout(() => this.closeModal(), 2000);
+      if (!orderResponse) {
+        throw new Error('Failed to create booking order');
+      }
+
+      console.log('✅ Booking created:', orderResponse);
+      console.log('📦 Razorpay Order ID:', orderResponse.razorpay_order_id);
+      console.log('🔑 Razorpay Key:', orderResponse.razorpay_key_id);
+      console.log('💰 Amount (paise):', orderResponse.amount_in_paise);
+
+      // Check if razorpay order was created successfully
+      if (!orderResponse.razorpay_order_id || !orderResponse.razorpay_key_id) {
+        throw new Error('Razorpay order creation failed. Please try again.');
+      }
+
+      // Step 2: Open Razorpay payment modal
+      await this.openRazorpayCheckout(orderResponse);
 
     } catch (error: any) {
-      console.error('Error booking consultation:', error);
-      this.submitError = error.error?.message || 'Failed to book consultation. Please try again.';
-    } finally {
+      console.error('❌ Error in booking submission:', error);
+      this.submitError = error.error?.detail || error.error?.message || 'Failed to create booking. Please try again.';
       this.isSubmitting = false;
+    }
+  }
+
+  // Open Razorpay checkout modal
+  private openRazorpayCheckout(orderData: RazorpayOrderResponse): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.paymentInProgress = true;
+
+      console.log('🚀 Opening Razorpay with options:', {
+        key: orderData.razorpay_key_id,
+        amount: orderData.amount_in_paise,
+        currency: orderData.currency,
+        order_id: orderData.razorpay_order_id
+      });
+
+      const options = {
+        key: orderData.razorpay_key_id,
+        amount: orderData.amount_in_paise, // Use amount_in_paise from response
+        currency: orderData.currency,
+        name: 'Medi-Tour',
+        description: `Consultation with Dr. ${this.doctor?.name}`,
+        order_id: orderData.razorpay_order_id,
+        handler: async (response: RazorpayPaymentResponse) => {
+          console.log('💳 Payment successful, verifying...', response);
+          await this.verifyPayment(response, orderData.id); // Use orderData.id
+          resolve();
+        },
+        prefill: {
+          name: `${orderData.first_name} ${orderData.last_name}`,
+          email: orderData.email,
+          contact: orderData.mobile_no
+        },
+        theme: {
+          color: '#3399cc'
+        },
+        modal: {
+          ondismiss: () => {
+            console.log('⚠️ Payment cancelled by user');
+            // Run inside Angular zone to trigger change detection
+            this.ngZone.run(() => {
+              this.paymentInProgress = false;
+              this.isSubmitting = false;
+              this.submitError = 'Payment cancelled. Your booking is saved but not confirmed.';
+            });
+            reject(new Error('Payment cancelled'));
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      
+      rzp.on('payment.failed', (response: any) => {
+        console.error('❌ Payment failed:', response.error);
+        // Run inside Angular zone to trigger change detection
+        this.ngZone.run(() => {
+          this.paymentInProgress = false;
+          this.isSubmitting = false;
+          this.submitError = `Payment failed: ${response.error.description}`;
+        });
+        reject(new Error(response.error.description));
+      });
+
+      console.log('🔓 Calling rzp.open()...');
+      try {
+        rzp.open();
+      } catch (error) {
+        console.error('❌ Error opening Razorpay:', error);
+        this.ngZone.run(() => {
+          this.paymentInProgress = false;
+          this.isSubmitting = false;
+          this.submitError = 'Failed to open payment window. Please try again.';
+        });
+        reject(error);
+      }
+    });
+  }
+
+  // Verify payment with backend
+  private async verifyPayment(paymentResponse: RazorpayPaymentResponse, bookingId: number): Promise<void> {
+    try {
+      const verifyData = {
+        razorpay_order_id: paymentResponse.razorpay_order_id,
+        razorpay_payment_id: paymentResponse.razorpay_payment_id,
+        razorpay_signature: paymentResponse.razorpay_signature,
+        booking_id: bookingId
+      };
+
+      const verifyResult = await this.http.post<{ success: boolean; message: string; booking: BookingResponse }>(
+        `${this.baseUrl}/api/v1/bookings/verify-payment`,
+        verifyData,
+        { headers: { 'Content-Type': 'application/json' } }
+      ).toPromise();
+
+      if (verifyResult?.success) {
+        console.log('✅ Payment verified successfully');
+        this.submitSuccess = true;
+        this.submitError = '';
+        this.paymentInProgress = false;
+        this.isSubmitting = false;
+        
+        setTimeout(() => {
+          this.closeModal();
+          // Optional: Redirect to success page
+          // window.location.href = '/booking-success';
+        }, 3000);
+      } else {
+        throw new Error(verifyResult?.message || 'Payment verification failed');
+      }
+
+    } catch (error: any) {
+      console.error('❌ Payment verification failed:', error);
+      this.paymentInProgress = false;
+      this.isSubmitting = false;
+      this.submitError = 'Payment verification failed. Please contact support with your payment ID.';
     }
   }
 
