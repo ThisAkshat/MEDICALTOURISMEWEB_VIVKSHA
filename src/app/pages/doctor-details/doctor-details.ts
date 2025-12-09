@@ -643,16 +643,18 @@ export class DoctorDetails implements OnInit {
 
       if (verifyResult?.success) {
         console.log('✅ Payment verified successfully');
-        this.submitSuccess = true;
-        this.submitError = '';
-        this.paymentInProgress = false;
-        this.isSubmitting = false;
+        this.ngZone.run(() => {
+          this.submitSuccess = true;
+          this.submitError = '';
+          this.paymentInProgress = false;
+          this.isSubmitting = false;
+        });
         
         setTimeout(() => {
           this.closeModal();
           // Optional: Redirect to success page
           // window.location.href = '/booking-success';
-        }, 3000);
+        }, 5000);
       } else {
         throw new Error(verifyResult?.message || 'Payment verification failed');
       }

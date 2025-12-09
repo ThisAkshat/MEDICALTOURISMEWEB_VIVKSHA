@@ -115,9 +115,13 @@
 
                             <!-- Success Message -->
                             <div *ngIf="submitSuccess" class="alert alert-success" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>
-                                Consultation booking submitted successfully! We'll contact you soon to confirm your
-                                appointment.
+                                <div class="text-center py-3">
+                                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                                    <h5 class="mb-3">Payment Successful!</h5>
+                                    <p class="mb-0">
+                                        Thank you for booking a consultation with us. We will connect with you soon to setup a time for online consultation with doctor.
+                                    </p>
+                                </div>
                             </div>
 
                             <!-- Error Message -->
@@ -245,20 +249,17 @@
                                 </div> -->
                                 <!-- Consultation Fee Display -->
                                 <div class="mb-3">
-                                    <label for="amount" class="form-label">Consultation Fee<span class="text-danger">*</span></label>
+                                    <label for="amount" class="form-label">Consultation Fee</label>
                                     <div class="input-group">
                                         <span class="input-group-text">₹</span>
-                                        <input type="number" class="form-control" formControlName="amount" 
-                                               [class.is-invalid]="isFieldInvalid('amount')" 
-                                               placeholder="Enter consultation fee" min="1">
+                                        <input type="text" class="form-control" formControlName="amount" 
+                                               [value]="doctor?.consultancy_fee | number:'1.0-0':'en-IN'"
+                                               readonly>
                                     </div>
                                     <small class="form-text text-muted" *ngIf="doctor?.consultancy_fee">
                                         <i class="fas fa-info-circle me-1"></i>
-                                        Standard consultation fee: ₹{{ doctor.consultancy_fee | number }}
+                                        Consultation fee as per doctor's rate
                                     </small>
-                                    <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('amount')">
-                                        Consultation fee is required
-                                    </div>
                                 </div>
 
                                 <!-- Doctor Preference (Pre-filled) -->
