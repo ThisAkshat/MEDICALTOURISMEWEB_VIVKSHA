@@ -253,10 +253,10 @@
                                     <div class="input-group">
                                         <span class="input-group-text">₹</span>
                                         <input type="text" class="form-control" formControlName="amount" 
-                                               [value]="doctor?.consultancy_fee | number:'1.0-0':'en-IN'"
+                                               [value]="doctor.consultancy_fee | number:'1.0-0':'en-IN'"
                                                readonly>
                                     </div>
-                                    <small class="form-text text-muted" *ngIf="doctor?.consultancy_fee">
+                                    <small class="form-text text-muted" *ngIf="doctor.consultancy_fee">
                                         <i class="fas fa-info-circle me-1"></i>
                                         Consultation fee as per doctor's rate
                                     </small>
