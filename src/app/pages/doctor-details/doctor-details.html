@@ -347,11 +347,11 @@
                                 </div> -->
 
                                 <!-- Note -->
-                                <div class="package-book-note">
+                                <!-- <div class="package-book-note">
                                     <p class="mb-3">
                                         <span>Note:</span> That travel and stay will incur additional charges.
                                     </p>
-                                </div>
+                                </div> -->
 
                                 <!-- Payment Info Box -->
                                 <div class="alert alert-light border mb-3" *ngIf="consultationForm.get('amount')?.value">
@@ -368,11 +368,11 @@
 
                                 <!-- Submit Button -->
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn-default custom-submit" 
+                                    <button type="submit" class="btn-default custom-submit payment-btn" 
                                             [disabled]="isSubmitting || paymentInProgress || !razorpayLoaded">
                                         <span *ngIf="isSubmitting || paymentInProgress" class="spinner-border spinner-border-sm me-2"
                                             role="status"></span>
-                                        <i class="fas fa-lock me-1" *ngIf="!isSubmitting && !paymentInProgress"></i>
+                                        <i class="fas fa-lock me-1 pay-secure" *ngIf="!isSubmitting && !paymentInProgress"></i>
                                         {{ isSubmitting ? 'Processing...' : (paymentInProgress ? 'Payment in progress...' : 'Proceed to Payment') }}
                                         <i class="fa-solid fa-arrow-up" *ngIf="!isSubmitting && !paymentInProgress"></i>
                                     </button>

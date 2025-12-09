@@ -241,6 +241,10 @@
   gap: 5px;
   flex-wrap: wrap;
 }
+.payment-btn .pay-secure
+{
+  transform: initial;
+}
 @media screen and (max-width: 767px)
 {
   .row.time-row
