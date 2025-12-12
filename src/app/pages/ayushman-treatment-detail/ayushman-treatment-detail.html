@@ -4,7 +4,9 @@
             <div class="col-lg-12">
                 <div class="inner-baner-dtl position-relative text-center">
                     <!-- Banner Image: prefer images[1] for banner, fallback to images[0] when only one image exists -->
-                    <img *ngIf="treatment.images && treatment.images.length" [src]="baseUrl + (treatment.images.length > 1 ? treatment.images[1].url : treatment.images[0].url)"
+                    <img *ngIf="treatment.images && treatment.images.length > 1" [src]="baseUrl + treatment.images[1].url"
+                        class="w-100 img-fluid rounded-5 banner-img" [alt]="treatment.name || 'Treatment image'" />
+                    <img *ngIf="!treatment.images || treatment.images.length <= 1" src="assets/images/surgical-treatment.png"
                         class="w-100 img-fluid rounded-5 banner-img" [alt]="treatment.name || 'Treatment image'" />
                     <div class="inner-heading">
                         <h2>{{ treatment.name }}</h2>
@@ -29,6 +31,8 @@
             <div class="col-lg-6">
                 <div class="detail-image">
                     <img *ngIf="treatment.images && treatment.images.length" [src]="baseUrl + treatment.images[0].url"
+                        class="img-fluid w-100" [alt]="treatment.name || 'Treatment image'" />
+                    <img *ngIf="!treatment.images || !treatment.images.length" src="assets/images/offer2.png"
                         class="img-fluid w-100" [alt]="treatment.name || 'Treatment image'" />
                 </div>
             </div>
