@@ -111,63 +111,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6">
-                            <div class="package-box position-relative">
-                                <div class="package-title d-flex align-items-center">
-                                    <img [src]="'assets/images/packages1.svg'">
-                                    <h5 class="mb-0">Basic Health Checkup</h5>
-                                </div>
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
-                                    1500s...</p>
-                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="package-box position-relative">
-                                <div class="package-title d-flex align-items-center">
-                                    <img [src]="'assets/images/packages2.svg'">
-                                    <h5 class="mb-0">Heart Implants</h5>
-                                </div>
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
-                                    1500s...</p>
-                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="package-box position-relative">
-                                <div class="package-title d-flex align-items-center">
-                                    <img [src]="'assets/images/packages3.svg'">
-                                    <h5 class="mb-0">Kidney Transplant</h5>
-                                </div>
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
-                                    1500s...</p>
-                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="package-box position-relative">
-                                <div class="package-title d-flex align-items-center">
-                                    <img [src]="'assets/images/packages4.svg'">
-                                    <h5 class="mb-0">Shoulder Arthroscopy</h5>
-                                </div>
-                                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the
-                                    1500s...</p>
-                                <a href="#"><img [src]="'assets/images/packages-detail.svg'"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <img [src]="'assets/images/packages-main.png'" class="img-fluid w-100 rounded-4 mt-2">
-                </div>
-            </div> -->
             <!-- Nawab -->
             <div class="row">
                 <div class="col-lg-8">
@@ -175,8 +118,6 @@
                         <div class="col-lg-6 col-md-6" *ngFor="let treatment of treatments; let i = index">
                             <div class="package-box position-relative">
                                 <div class="package-title d-flex align-items-center">
-                                    <!-- Static images -->
-                                    <!-- <img [src]="'assets/images/packages' + (i + 1) + '.svg'"> -->
                                     <img [src]="'assets/images/packages' + (i + 1) + '.svg'" alt="Package icon">
                                     <h5 class="mb-0">{{ treatment.name }}</h5>
                                 </div>
