@@ -35,6 +35,16 @@
                 "glob": "_redirects",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "robots.txt",
+                "input": "public",
+                "output": "/"
+              },
+              {
+                "glob": "sitemap.xml",
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [ 
@@ -60,7 +70,18 @@
                   "maximumError": "20kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": true
+                },
+                "fonts": true
+              },
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true
             },
             "development": {
               "optimization": false,
@@ -105,6 +126,26 @@
               "src/styles.css"
             ]
           }
+        }
+      ,
+        "server": {
+          "builder": "@angular/build:server",
+          "options": {
+            "server": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "outputPath": "dist/medical-tourism/server"
+          },
+          "configurations": {
+            "production": {
+              "sourceMap": false,
+              "optimization": true
+            },
+            "development": {
+              "sourceMap": true,
+              "optimization": false
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

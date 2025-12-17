@@ -8,6 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:medical-tourism": "node dist/medical-tourism/server/server.mjs",
+    "build:ssr": "ng build --configuration production && ng run medical-tourism:server:production",
+    "serve:ssr": "node dist/medical-tourism/server/server.mjs",
     "serve:prod": "node server.js",
     "build:serve": "npm run build && npm run serve:prod"
   },
@@ -50,6 +52,7 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "baseline-browser-mapping": "^2.9.8",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
@@ -57,5 +60,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.9.2"
+  }
+  ,
+  "overrides": {
+    "vite": "7.1.11"
   }
 }
