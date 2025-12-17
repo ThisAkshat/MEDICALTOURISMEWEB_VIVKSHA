@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { CommonModule, DatePipe, NgFor } from '@angular/common';
+import { CommonModule, DatePipe, NgFor, DOCUMENT } from '@angular/common';
+import { Title, Meta } from '@angular/platform-browser';
 import { BannerService, Banner } from 'src/app/core/services/banner.service'; // ✅ import BannerService
 
 interface BlogImage {
@@ -66,7 +67,10 @@ export class BlogDetailComponent implements OnInit {
     private route: ActivatedRoute, 
     private http: HttpClient, 
     private bannerService: BannerService,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
+    private meta: Meta,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +80,7 @@ export class BlogDetailComponent implements OnInit {
         .get<BlogDetail>(`${this.baseUrl}/api/v1/blogs/${id}`)
         .subscribe((data) => {
           this.blog = data;
+          this.setMetaTagsForBlog(this.blog);
         });
     }
 
@@ -102,6 +107,82 @@ export class BlogDetailComponent implements OnInit {
 
   getImageUrl(path: string): string {
     return path ? this.baseUrl + path : 'assets/images/blog-img.png';
+  }
+
+  private stripHtml(html = ''): string {
+    return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  private setMetaTagsForBlog(blog: BlogDetail): void {
+    if (!blog) return;
+
+    const title = `${blog.title} - Cureon Medical Tourism`;
+    const description = (blog.excerpt && blog.excerpt.trim()) || this.stripHtml(blog.content).slice(0, 160);
+    const image = this.getImageUrl(blog.featured_image || '');
+    const canonicalUrl = `${this.document?.location?.origin || ''}/blog-detail/${blog.id}`;
+
+    try {
+      this.titleService.setTitle(title);
+
+      // Basic meta
+      this.meta.updateTag({ name: 'description', content: description });
+      this.meta.updateTag({ name: 'keywords', content: '' });
+
+      // Open Graph
+      this.meta.updateTag({ property: 'og:title', content: title });
+      this.meta.updateTag({ property: 'og:description', content: description });
+      this.meta.updateTag({ property: 'og:type', content: 'article' });
+      this.meta.updateTag({ property: 'og:url', content: canonicalUrl });
+      if (image) this.meta.updateTag({ property: 'og:image', content: image });
+
+      // Twitter
+      this.meta.updateTag({ name: 'twitter:card', content: image ? 'summary_large_image' : 'summary' });
+      this.meta.updateTag({ name: 'twitter:title', content: title });
+      this.meta.updateTag({ name: 'twitter:description', content: description });
+      if (image) this.meta.updateTag({ name: 'twitter:image', content: image });
+
+      // Canonical link
+      let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+      if (link) {
+        link.href = canonicalUrl;
+      } else {
+        link = this.document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        link.setAttribute('href', canonicalUrl);
+        this.document.head.appendChild(link);
+      }
+
+      // JSON-LD structured data for Article
+      const ldId = 'blog-json-ld';
+      const existing = this.document.getElementById(ldId);
+      if (existing) existing.remove();
+
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: blog.title,
+        description: description,
+        image: image || undefined,
+        datePublished: blog.published_at || undefined,
+        author: {
+          '@type': 'Person',
+          name: (blog as any).author_name || 'Cureon Medical Tourism'
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': canonicalUrl
+        }
+      };
+
+      const script = this.document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = ldId;
+      script.text = JSON.stringify(ld);
+      this.document.head.appendChild(script);
+    } catch (err) {
+      // Failsafe: don't break the page
+      console.warn('Failed to set meta tags for blog:', err);
+    }
   }
 
   // Extract unique categories from blogs
