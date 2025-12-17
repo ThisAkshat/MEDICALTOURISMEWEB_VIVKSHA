@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Title, Meta } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
@@ -76,7 +78,10 @@ export class TreatmentDetail implements OnInit {
     private bookingService: BookingService,
     private fb: FormBuilder,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private titleService: Title,
+    private metaService: Meta,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.bookingForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -94,6 +99,83 @@ export class TreatmentDetail implements OnInit {
       stay_assistant: [false],
       personal_assistant: [false] // New field for Personal Nursing Assistant
     });
+  }
+
+  /**
+   * Update document title, meta tags, Open Graph and JSON-LD for the treatment
+   */
+  private setMetaTagsForTreatment(treatment: Treatment) {
+    try {
+      const siteName = 'CureOn Medical Tourism';
+      const title = `${treatment.name} | ${siteName}`;
+      const description = (treatment.short_description || treatment.long_description || '').replace(/\s+/g, ' ').trim().slice(0, 160);
+
+      // Determine best image
+      const imageUrl = (treatment.images && treatment.images.length)
+        ? (this.baseUrl + treatment.images[0].url)
+        : (this.baseUrl + '/static/default-treatment.png');
+
+      // Build canonical / absolute URL safely
+      const origin = (this.document && (this.document.location && this.document.location.origin)) ? this.document.location.origin : '';
+      const canonicalUrl = origin ? `${origin}/treatment-detail/${treatment.id}` : `/treatment-detail/${treatment.id}`;
+
+      // Title and meta description
+      this.titleService.setTitle(title);
+      this.metaService.updateTag({ name: 'description', content: description });
+
+      // Open Graph
+      this.metaService.updateTag({ property: 'og:title', content: title });
+      this.metaService.updateTag({ property: 'og:description', content: description });
+      this.metaService.updateTag({ property: 'og:image', content: imageUrl });
+      this.metaService.updateTag({ property: 'og:url', content: canonicalUrl });
+      this.metaService.updateTag({ property: 'og:site_name', content: siteName });
+      this.metaService.updateTag({ property: 'og:type', content: 'article' });
+
+      // Twitter
+      this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+      this.metaService.updateTag({ name: 'twitter:title', content: title });
+      this.metaService.updateTag({ name: 'twitter:description', content: description });
+      this.metaService.updateTag({ name: 'twitter:image', content: imageUrl });
+
+      // Canonical link
+      const existingCanonical = this.document.querySelector("link[rel='canonical']");
+      if (existingCanonical) {
+        existingCanonical.setAttribute('href', canonicalUrl);
+      } else {
+        const link = this.document.createElement('link');
+        link.setAttribute('rel', 'canonical');
+        link.setAttribute('href', canonicalUrl);
+        this.document.head.appendChild(link);
+      }
+
+      // JSON-LD structured data (MedicalProcedure simplified)
+      const ldId = 'treatment-jsonld';
+      // remove existing
+      const existingLd = this.document.getElementById(ldId);
+      if (existingLd) existingLd.remove();
+
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'MedicalProcedure',
+        'name': treatment.name,
+        'description': description,
+        'image': imageUrl,
+        'url': canonicalUrl,
+        'provider': {
+          '@type': 'Organization',
+          'name': siteName
+        }
+      };
+
+      const script = this.document.createElement('script');
+      script.type = 'application/ld+json';
+      script.id = ldId;
+      script.text = JSON.stringify(ld);
+      this.document.head.appendChild(script);
+
+    } catch (e) {
+      console.error('Error setting SEO meta tags for treatment', e);
+    }
   }
   hospitalName: string = '';
   // ✅ NEW: Toggle dropdowns
@@ -575,6 +657,9 @@ export class TreatmentDetail implements OnInit {
       next: (res) => {
         this.treatment = res;
         this.loading = false;
+
+        // Set SEO / Open Graph tags when treatment is loaded
+        this.setMetaTagsForTreatment(this.treatment);
 
         // ✅ Fetch hospital name by ID
         if (this.treatment?.hospital_id) {
