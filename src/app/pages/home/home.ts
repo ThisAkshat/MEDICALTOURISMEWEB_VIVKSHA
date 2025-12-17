@@ -66,8 +66,8 @@ export class Home implements OnInit {
 
   // Load top treatments (filter featured on frontend, limit to 4)
   private loadTopTreatments(): void {
-    // Request featured treatments from the backend directly and limit to 4
-    this.treatmentService.searchTreatments({ skip: 0, limit: 4, featured_only: true }).subscribe({
+    // Request featured treatments from the dedicated featured endpoint and limit to 4
+    this.treatmentService.getFeaturedTreatments(0, 4).subscribe({
       next: (res) => {
         console.log('[Home] featured treatments response:', res);
         this.treatments = Array.isArray(res) ? res.slice(0, 4) : [];

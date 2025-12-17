@@ -35,6 +35,18 @@ export class TreatmentService {
     return this.apiService.get<Treatment[]>('/api/v1/treatments', httpParams);
   }
 
+  /**
+   * Fetch featured treatments from the dedicated endpoint.
+   * Backend supports: GET /api/v1/treatments/featured?skip=0&limit=20
+   */
+  getFeaturedTreatments(skip: number = 0, limit: number = 20): Observable<Treatment[]> {
+    let httpParams = new HttpParams()
+      .set('skip', skip.toString())
+      .set('limit', limit.toString());
+
+    return this.apiService.get<Treatment[]>('/api/v1/treatments/featured', httpParams);
+  }
+
   getLocations(): Observable<string[]> {
     return this.apiService.get<string[]>('/api/filters/locations');
   }
