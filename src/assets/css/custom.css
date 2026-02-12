@@ -394,7 +394,7 @@
 }
 
 .user-card-img {
-    height: 240px;
+    height: 300px;
     overflow: hidden;
 }
 
@@ -1578,12 +1578,12 @@
     }
     .user-card-img
     {
-        height: 210px;
+        height: 300px;
     }
-    .user-card-img img
+    /* .user-card-img img
     {
         object-position: initial;
-    }
+    } */
     .ptc-60
     {
         padding-top: 30px;

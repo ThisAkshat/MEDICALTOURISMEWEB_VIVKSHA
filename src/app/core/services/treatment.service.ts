@@ -13,7 +13,7 @@ export class TreatmentService {
   searchTreatments(params: TreatmentSearchParams = {}): Observable<Treatment[]> {
     let httpParams = new HttpParams()
       .set('skip', params.skip?.toString() || '0')
-      .set('limit', params.limit?.toString() || '100');
+      .set('limit', params.limit?.toString() || '1000');
 
     if (params.location) {
       httpParams = httpParams.set('location', params.location.trim());
