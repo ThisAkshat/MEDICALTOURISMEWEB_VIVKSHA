@@ -14,7 +14,7 @@
                             <li><img [src]="'assets/images/breadcumb.svg'" /></li>
                             <li><a routerLink="/doctors">Doctors</a></li>
                             <li><img [src]="'assets/images/breadcumb.svg'" /></li>
-                            <li><a routerLink="/doctor/{{doctor.id}}">{{ doctor.name }}</a></li>
+                            <li><a [routerLink]="['/doctors', generateSlug(doctor.name)]">{{ doctor.name }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -38,7 +38,9 @@
             <!-- Info -->
             <div class="col-lg-6">
                 <div class="dtl-info doctor-info">
-                    <h2 class="section-title">{{ doctor.name }}</h2>
+                    <h2 class="section-title">
+                        {{ doctor.name }} - {{ doctor.designation }} in India
+                    </h2>
                     <div class="detail-description">
                         <p class="mb-1">{{ doctor.short_description }}</p>
                     </div>
@@ -576,7 +578,7 @@
                     <!-- Dynamic related doctors list -->
                     <div *ngFor="let relatedDoctor of relatedDoctors"
                         class="dtl-doctor-list d-flex align-items-start flex-sm-row"
-                        [routerLink]="['/doctor', relatedDoctor.id]" style="cursor: pointer;">
+                        [routerLink]="['/doctors', generateSlug(relatedDoctor.name)]" style="cursor: pointer;">
                         <div class="dtl-doctor-img mb-2 mb-sm-0 flex-shrink-0">
                             <img [src]="relatedDoctor.profile_photo ? (baseUrl + relatedDoctor.profile_photo) : 'assets/images/our-doctors.png'"
                                 [alt]="relatedDoctor.name" class="img-fluid">

@@ -5,6 +5,8 @@ import { PartnerService, Partner } from 'src/app/core/services/partner.service';
 import { PatientStory, PatientStoryService } from 'src/app/core/services/patient-story.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
 import { AboutUsService, AboutUs } from 'src/app/core/services/about-us.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-about',
@@ -37,7 +39,10 @@ export class AboutComponent implements OnInit {
     private bannerService: BannerService,
     public partnerService: PartnerService,
     private patientStoryService: PatientStoryService,
-    public aboutUsService: AboutUsService
+    public aboutUsService: AboutUsService,
+    private titleService: Title,
+    private metaService: Meta,
+    private seo: SeoService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +52,17 @@ export class AboutComponent implements OnInit {
     this.bannerService.getBannerByTitle('About Us').subscribe(banner => {
       this.banner = banner;
     });
+this.seo.setTitle(
+  'About CureOn Medical Tourism | Trusted Medical Travel Partner in India'
+);
+
+this.seo.setDescription(
+  'Learn about CureOn Medical Tourism, your trusted partner for safe and affordable medical treatment in India. We assist international patients with hospital coordination, consultation, and complete travel support.'
+);
+
+this.seo.setCanonical(
+  'https://www.cureonmedicaltourism.com/about'
+);
   }
 
   // Load about us data

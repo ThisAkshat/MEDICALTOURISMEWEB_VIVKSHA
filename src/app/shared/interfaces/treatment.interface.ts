@@ -3,6 +3,7 @@ import { Doctor } from 'src/app/core/services/doctors.service';
 export interface Treatment {
   id: number;
   name: string;
+  slug?: string;
   short_description: string;
   long_description: string;
   treatment_type: string;

@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule, DatePipe, NgFor } from '@angular/common';
 import { BannerService, Banner } from 'src/app/core/services/banner.service'; // ✅ import BannerService
+import { DOCUMENT } from '@angular/common';
+import { Inject } from '@angular/core';
 
 interface BlogImage {
   id: number;
@@ -55,7 +57,8 @@ export class BlogComponent implements OnInit {
   constructor(
     private http: HttpClient, 
     private bannerService: BannerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +89,18 @@ export class BlogComponent implements OnInit {
           }
         });
       });
+      const canonicalUrl = `${this.document.location.origin}/blog`;
+      let link: HTMLLinkElement | null = this.document.querySelector("link[rel='canonical']");
+
+      if (link) {
+        link.href = canonicalUrl;
+      }
+      else{
+        link = this.document.createElement('link');
+        link.setAttribute('rel','canonical');
+        link.setAttribute('href', canonicalUrl);
+        this.document.head.appendChild(link);
+      }
   }
 
   getImageUrl(path: string): string {

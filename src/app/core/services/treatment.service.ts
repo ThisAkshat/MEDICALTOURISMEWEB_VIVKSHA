@@ -59,6 +59,9 @@ export class TreatmentService {
   getTreatmentById(id: number): Observable<Treatment> {
     return this.apiService.get<Treatment>(`/api/v1/treatments/${id}`);
   }
+  getTreatmentBySlug(slug: string): Observable<Treatment> {
+    return this.apiService.get<Treatment>(`/api/v1/treatments/slug/${slug}`);
+  }
 
   /** ✅ Get Ayushman treatments specifically */
   getAyushmanTreatments(params: Omit<TreatmentSearchParams, 'ayushman_only'> = {}): Observable<Treatment[]> {

@@ -107,7 +107,7 @@ export class TreatmentDetail implements OnInit {
   private setMetaTagsForTreatment(treatment: Treatment) {
     try {
       const siteName = 'CureOn Medical Tourism';
-      const title = `${treatment.name} | ${siteName}`;
+      const title = `${treatment.name} in India | Cost, Hospitals & Specialists – CureOn`; 
       const description = (treatment.short_description || treatment.long_description || '').replace(/\s+/g, ' ').trim().slice(0, 160);
 
       // Determine best image
@@ -117,7 +117,14 @@ export class TreatmentDetail implements OnInit {
 
       // Build canonical / absolute URL safely
       const origin = (this.document && (this.document.location && this.document.location.origin)) ? this.document.location.origin : '';
-      const canonicalUrl = origin ? `${origin}/treatment-detail/${treatment.id}` : `/treatment-detail/${treatment.id}`;
+      // const canonicalUrl = origin ? `${origin}/treatment-detail/${treatment.id}` : `/treatment-detail/${treatment.id}`;
+      const slug = treatment.slug 
+      ? treatment.slug 
+      : treatment.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+      const canonicalUrl = origin 
+      ? `${origin}/treatments/${slug}` 
+      : `/treatments/${slug}`;
 
       // Title and meta description
       this.titleService.setTitle(title);
@@ -650,45 +657,72 @@ export class TreatmentDetail implements OnInit {
   //     this.loading = false;
   //   }
   // }
-  ngOnInit(): void {
-  const id = Number(this.route.snapshot.paramMap.get('id'));
-  if (id) {
-    this.treatmentService.getTreatmentById(id).subscribe({
-      next: (res) => {
-        this.treatment = res;
-        this.loading = false;
+ngOnInit(): void {
 
-        // Set SEO / Open Graph tags when treatment is loaded
-        this.setMetaTagsForTreatment(this.treatment);
+this.route.paramMap.subscribe(params => {
+  const slug = params.get('slug');
 
-        // ✅ Fetch hospital name by ID
-        if (this.treatment?.hospital_id) {
-          this.hospitalService.getHospitalById(this.treatment.hospital_id).subscribe({
-            next: (hospital) => {
-              this.hospitalName = hospital.name;
-              //console.log('Hospital name:', this.hospitalName);
-            },
-            error: (err) => {
-              console.error('Error fetching hospital:', err);
-              this.hospitalName = this.treatment?.other_hospital_name || 'Unknown Hospital';
-            }
-          });
-        }
+  this.treatmentService.searchTreatments({skip:0,limit:100}).subscribe(data => {
 
-        // ✅ Load related doctors
-        if (this.treatment?.name) {
-          this.loadRelatedDoctors(this.treatment.name);
-        }
-      },
-      error: (err) => {
-        console.error('Error loading treatment:', err);
-        this.loading = false;
-      }
-    });
-  } else {
-    console.warn('No treatment ID found in route');
+    this.treatment = data.find(t =>
+      this.generateSlug(t.name) === slug
+    );
+
+    if(this.treatment){
+      this.setMetaTagsForTreatment(this.treatment);
+      this.loadRelatedDoctors(this.treatment.name);
+    }
+
     this.loading = false;
-  }
-  }
+
+  });
+
+});
 
 }
+generateSlug(name: string): string {
+return name
+.toLowerCase()
+.replace(/[^a-z0-9]+/g, '-')
+.replace(/(^-|-$)/g, '');
+}
+private loadTreatmentById(id: number): void {
+  this.treatmentService.getTreatmentById(id).subscribe({
+    next: (res) => {
+      this.treatment = res;
+      this.loading = false;
+
+      this.setMetaTagsForTreatment(this.treatment);
+
+      if (this.treatment?.name) {
+        this.loadRelatedDoctors(this.treatment.name);
+      }
+    },
+    error: (err) => {
+      console.error('Error loading treatment:', err);
+      this.loading = false;
+    }
+  });
+}
+private loadTreatmentBySlug(slug: string): void {
+
+  this.treatmentService.getTreatmentBySlug(slug).subscribe({
+    next: (res) => {
+
+      this.treatment = res;
+      this.loading = false;
+
+      this.setMetaTagsForTreatment(this.treatment);
+
+      if (this.treatment?.name) {
+        this.loadRelatedDoctors(this.treatment.name);
+      }
+
+    },
+    error: (err) => {
+      console.error('Error loading treatment by slug:', err);
+      this.loading = false;
+    }
+  });
+
+}}

@@ -160,10 +160,10 @@
 
             <!-- More Detail -->
             <div class="read-more">
-              <a *ngIf="t.id" [attr.href]="'/treatment-detail/' + t.id" class="btn">
-                More Detail <i class="fa fa-arrow-up"></i>
-              </a>
-            </div>
+            <a *ngIf="t.id" [routerLink]="['/treatments', generateSlug(t.name)]" class="btn">
+            More Detail <i class="fa fa-arrow-up"></i>
+            </a>
+        </div>
           </div>
         </div>
       </div>

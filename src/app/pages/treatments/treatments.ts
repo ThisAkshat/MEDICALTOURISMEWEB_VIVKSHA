@@ -5,15 +5,26 @@ import { ActivatedRoute } from '@angular/router';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service'; 
+import { RouterModule } from '@angular/router'; 
 
 @Component({
   selector: 'app-treatments',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './treatments.html',
-  styleUrls: ['./treatments.css']
+  styleUrls: ['./treatments.css'],
+
 })
 export class Treatments implements OnInit {
+  generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
   slug: string | null = null;
   treatmentName: string | null = null;
 
@@ -41,20 +52,94 @@ export class Treatments implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private treatmentService: TreatmentService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private titleService: Title,
+    private metaService: Meta,
+    private seo: SeoService
   ) {}
 
-  ngOnInit(): void {
-    this.loadTreatments();
+ngOnInit(): void {
 
-    // ✅ Load Treatments Banner
-    this.bannerService.getBannerByTitle('Treatment Plan').subscribe({
-      next: (banner) => {
-        this.banner = banner;
-      },
-      error: (err) => console.error('Error loading banner:', err)
-    });
-  }
+this.route.paramMap.subscribe(params => {
+  this.slug = params.get('slug');
+});
+this.loadTreatments();  
+
+
+  /* ================= SEO FOR LISTING PAGE ================= */
+
+  this.seo.setTitle(
+    'Medical Treatments in India | Cost, Hospitals & Specialists – CureOn'
+  );
+
+  this.seo.setDescription(
+    'Explore affordable medical treatments in India with top hospitals and expert doctors. CureOn Medical Tourism provides complete treatment planning and travel support for international patients.'
+  );
+
+  this.seo.setCanonical(
+    'https://www.cureonmedicaltourism.com/treatments'
+  );
+
+  this.metaService.updateTag({
+    name: 'robots',
+    content: 'index, follow'
+  });
+  /* ================= OPEN GRAPH ================= */
+
+  this.metaService.updateTag({
+    property: 'og:type',
+    content: 'article'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:url',
+    content: 'https://www.cureonmedicaltourism.com/treatments/#TREATMENTNAME'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:title',
+    content: '#TREATMENTNAME in India | Affordable #TREATMENTNAME for patients'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:description',
+    content: 'Explore affordable #TREATMENTNAME in India with internationally accredited hospitals and expert doctors for #TREATMENTNAME.'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:image',
+    content: 'https://www.cureonmedicaltourism.com/images/#TREATMENTNAME'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:site_name',
+    content: 'CureOn Medical Tourism'
+  });
+
+  /* ================= TWITTER ================= */
+
+  this.metaService.updateTag({
+    name: 'twitter:card',
+    content: 'summary_large_image'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:title',
+    content: '#TREATMENTNAME in India | CureOn Medical Tourism'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:description',
+    content: 'Affordable #TREATMENTNAME in India with full international patient support and hospital coordination.'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:image',
+    content: 'https://www.cureonmedicaltourism.com/images/#TREATMENTNAME'
+  });
+
+}
+currentTreatment: Treatment | undefined;
 
   /** Load non-Ayushman treatments from API */
   loadTreatments(): void {
@@ -62,11 +147,16 @@ export class Treatments implements OnInit {
     const requestPayload = { skip: 0, limit: 100 };
 
     this.treatmentService.searchTreatments(requestPayload).subscribe({
-      next: (data) => {
+      next: (data: Treatment[]) => {
         //console.log('✅ All treatments loaded:', data);
         
         // Keep all treatments (including Ayushman ones)
-        this.treatments = data.sort((a, b) => (b.rating ?? -1) - (a.rating ?? -1));
+        this.treatments = data.sort((a: Treatment, b: Treatment) => (b.rating ?? -1) - (a.rating ?? -1));
+                if (this.slug) {
+        this.currentTreatment = this.treatments.find(
+    t => this.generateSlug(t.name) === this.slug
+  );
+}
 
   // Build normalized, deduped location list (display labels + keys) by splitting comma-separated parts
   const locationMap = new Map<string, string>();

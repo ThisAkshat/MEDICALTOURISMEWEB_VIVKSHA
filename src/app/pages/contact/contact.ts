@@ -6,6 +6,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
 import { ContactService, ContactInfo } from 'src/app/core/services/contact.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -33,7 +35,10 @@ export class ContactComponent implements OnInit {
     private treatmentService: TreatmentService,
     private bannerService: BannerService,
     private contactService: ContactService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private titleService: Title,
+    private metaService: Meta,
+    private seo: SeoService
   ) {
     this.contactForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -94,6 +99,94 @@ export class ContactComponent implements OnInit {
       next: (types) => this.treatmentTypes = types,
       error: (err) => console.error('Error loading treatment types ❌', err)
     });
+    this.titleService.setTitle('Contact CureOn Medical Tourism | Get Medical Travel Assistance in India');
+    this.metaService.updateTag({
+    name: 'description',
+    content: 'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.'
+});
+/* =======================
+    SEO META TAGS
+  ======================== */
+  this.seo.setTitle(
+  'Contact CureOn Medical Tourism | Get Medical Travel Assistance in India'
+);
+  this.seo.setDescription(
+  'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.'
+);
+
+  this.metaService.updateTag({
+    name: 'robots',
+    content: 'index, follow'
+  });
+
+  // Canonical
+  this.seo.setCanonical(
+  'https://www.cureonmedicaltourism.com/contact'
+);
+
+  /* =======================
+    OPEN GRAPH
+  ======================== */
+
+  this.metaService.updateTag({
+    property: 'og:type',
+    content: 'website'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:url',
+    content: 'https://www.cureonmedicaltourism.com/contact'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:title',
+    content: 'Contact CureOn Medical Tourism | International Patient Support'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:description',
+    content: 'Speak with our medical travel experts today. Get assistance with treatment planning, hospital selection, visa support, and travel coordination in India.'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:image',
+    content: 'https://www.cureonmedicaltourism.com/assets/images/contact-og.jpg'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:site_name',
+    content: 'CureOn Medical Tourism'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:locale',
+    content: 'en_US'
+  });
+
+  /* =======================
+    TWITTER CARD
+  ======================== */
+
+  this.metaService.updateTag({
+    name: 'twitter:card',
+    content: 'summary_large_image'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:title',
+    content: 'Contact CureOn Medical Tourism | Get Free Medical Consultation'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:description',
+    content: 'Connect with our team for affordable medical treatment in India with complete international patient support.'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:image',
+    content: 'https://www.cureonmedicaltourism.com/assets/images/contact-twitter.jpg'
+  });
+
   }
 
   // ✅ NEW: Generate dynamic Google Maps embed URL with pin pointer

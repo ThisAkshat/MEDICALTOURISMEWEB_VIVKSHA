@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
+import { TreatmentDetail } from './pages/treatment-detail/treatment-detail';
 
 export const routes: Routes = [
   {
@@ -18,10 +19,10 @@ export const routes: Routes = [
     path: 'treatments',
     loadComponent: () => import('./pages/treatments/treatments').then(m => m.Treatments)
   },
-  {
-    path: 'treatments',
-    loadComponent: () => import('./pages/treatments/treatments').then(m => m.Treatments)
-  },
+  // {
+  //   path: 'treatments',
+  //   loadComponent: () => import('./pages/treatments/treatments').then(m => m.Treatments)
+  // },
   {
     path: 'associate-hospital',
     loadComponent: () => import('./pages/associate-hospital/associate-hospital').then(m => m.AssociateHospital)
@@ -50,6 +51,10 @@ export const routes: Routes = [
     path: 'ayushman-treatment',
     loadComponent: () => import('./pages/ayushman-treatment/ayushman-treatment').then(m => m.AyushmanTreatment)
   },
+{
+  path: 'treatments/:slug',
+  component: TreatmentDetail
+},
   {
     path: 'treatment-detail/:id',
     loadComponent: () => import('./pages/treatment-detail/treatment-detail').then(m => m.TreatmentDetail)
@@ -101,10 +106,10 @@ export const routes: Routes = [
     path: 'refund-policy',
     loadComponent: () => import('./pages/refund-policy/refund-policy').then(m => m.RefundPolicy)
   },
-  {
-    path: 'doctor-details/:id',
-    loadComponent: () => import('./pages/doctor-details/doctor-details').then(m => m.DoctorDetails)
-  },
+{
+  path: 'doctors/:slug',
+  loadComponent: () => import('./pages/doctor-details/doctor-details').then(m => m.DoctorDetails)
+},
   {
     path: 'search',
     loadComponent: () => import('./pages/search-results/search-results.component').then(m => m.SearchResultsComponent)

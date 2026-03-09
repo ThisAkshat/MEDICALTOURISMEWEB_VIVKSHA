@@ -6,7 +6,7 @@ import { DoctorService, Doctor } from 'src/app/core/services/doctors.service';
 import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service'; // ✅ import banner service
 import { ModalComponent } from '@core/modal/modal.component';
-
+import { SeoService } from 'src/app/core/services/seo.service'; 
 interface BookingRequest {
   first_name: string;
   last_name: string;
@@ -83,7 +83,8 @@ export class OnlineConsultation implements OnInit {
     private bannerService: BannerService, // ✅ banner service
     private cdr: ChangeDetectorRef,
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private seo: SeoService
   ) {
     this.bookingForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -117,6 +118,17 @@ export class OnlineConsultation implements OnInit {
         console.error('❌ Error loading banner:', err);
       }
     });
+    this.seo.setTitle(
+  'Online Doctor Consultation in India | CureOn Medical Tourism'
+);
+
+this.seo.setDescription(
+  'Book online doctor consultation with experienced specialists in India. Get expert advice, second opinions, and treatment planning support.'
+);
+
+this.seo.setCanonical(
+  'https://www.cureonmedicaltourism.com/online-consultation'
+);
 
     // 🔹 Load filter data
     this.loadFilterData();

@@ -4,15 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { DoctorService, Doctor } from 'src/app/core/services/doctors.service';
 import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-doctors',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './doctors.html',
   styleUrls: ['./doctors.css']
 })
 export class Doctors implements OnInit {
+    generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
   doctors: (Doctor & { hospitalName?: string })[] = [];
   hospitalCache: { [id: number]: string } = {};
   loading = true;
@@ -34,14 +42,90 @@ export class Doctors implements OnInit {
     private doctorService: DoctorService,
     private hospitalService: HospitalService,
     private bannerService: BannerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private titleService: Title,
+    private metaService: Meta
   ) {}
 
-  ngOnInit(): void {
-    this.loadBanner();
-    this.loadFilters();
-    this.loadDoctors();
-  }
+ngOnInit(): void {
+
+  this.loadBanner();
+  this.loadFilters();
+  this.loadDoctors();
+
+  /* ================= TITLE ================= */
+
+  this.titleService.setTitle(
+    'Dr. Rajesh Sharma – Leading Cardiac Surgeon in India | CureOn'
+  );
+
+  /* ================= BASIC META ================= */
+
+  this.metaService.updateTag({
+    name: 'description',
+    content: 'Dr. Rajesh Sharma is a leading cardiac surgeon in India with extensive experience in heart bypass and advanced cardiac procedures. Consult through CureOn Medical Tourism for international patient assistance.'
+  });
+
+  this.metaService.updateTag({
+    name: 'robots',
+    content: 'index, follow'
+  });
+
+  /* ================= OPEN GRAPH ================= */
+
+  this.metaService.updateTag({
+    property: 'og:type',
+    content: 'profile'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:url',
+    content: 'https://www.cureonmedicaltourism.com/doctors/dr-rajesh-sharma-cardiac-surgeon-india'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:title',
+    content: 'Dr. Rajesh Sharma – Cardiac Surgeon in India'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:description',
+    content: 'Experienced cardiac surgeon in India specializing in heart bypass surgery and advanced cardiac procedures for international patients.'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:image',
+    content: 'https://www.cureonmedicaltourism.com/images/doctors/dr-rajesh-sharma.jpg'
+  });
+
+  this.metaService.updateTag({
+    property: 'og:site_name',
+    content: 'CureOn Medical Tourism'
+  });
+
+  /* ================= TWITTER ================= */
+
+  this.metaService.updateTag({
+    name: 'twitter:card',
+    content: 'summary_large_image'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:title',
+    content: 'Dr. Rajesh Sharma – Leading Cardiac Surgeon in India'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:description',
+    content: 'Consult Dr. Rajesh Sharma through CureOn Medical Tourism for expert cardiac treatment in India.'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:image',
+    content: 'https://www.cureonmedicaltourism.com/images/doctors/dr-rajesh-sharma.jpg'
+  });
+
+}
 
   loadBanner() {
     this.bannerService.getBannerByTitle('Doctors').subscribe({

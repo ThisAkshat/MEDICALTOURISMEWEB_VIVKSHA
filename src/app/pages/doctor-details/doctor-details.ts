@@ -7,6 +7,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { DoctorService, Doctor } from 'src/app/core/services/doctors.service';
 import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
 import { ModalComponent } from '@core/modal/modal.component';
+import { Title, Meta } from '@angular/platform-browser';
 
 interface BookingRequest {
   first_name: string;
@@ -72,6 +73,13 @@ declare var Razorpay: any;
   styleUrls: ['./doctor-details.css']
 })
 export class DoctorDetails implements OnInit {
+
+  generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
   doctor: Doctor | null = null;
   hospitalName = '';
   relatedDoctors: Doctor[] = [];
@@ -124,7 +132,9 @@ export class DoctorDetails implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private http: HttpClient,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private titleService: Title,
+    private metaService: Meta 
   ) {
     this.consultationForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -145,6 +155,83 @@ export class DoctorDetails implements OnInit {
     });
     this.loadRazorpayScript();
   }
+
+  setMetaTagsForDoctor(doctor: Doctor) {
+
+const slug = doctor.name
+.toLowerCase()
+.replace(/[^a-z0-9]+/g, '-')
+.replace(/(^-|-$)/g, '');
+
+const url = `https://www.cureonmedicaltourism.com/doctors/${slug}`;
+
+this.titleService.setTitle(
+`${doctor.name} | ${doctor.specialization} in India | CureOn`
+);
+
+this.metaService.updateTag({
+name: 'description',
+content: `${doctor.name} is a leading ${doctor.specialization} in India associated with ${this.hospitalName}. Book consultation through CureOn Medical Tourism.`
+});
+
+this.metaService.updateTag({
+name: 'robots',
+content: 'index, follow'
+});
+
+this.metaService.updateTag({
+property: 'og:type',
+content: 'profile'
+});
+
+this.metaService.updateTag({
+property: 'og:url',
+content: url
+});
+
+this.metaService.updateTag({
+property: 'og:title',
+content: `${doctor.name} | ${doctor.specialization}`
+});
+
+this.metaService.updateTag({
+property: 'og:description',
+content: `${doctor.name} is an expert ${doctor.specialization} in India offering advanced treatment for international patients.`
+});
+
+this.metaService.updateTag({
+property: 'og:image',
+content: `${this.baseUrl}${doctor.images}`
+});
+
+this.metaService.updateTag({
+name: 'twitter:card',
+content: 'summary_large_image'
+});
+
+this.metaService.updateTag({
+name: 'twitter:title',
+content: `${doctor.name} | ${doctor.specialization}`
+});
+
+this.metaService.updateTag({
+name: 'twitter:description',
+content: `Consult ${doctor.name} through CureOn Medical Tourism.`
+});
+
+/* Canonical Tag */
+let link: HTMLLinkElement | null =
+document.querySelector("link[rel='canonical']");
+
+if (!link) {
+link = document.createElement('link');
+link.setAttribute('rel', 'canonical');
+document.head.appendChild(link);
+}
+
+link.setAttribute('href', url);
+
+}
 
   // Load Razorpay script dynamically
   private loadRazorpayScript(): void {
@@ -219,6 +306,7 @@ export class DoctorDetails implements OnInit {
     // You could add a toast notification here if desired
   }
 
+
   @HostListener('document:click', ['$event'])
   clickOutside(event: any): void {
     if (!event.target.closest('.custom-select-wrapper')) {
@@ -227,13 +315,28 @@ export class DoctorDetails implements OnInit {
       this.isTimeSlotDropdownOpen = false;
     }
   }
+ngOnInit(): void {
 
-  ngOnInit(): void {
-    const doctorId = Number(this.route.snapshot.paramMap.get('id'));
-    if (doctorId) {
-      this.fetchDoctor(doctorId);
+  const slug = this.route.snapshot.paramMap.get('slug');
+
+  this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
+
+    this.doctor = doctors.find(d => this.generateSlug(d.name) === slug) || null;
+
+    if (this.doctor) {
+      this.setMetaTagsForDoctor(this.doctor);
+      this.parseDynamicTimeSlots(this.doctor.time_slots);
+      this.updateConsultationAmount();
+
+      if (this.doctor.hospital_id) {
+        this.fetchHospitalName(this.doctor.hospital_id);
+        this.fetchRelatedDoctors(this.doctor.hospital_id, this.doctor.id);
+      }
     }
-  }
+
+  });
+
+}
 
   // Update amount when doctor data loads
   private updateConsultationAmount(): void {
@@ -248,6 +351,7 @@ export class DoctorDetails implements OnInit {
     this.doctorService.getDoctorById(id).subscribe({
       next: (data) => {
         this.doctor = data;
+        this.setMetaTagsForDoctor(this.doctor);
         // build and cache sanitized FAQ list for template use
         this.dynamicFaqsList = this.getDynamicFaqs();
         

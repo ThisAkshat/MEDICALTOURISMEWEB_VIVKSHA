@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { BannerService, Banner } from 'src/app/core/services/banner.service';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-ayushman-treatment',
@@ -41,20 +42,31 @@ export class AyushmanTreatment implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private treatmentService: TreatmentService,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private seo: SeoService
   ) {}
 
-  ngOnInit(): void {
-    this.loadTreatments();
+ngOnInit(): void {
 
-    // ✅ Load Treatments Banner
-    this.bannerService.getBannerByTitle('Ayushman Treatment').subscribe({
-      next: (banner) => {
-        this.banner = banner;
-      },
-      error: (err) => console.error('Error loading banner:', err)
-    });
-  }
+  this.seo.setTitle('Ayushman Bharat Treatment in India | CureOn Medical Tourism');
+
+  this.seo.setDescription(
+    'Explore Ayushman Bharat approved treatments in top Indian hospitals with CureOn Medical Tourism. Affordable, trusted, and expert healthcare services.'
+  );
+
+  this.seo.setCanonical(
+    'https://www.cureonmedicaltourism.com/ayushman-treatment'
+  );
+
+  this.loadTreatments();
+
+  this.bannerService.getBannerByTitle('Ayushman Treatment').subscribe({
+    next: (banner) => {
+      this.banner = banner;
+    },
+    error: (err) => console.error('Error loading banner:', err)
+  });
+}
 
   /** Load Ayushman treatments from API */
   loadTreatments(): void {

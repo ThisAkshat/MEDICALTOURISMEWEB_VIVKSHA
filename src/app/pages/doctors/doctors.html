@@ -107,7 +107,7 @@
             </div> <!-- <p><strong>Awards:</strong> {{ d.awards }}</p> -->
           </div>
           <div class="read-more"> <!-- <a hre class="btn">More Detail <i class="fa fa-arrow-up"></i></a> -->
-            <a *ngIf="d.id" [attr.href]="'/doctor-details/' + d.id" class="btn"> More Detail <i
+            <a *ngIf="d.id" [routerLink]="['/doctors', generateSlug(d.name)]" class="btn"> More Detail <i
                 class="fa fa-arrow-up"></i> </a>
           </div>
         </div>

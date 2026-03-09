@@ -129,7 +129,7 @@
         }
       ,
         "server": {
-          "builder": "@angular/build:server",
+          "builder": "@angular-devkit/built-angular:server",
           "options": {
             "server": "src/main.server.ts",
             "tsConfig": "tsconfig.server.json",

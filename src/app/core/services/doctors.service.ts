@@ -11,6 +11,7 @@ export interface DoctorImage {
   is_primary: boolean;
   position: number;
   uploaded_at: string;
+  slug? : string;
 }
 
 export interface AssociatedHospital {

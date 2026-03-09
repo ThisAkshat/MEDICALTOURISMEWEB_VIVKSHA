@@ -9,6 +9,8 @@ import { PatientStory, PatientStoryService } from 'src/app/core/services/patient
 import { OfferService } from 'src/app/core/services/offer.service';
 import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
+import { Title, Meta } from '@angular/platform-browser';
+import { SeoService } from 'src/app/core/services/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +53,10 @@ export class Home implements OnInit {
     public partnerService: PartnerService,
     private patientStoryService: PatientStoryService,
     private offerService: OfferService,
-    private hospitalService: HospitalService // Inject hospital service
+    private hospitalService: HospitalService, // Inject hospital service
+    private titleService: Title,
+    private metaService: Meta,
+    private seoService: SeoService 
   ) { }
 
   ngOnInit(): void {
@@ -62,7 +67,94 @@ export class Home implements OnInit {
     this.loadHospitals(); // Load hospitals dynamically
     this.startCounter('patientsCount', this.patientsTarget, 20, 25);
     this.startCounter('awardsCount', this.awardsTarget, 50, 1);
+  this.metaService.updateTag({
+    name: 'robots',
+    content: 'index, follow'
+  });
+  this.metaService.updateTag({
+    name: 'keywords',
+    content: 'medical tourism company in India, medical travel India, international patient services India, affordable treatment in India, CureOn Medical Tourism'
+  });
+
+  this.metaService.updateTag({
+    name: 'author',
+    content: 'CureOn Medical Tourism'
+  });
+  this.seoService.setTitle(
+  'Medical Tourism in India | Trusted Medical Travel Company – CureOn'
+);
+
+this.seoService.setDescription(
+  'CureOn Medical Tourism helps international patients access affordable, world-class healthcare in India. Connect with top hospitals, expert doctors, and complete medical travel support.'
+);
+
+this.seoService.setCanonical(
+  'https://www.cureonmedicaltourism.com/'
+);
+
+  //Open Graph Tags
+  this.metaService.updateTag({
+    property: 'og:type',
+    content:'website'
+  });
+  this.metaService.updateTag({
+    property: 'og:url',
+    content: 'https://www.cureonmedicaltourism.com/'  
+  });
+  this.metaService.updateTag({
+    property: 'og:title',
+    content: 'Medical Tourism in India | Affordable & Trusted Healthcare Access'
+  });
+  this.metaService.updateTag({
+    property: 'og:description',
+    content: 'Helping international patients receive high-quality medical treatment in India with complete travel coordination and personalized care.'
+  });
+  this.metaService.updateTag({
+    property: 'og:image',
+    content: 'https://www.cureonmedicaltourism.com/assets/images/og-image.jpg'
+  });
+  this.metaService.updateTag({
+    property: 'og:site_name',
+    content: 'CureOn Medical Tourism'
+  });
+  this.metaService.updateTag({
+    property: 'og:locale',
+    content: 'en_US'
+  });
+
+  //TWITTER 
+  this.metaService.updateTag({
+    name: 'twitter:card',
+    content: 'summary_large_image'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:title',
+    content: 'Medical Tourism in India | CureOn Medical Travel Experts' 
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:description',
+    content: 'Affordable healthcare in India for international patients with end-to-end medical travel assistance'
+  });
+
+  this.metaService.updateTag({
+    name: 'twitter:image',
+    content: 'https://www.cureonmedicaltourism.com/assets/images/twitter-card.jpg'
+  });
+  
   }
+
+//   private setCanonicalURL(url?: string) {
+//   const canURL = url || window.location.href;
+//   let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
+//   if (!link) {
+//     link = document.createElement('link');
+//     link.setAttribute('rel', 'canonical');
+//     document.head.appendChild(link);
+//   }
+//   link.setAttribute('href', canURL);
+// }
 
   // Load top treatments (filter featured on frontend, limit to 4)
   private loadTopTreatments(): void {
