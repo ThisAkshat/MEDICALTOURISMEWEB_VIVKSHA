@@ -33,7 +33,7 @@
     "@angular/core": "^20.3.0",
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
-    "@angular/platform-server": "^20.3.0",
+    "@angular/platform-server": "^20.3.17",
     "@angular/router": "^20.3.0",
     "@angular/ssr": "^20.3.19",
     "@ng-bootstrap/ng-bootstrap": "^19.0.0-rc.0",
@@ -46,6 +46,7 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^21.2.1",
     "@angular/build": "^20.3.2",
     "@angular/cli": "^20.3.2",
     "@angular/compiler-cli": "^20.3.0",

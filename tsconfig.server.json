@@ -5,7 +5,8 @@
     "types": ["node"]
   },
   "files": [
-    "src/main.server.ts"
+    "src/main.server.ts",
+    "src/server.ts"
   ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
