@@ -129,9 +129,9 @@
         }
       ,
         "server": {
-          "builder": "@angular-devkit/built-angular:server",
+          "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "server": "src/main.server.ts",
+            "main": "src/main.server.ts",
             "tsConfig": "tsconfig.server.json",
             "outputPath": "dist/medical-tourism/server"
           },
