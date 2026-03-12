@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:medical-tourism": "node dist/medical-tourism/server/server.mjs",
-    "build:ssr": "ng build --configuration production && ng run medical-tourism:server:production",
-    "serve:ssr": "node dist/medical-tourism/server/main.js",
+    "build:ssr": "ng build --configuration production",
+    "serve:ssr": "node dist/medical-tourism/server/server.mjs",
     "serve:prod": "node server.js",
     "build:serve": "npm run build && npm run serve:prod"
   },
