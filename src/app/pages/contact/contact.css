@@ -5,7 +5,54 @@
     width: 55px;
     margin-right: 15px;
 }
+.phone-input-group:has(.phone-number-input.ng-invalid.ng-touched) .country-select {
+  border-color: #dc3545;
+}
+.phone-input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
 
+.country-code-wrapper {
+  width: 80px !important;
+  min-width: 80px !important;
+  flex-shrink: 0;
+}
+
+
+
+.country-select {
+  padding: 17px 8px !important;
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 260px;
+  max-height: 250px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  z-index: 10;
+}
+
+.country-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phone-number-input {
+  flex: 1;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
 .contact-inner h5 {
     font-size: 20px;
     font-family: var(--primary-font);
@@ -38,8 +85,6 @@
 /* Custom Select Wrapper */
 .contact-form .custom-select-wrapper {
   position: relative;
-  display: inline-block;
-  min-width: 200px;
   width: 100%;
 }
 

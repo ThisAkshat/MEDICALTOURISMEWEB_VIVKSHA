@@ -11,13 +11,15 @@ import { Treatment } from 'src/app/shared/interfaces/treatment.interface';
 import { HospitalService, Hospital } from 'src/app/core/services/hospital.service';
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from 'src/app/core/services/seo.service';
+import { YoutubeService } from '@core/services/youtube.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterModule, HeroSection, CarouselModule],
   templateUrl: './home.html',
-  styleUrls: ['./home.css']
+  styleUrls: ['./home.css'],
 })
 export class Home implements OnInit {
   treatments: Treatment[] = [];
@@ -32,6 +34,10 @@ export class Home implements OnInit {
   awardsCount = 0;
   awardsTarget = 25;
 
+  videos: any[] = [];
+  youtubeChannelUrl = 'https://www.youtube.com/@CureonMedicalTourism';
+  selectedVideo: SafeResourceUrl | null = null;
+
   hasSearchResults = false;
 
   customOptions: OwlOptions = {
@@ -44,11 +50,13 @@ export class Home implements OnInit {
     responsive: {
       0: { items: 1 },
       600: { items: 2 },
-      1000: { items: 3 }
-    }
+      1000: { items: 3 },
+    },
   };
 
   constructor(
+    private sanitizer: DomSanitizer,
+    private youtube: YoutubeService,
     private treatmentService: TreatmentService,
     public partnerService: PartnerService,
     private patientStoryService: PatientStoryService,
@@ -56,8 +64,8 @@ export class Home implements OnInit {
     private hospitalService: HospitalService, // Inject hospital service
     private titleService: Title,
     private metaService: Meta,
-    private seoService: SeoService 
-  ) { }
+    private seoService: SeoService,
+  ) {}
 
   ngOnInit(): void {
     this.loadTopTreatments();
@@ -67,94 +75,118 @@ export class Home implements OnInit {
     this.loadHospitals(); // Load hospitals dynamically
     this.startCounter('patientsCount', this.patientsTarget, 20, 25);
     this.startCounter('awardsCount', this.awardsTarget, 50, 1);
-  this.metaService.updateTag({
-    name: 'robots',
-    content: 'index, follow'
-  });
-  this.metaService.updateTag({
-    name: 'keywords',
-    content: 'medical tourism company in India, medical travel India, international patient services India, affordable treatment in India, CureOn Medical Tourism'
-  });
 
-  this.metaService.updateTag({
-    name: 'author',
-    content: 'CureOn Medical Tourism'
-  });
-  this.seoService.setTitle(
-  'Medical Tourism in India | Trusted Medical Travel Company – CureOn'
-);
+    this.youtube.getChannelVideos().subscribe((data: any) => {
+      console.log('YouTube API wrking:', data);
 
-this.seoService.setDescription(
-  'CureOn Medical Tourism helps international patients access affordable, world-class healthcare in India. Connect with top hospitals, expert doctors, and complete medical travel support.'
-);
+      this.videos = data.items.filter((item: any) => {
+        const title = item.snippet.title.toLowerCase();
+        return !title.includes('#shorts');
+      });
 
-this.seoService.setCanonical(
-  'https://www.cureonmedicaltourism.com/'
-);
+      this.videos = data.items.map((item: any) => {
+        return {
+          title: item.snippet.title,
+          thumbnail: item.snippet.thumbnails.high.url,
+          videoId: item.id.videoId,
+        };
+      });
+    });
 
-  //Open Graph Tags
-  this.metaService.updateTag({
-    property: 'og:type',
-    content:'website'
-  });
-  this.metaService.updateTag({
-    property: 'og:url',
-    content: 'https://www.cureonmedicaltourism.com/'  
-  });
-  this.metaService.updateTag({
-    property: 'og:title',
-    content: 'Medical Tourism in India | Affordable & Trusted Healthcare Access'
-  });
-  this.metaService.updateTag({
-    property: 'og:description',
-    content: 'Helping international patients receive high-quality medical treatment in India with complete travel coordination and personalized care.'
-  });
-  this.metaService.updateTag({
-    property: 'og:image',
-    content: 'https://www.cureonmedicaltourism.com/assets/images/og-image.jpg'
-  });
-  this.metaService.updateTag({
-    property: 'og:site_name',
-    content: 'CureOn Medical Tourism'
-  });
-  this.metaService.updateTag({
-    property: 'og:locale',
-    content: 'en_US'
-  });
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'index, follow',
+    });
+    this.metaService.updateTag({
+      name: 'keywords',
+      content:
+        'medical tourism company in India, medical travel India, international patient services India, affordable treatment in India, CureOn Medical Tourism',
+    });
 
-  //TWITTER 
-  this.metaService.updateTag({
-    name: 'twitter:card',
-    content: 'summary_large_image'
-  });
+    this.metaService.updateTag({
+      name: 'author',
+      content: 'CureOn Medical Tourism',
+    });
+    this.seoService.setTitle('Medical Tourism in India | Trusted Medical Travel Company – CureOn');
 
-  this.metaService.updateTag({
-    name: 'twitter:title',
-    content: 'Medical Tourism in India | CureOn Medical Travel Experts' 
-  });
+    this.seoService.setDescription(
+      'CureOn Medical Tourism helps international patients access affordable, world-class healthcare in India. Connect with top hospitals, expert doctors, and complete medical travel support.',
+    );
 
-  this.metaService.updateTag({
-    name: 'twitter:description',
-    content: 'Affordable healthcare in India for international patients with end-to-end medical travel assistance'
-  });
+    this.seoService.setCanonical('https://www.cureonmedicaltourism.com/');
 
-  this.metaService.updateTag({
-    name: 'twitter:image',
-    content: 'https://www.cureonmedicaltourism.com/assets/images/twitter-card.jpg'
-  });
-  
+    //Open Graph Tags
+    this.metaService.updateTag({
+      property: 'og:type',
+      content: 'website',
+    });
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: 'https://www.cureonmedicaltourism.com/',
+    });
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: 'Medical Tourism in India | Affordable & Trusted Healthcare Access',
+    });
+    this.metaService.updateTag({
+      property: 'og:description',
+      content:
+        'Helping international patients receive high-quality medical treatment in India with complete travel coordination and personalized care.',
+    });
+    this.metaService.updateTag({
+      property: 'og:image',
+      content: 'https://www.cureonmedicaltourism.com/assets/images/og-image.jpg',
+    });
+    this.metaService.updateTag({
+      property: 'og:site_name',
+      content: 'CureOn Medical Tourism',
+    });
+    this.metaService.updateTag({
+      property: 'og:locale',
+      content: 'en_US',
+    });
+
+    //TWITTER
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:title',
+      content: 'Medical Tourism in India | CureOn Medical Travel Experts',
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content:
+        'Affordable healthcare in India for international patients with end-to-end medical travel assistance',
+    });
+
+    this.metaService.updateTag({
+      name: 'twitter:image',
+      content: 'https://www.cureonmedicaltourism.com/assets/images/twitter-card.jpg',
+    });
+  }
+  openVideo(videoId: string) {
+    const url = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    this.selectedVideo = this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-//   private setCanonicalURL(url?: string) {
-//   const canURL = url || window.location.href;
-//   let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
-//   if (!link) {
-//     link = document.createElement('link');
-//     link.setAttribute('rel', 'canonical');
-//     document.head.appendChild(link);
-//   }
-//   link.setAttribute('href', canURL);
-// }
+  closeVideo() {
+    this.selectedVideo = null;
+  }
+
+  //   private setCanonicalURL(url?: string) {
+  //   const canURL = url || window.location.href;
+  //   let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
+  //   if (!link) {
+  //     link = document.createElement('link');
+  //     link.setAttribute('rel', 'canonical');
+  //     document.head.appendChild(link);
+  //   }
+  //   link.setAttribute('href', canURL);
+  // }
 
   // Load top treatments (filter featured on frontend, limit to 4)
   private loadTopTreatments(): void {
@@ -167,7 +199,7 @@ this.seoService.setCanonical(
       },
       error: (err) => {
         console.error('Failed to load featured treatments:', err);
-      }
+      },
     });
   }
 
@@ -175,7 +207,7 @@ this.seoService.setCanonical(
   private loadPartners(): void {
     this.partnerService.getActivePartners().subscribe({
       next: (res) => (this.partners = res.slice(0)),
-      error: (err) => console.error('Failed to load partners:', err)
+      error: (err) => console.error('Failed to load partners:', err),
     });
   }
 
@@ -183,7 +215,7 @@ this.seoService.setCanonical(
   private loadPatientStories(): void {
     this.patientStoryService.getStories().subscribe({
       next: (res) => (this.patientStories = res.slice(0, 3)),
-      error: (err) => console.error('Failed to load patient stories:', err)
+      error: (err) => console.error('Failed to load patient stories:', err),
     });
   }
 
@@ -191,7 +223,7 @@ this.seoService.setCanonical(
   private loadOffers(): void {
     this.offerService.getAllOffers(0, 3, true, false).subscribe({
       next: (res) => (this.offers = res),
-      error: (err) => console.error('Failed to load offers:', err)
+      error: (err) => console.error('Failed to load offers:', err),
     });
   }
 
@@ -202,17 +234,15 @@ this.seoService.setCanonical(
     this.hospitalService.getHospitals(0, 10).subscribe({
       next: (res) => {
         // Filter only active AND featured hospitals
-        this.hospitals = res.filter(h => h.is_active && h.is_featured);
+        this.hospitals = res.filter((h) => h.is_active && h.is_featured);
         this.loadingHospitals = false;
       },
       error: (err) => {
         console.error('Failed to load hospitals:', err);
         this.loadingHospitals = false;
-      }
+      },
     });
   }
-  
-
 
   // Get offer image URL
   getOfferImageUrl(offer: any): string {
@@ -230,7 +260,7 @@ this.seoService.setCanonical(
     return [
       ...Array(fullStars).fill('full'),
       ...Array(halfStar).fill('half'),
-      ...Array(emptyStars).fill('empty')
+      ...Array(emptyStars).fill('empty'),
     ];
   }
   hospitalSliderOptions: OwlOptions = {
@@ -243,10 +273,9 @@ this.seoService.setCanonical(
     responsive: {
       0: { items: 1 },
       576: { items: 2 },
-      992: { items: 3 }
-    }
+      992: { items: 3 },
+    },
   };
-
 
   // Handle search result changes
   onSearchResultsChange(hasResults: boolean): void {
@@ -255,7 +284,12 @@ this.seoService.setCanonical(
   }
 
   // Counter animation
-  private startCounter(counterName: 'patientsCount' | 'awardsCount', target: number, speed: number, step: number): void {
+  private startCounter(
+    counterName: 'patientsCount' | 'awardsCount',
+    target: number,
+    speed: number,
+    step: number,
+  ): void {
     const interval = setInterval(() => {
       if (this[counterName] < target) {
         this[counterName] += step;

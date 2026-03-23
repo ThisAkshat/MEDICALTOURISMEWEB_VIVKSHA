@@ -62,24 +62,17 @@ declare var Razorpay: any;
 @Component({
   selector: 'app-doctor-details',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ModalComponent
-  ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule, ModalComponent],
   templateUrl: './doctor-details.html',
-  styleUrls: ['./doctor-details.css']
+  styleUrls: ['./doctor-details.css'],
 })
 export class DoctorDetails implements OnInit {
-
   generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
   doctor: Doctor | null = null;
   hospitalName = '';
   relatedDoctors: Doctor[] = [];
@@ -102,7 +95,7 @@ export class DoctorDetails implements OnInit {
     { value: '100000 - 300000', label: '₹1,00,000 - ₹3,00,000' },
     { value: '300000 - 500000', label: '₹3,00,000 - ₹5,00,000' },
     { value: '500000 - 800000', label: '₹5,00,000 - ₹8,00,000' },
-    { value: '800000+', label: '₹8,00,000+' }
+    { value: '800000+', label: '₹8,00,000+' },
   ];
 
   serviceOptions = [
@@ -110,7 +103,7 @@ export class DoctorDetails implements OnInit {
     { value: 2, label: 'Follow-up Consultation' },
     { value: 3, label: 'Specialist Consultation' },
     { value: 4, label: 'Second Opinion' },
-    { value: 5, label: 'Emergency Consultation' }
+    { value: 5, label: 'Emergency Consultation' },
   ];
 
   timeSlotOptions: { value: string; label: string }[] = [];
@@ -134,7 +127,7 @@ export class DoctorDetails implements OnInit {
     private http: HttpClient,
     private ngZone: NgZone,
     private titleService: Title,
-    private metaService: Meta 
+    private metaService: Meta,
   ) {
     this.consultationForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.minLength(2)]],
@@ -151,87 +144,82 @@ export class DoctorDetails implements OnInit {
       user_query: [''],
       travel_assistant: [false],
       stay_assistant: [false],
-      amount: [0, [Validators.required, Validators.min(1)]]
+      amount: [0, [Validators.required, Validators.min(1)]],
     });
     this.loadRazorpayScript();
   }
 
   setMetaTagsForDoctor(doctor: Doctor) {
+    const slug = doctor.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
 
-const slug = doctor.name
-.toLowerCase()
-.replace(/[^a-z0-9]+/g, '-')
-.replace(/(^-|-$)/g, '');
+    const url = `https://www.cureonmedicaltourism.com/doctors/${slug}`;
 
-const url = `https://www.cureonmedicaltourism.com/doctors/${slug}`;
+    this.titleService.setTitle(`${doctor.name} | ${doctor.specialization} in India | CureOn`);
 
-this.titleService.setTitle(
-`${doctor.name} | ${doctor.specialization} in India | CureOn`
-);
+    this.metaService.updateTag({
+      name: 'description',
+      content: `${doctor.name} is a leading ${doctor.specialization} in India associated with ${this.hospitalName}. Book consultation through CureOn Medical Tourism.`,
+    });
 
-this.metaService.updateTag({
-name: 'description',
-content: `${doctor.name} is a leading ${doctor.specialization} in India associated with ${this.hospitalName}. Book consultation through CureOn Medical Tourism.`
-});
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'index, follow',
+    });
 
-this.metaService.updateTag({
-name: 'robots',
-content: 'index, follow'
-});
+    this.metaService.updateTag({
+      property: 'og:type',
+      content: 'profile',
+    });
 
-this.metaService.updateTag({
-property: 'og:type',
-content: 'profile'
-});
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: url,
+    });
 
-this.metaService.updateTag({
-property: 'og:url',
-content: url
-});
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: `${doctor.name} | ${doctor.specialization}`,
+    });
 
-this.metaService.updateTag({
-property: 'og:title',
-content: `${doctor.name} | ${doctor.specialization}`
-});
+    this.metaService.updateTag({
+      property: 'og:description',
+      content: `${doctor.name} is an expert ${doctor.specialization} in India offering advanced treatment for international patients.`,
+    });
 
-this.metaService.updateTag({
-property: 'og:description',
-content: `${doctor.name} is an expert ${doctor.specialization} in India offering advanced treatment for international patients.`
-});
+    this.metaService.updateTag({
+      property: 'og:image',
+      content: `${this.baseUrl}${doctor.images}`,
+    });
 
-this.metaService.updateTag({
-property: 'og:image',
-content: `${this.baseUrl}${doctor.images}`
-});
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
 
-this.metaService.updateTag({
-name: 'twitter:card',
-content: 'summary_large_image'
-});
+    this.metaService.updateTag({
+      name: 'twitter:title',
+      content: `${doctor.name} | ${doctor.specialization}`,
+    });
 
-this.metaService.updateTag({
-name: 'twitter:title',
-content: `${doctor.name} | ${doctor.specialization}`
-});
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content: `Consult ${doctor.name} through CureOn Medical Tourism.`,
+    });
 
-this.metaService.updateTag({
-name: 'twitter:description',
-content: `Consult ${doctor.name} through CureOn Medical Tourism.`
-});
+    /* Canonical Tag */
+    let link: HTMLLinkElement | null = document.querySelector("link[rel='canonical']");
 
-/* Canonical Tag */
-let link: HTMLLinkElement | null =
-document.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
 
-if (!link) {
-link = document.createElement('link');
-link.setAttribute('rel', 'canonical');
-document.head.appendChild(link);
-}
-
-link.setAttribute('href', url);
-
-}
+    link.setAttribute('href', url);
+  }
 
   // Load Razorpay script dynamically
   private loadRazorpayScript(): void {
@@ -291,7 +279,7 @@ link.setAttribute('href', url);
   }
 
   // Select time slot from sidebar display
-  selectTimeSlotFromSidebar(slot: {day: string, time: string, isAvailable: boolean}): void {
+  selectTimeSlotFromSidebar(slot: { day: string; time: string; isAvailable: boolean }): void {
     if (!slot.isAvailable) {
       return; // Don't allow selection of unavailable slots
     }
@@ -299,13 +287,12 @@ link.setAttribute('href', url);
     const timeSlotValue = `${slot.day} - ${slot.time}`;
     this.selectedTimeSlotLabel = timeSlotValue;
     this.consultationForm.patchValue({ preferred_time_slot: timeSlotValue });
-    
+
     //console.log('🎯 Time slot selected from sidebar:', timeSlotValue);
-    
+
     // Optional: Show a brief feedback message
     // You could add a toast notification here if desired
   }
-
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: any): void {
@@ -315,34 +302,30 @@ link.setAttribute('href', url);
       this.isTimeSlotDropdownOpen = false;
     }
   }
-ngOnInit(): void {
+  ngOnInit(): void {
+    const slug = this.route.snapshot.paramMap.get('slug');
 
-  const slug = this.route.snapshot.paramMap.get('slug');
+    this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
+      this.doctor = doctors.find((d) => this.generateSlug(d.name) === slug) || null;
 
-  this.doctorService.getDoctors().subscribe((doctors: Doctor[]) => {
+      if (this.doctor) {
+        this.setMetaTagsForDoctor(this.doctor);
+        this.parseDynamicTimeSlots(this.doctor.time_slots);
+        this.updateConsultationAmount();
 
-    this.doctor = doctors.find(d => this.generateSlug(d.name) === slug) || null;
-
-    if (this.doctor) {
-      this.setMetaTagsForDoctor(this.doctor);
-      this.parseDynamicTimeSlots(this.doctor.time_slots);
-      this.updateConsultationAmount();
-
-      if (this.doctor.hospital_id) {
-        this.fetchHospitalName(this.doctor.hospital_id);
-        this.fetchRelatedDoctors(this.doctor.hospital_id, this.doctor.id);
+        if (this.doctor.hospital_id) {
+          this.fetchHospitalName(this.doctor.hospital_id);
+          this.fetchRelatedDoctors(this.doctor.hospital_id, this.doctor.id);
+        }
       }
-    }
-
-  });
-
-}
+    });
+  }
 
   // Update amount when doctor data loads
   private updateConsultationAmount(): void {
     if (this.doctor?.consultancy_fee) {
       this.consultationForm.patchValue({
-        amount: this.doctor.consultancy_fee
+        amount: this.doctor.consultancy_fee,
       });
     }
   }
@@ -354,13 +337,13 @@ ngOnInit(): void {
         this.setMetaTagsForDoctor(this.doctor);
         // build and cache sanitized FAQ list for template use
         this.dynamicFaqsList = this.getDynamicFaqs();
-        
+
         // Parse dynamic time slots from API
         this.parseDynamicTimeSlots(data.time_slots);
-        
+
         // Update consultation amount
         this.updateConsultationAmount();
-        
+
         if (data.hospital_id) {
           this.fetchHospitalName(data.hospital_id);
           this.fetchRelatedDoctors(data.hospital_id, id);
@@ -368,7 +351,7 @@ ngOnInit(): void {
           console.warn('⚠️ No hospital_id found for doctor:', data.name);
         }
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
@@ -381,7 +364,7 @@ ngOnInit(): void {
       error: (err) => {
         console.error('❌ Error fetching hospital:', err);
         this.hospitalName = 'Hospital information unavailable';
-      }
+      },
     });
   }
 
@@ -389,15 +372,13 @@ ngOnInit(): void {
     this.loadingRelatedDoctors = true;
     this.doctorService.getDoctorsByHospital(hospitalId, 0, 10).subscribe({
       next: (doctors) => {
-        this.relatedDoctors = doctors
-          .filter(doctor => doctor.id !== currentDoctorId)
-          .slice(0, 3);
+        this.relatedDoctors = doctors.filter((doctor) => doctor.id !== currentDoctorId).slice(0, 3);
         this.loadingRelatedDoctors = false;
       },
       error: (err) => {
         console.error('Error fetching related doctors', err);
         this.loadingRelatedDoctors = false;
-      }
+      },
     });
   }
 
@@ -436,17 +417,17 @@ ngOnInit(): void {
           // If it's already an object, use it directly
           this.dynamicTimeSlots = timeSlotsData as Record<string, string>;
         }
-        
+
         //console.log('📅 Parsed time slots:', this.dynamicTimeSlots);
-        
+
         // Convert to dropdown options (only available slots)
         this.timeSlotOptions = Object.entries(this.dynamicTimeSlots)
           .filter(([day, time]) => time && time.toLowerCase() !== 'off')
           .map(([day, time]) => ({
             value: `${day} - ${time}`,
-            label: `${day} - ${time}`
+            label: `${day} - ${time}`,
           }));
-        
+
         //console.log('🕐 Available time slot options for booking:', this.timeSlotOptions);
         //console.log('📋 Total available slots:', this.timeSlotOptions.length);
       } else {
@@ -462,14 +443,22 @@ ngOnInit(): void {
   }
 
   // Get formatted time slots for display
-  getFormattedTimeSlots(): Array<{day: string, time: string, isAvailable: boolean}> {
-    const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    return daysOrder.map(day => {
+  getFormattedTimeSlots(): Array<{ day: string; time: string; isAvailable: boolean }> {
+    const daysOrder = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ];
+    return daysOrder.map((day) => {
       const timeSlot = this.dynamicTimeSlots[day] || 'Closed';
       return {
         day,
         time: timeSlot === 'Off' ? 'Closed' : timeSlot,
-        isAvailable: Boolean(timeSlot && timeSlot.toLowerCase() !== 'off')
+        isAvailable: Boolean(timeSlot && timeSlot.toLowerCase() !== 'off'),
       };
     });
   }
@@ -484,39 +473,46 @@ ngOnInit(): void {
     const raw = this.doctor?.awards;
     if (!raw || typeof raw !== 'string') return [];
     // Split by comma or CR/LF combinations and trim empty entries
-    return raw.split(/[\r\n]+/).map(a => a.trim()).filter(a => a.length > 0);
+    return raw
+      .split(/[\r\n]+/)
+      .map((a) => a.trim())
+      .filter((a) => a.length > 0);
   }
 
   // Helper method to get background color for time slot based on selection
-  getTimeSlotBackgroundColor(slot: {day: string, time: string, isAvailable: boolean}): string {
+  getTimeSlotBackgroundColor(slot: { day: string; time: string; isAvailable: boolean }): string {
     if (!slot.isAvailable) {
       return 'transparent';
     }
-    
+
     const slotValue = `${slot.day} - ${slot.time}`;
     if (this.selectedTimeSlotLabel === slotValue) {
       return '#d4edda'; // Light green for selected
     }
-    
+
     return '#f8f9fa'; // Default light gray
   }
 
   // Helper method to get border color for time slot based on selection
-  getTimeSlotBorder(slot: {day: string, time: string, isAvailable: boolean}): string {
+  getTimeSlotBorder(slot: { day: string; time: string; isAvailable: boolean }): string {
     if (!slot.isAvailable) {
       return 'none';
     }
-    
+
     const slotValue = `${slot.day} - ${slot.time}`;
     if (this.selectedTimeSlotLabel === slotValue) {
       return '2px solid #28a745'; // Green border for selected
     }
-    
+
     return '1px solid #e9ecef'; // Default border
   }
 
   // Handle hover effects for time slots
-  onTimeSlotHover(slot: {day: string, time: string, isAvailable: boolean}, event: any, isEntering: boolean): void {
+  onTimeSlotHover(
+    slot: { day: string; time: string; isAvailable: boolean },
+    event: any,
+    isEntering: boolean,
+  ): void {
     if (!slot.isAvailable) {
       return;
     }
@@ -572,7 +568,7 @@ ngOnInit(): void {
       hospital_preference: this.hospitalName || '',
       preferred_time_slot: '',
       consultation_fee: this.doctor?.consultancy_fee ? `₹${this.doctor.consultancy_fee}` : '',
-      amount: this.doctor?.consultancy_fee || 0
+      amount: this.doctor?.consultancy_fee || 0,
     });
   }
 
@@ -602,22 +598,34 @@ ngOnInit(): void {
     try {
       const formData = this.consultationForm.value;
       const multipartFormData = new FormData();
-      
+
       multipartFormData.append('first_name', formData.first_name);
       multipartFormData.append('last_name', formData.last_name);
       multipartFormData.append('email', formData.email);
       multipartFormData.append('mobile_no', formData.mobile_no);
       multipartFormData.append('treatment_id', '');
-      multipartFormData.append('amount', formData.amount?.toString() || this.doctor?.consultancy_fee?.toString() || '0');
-      multipartFormData.append('budget', formData.budget || `₹${this.doctor?.consultancy_fee || ''}`);
-      multipartFormData.append('doctor_preference', formData.doctor_preference || (this.doctor?.name || ''));
-      multipartFormData.append('hospital_preference', formData.hospital_preference || (this.hospitalName || ''));
+      multipartFormData.append(
+        'amount',
+        formData.amount?.toString() || this.doctor?.consultancy_fee?.toString() || '0',
+      );
+      multipartFormData.append(
+        'budget',
+        formData.budget || `₹${this.doctor?.consultancy_fee || ''}`,
+      );
+      multipartFormData.append(
+        'doctor_preference',
+        formData.doctor_preference || this.doctor?.name || '',
+      );
+      multipartFormData.append(
+        'hospital_preference',
+        formData.hospital_preference || this.hospitalName || '',
+      );
       multipartFormData.append('preferred_time_slot', formData.preferred_time_slot || '');
       multipartFormData.append('user_query', formData.user_query || 'Consultation booking request');
       multipartFormData.append('travel_assistant', 'false');
       multipartFormData.append('stay_assistant', 'false');
       multipartFormData.append('personal_assistant', 'false');
-      
+
       if (this.selectedFile) {
         multipartFormData.append('medical_history_file', this.selectedFile);
       } else {
@@ -625,11 +633,11 @@ ngOnInit(): void {
       }
 
       // Step 1: Create booking and get Razorpay order
-      const orderResponse = await this.http.post<RazorpayOrderResponse>(
-        `${this.baseUrl}/api/v1/bookings`,
-        multipartFormData,
-        { headers: { 'accept': 'application/json' } }
-      ).toPromise();
+      const orderResponse = await this.http
+        .post<RazorpayOrderResponse>(`${this.baseUrl}/api/v1/bookings`, multipartFormData, {
+          headers: { accept: 'application/json' },
+        })
+        .toPromise();
 
       if (!orderResponse) {
         throw new Error('Failed to create booking order');
@@ -647,10 +655,12 @@ ngOnInit(): void {
 
       // Step 2: Open Razorpay payment modal
       await this.openRazorpayCheckout(orderResponse);
-
     } catch (error: any) {
       console.error('❌ Error in booking submission:', error);
-      this.submitError = error.error?.detail || error.error?.message || 'Failed to create booking. Please try again.';
+      this.submitError =
+        error.error?.detail ||
+        error.error?.message ||
+        'Failed to create booking. Please try again.';
       this.isSubmitting = false;
     }
   }
@@ -664,7 +674,7 @@ ngOnInit(): void {
         key: orderData.razorpay_key_id,
         amount: orderData.amount_in_paise,
         currency: orderData.currency,
-        order_id: orderData.razorpay_order_id
+        order_id: orderData.razorpay_order_id,
       });
 
       const options = {
@@ -682,10 +692,10 @@ ngOnInit(): void {
         prefill: {
           name: `${orderData.first_name} ${orderData.last_name}`,
           email: orderData.email,
-          contact: orderData.mobile_no
+          contact: orderData.mobile_no,
         },
         theme: {
-          color: '#3399cc'
+          color: '#3399cc',
         },
         modal: {
           ondismiss: () => {
@@ -697,12 +707,12 @@ ngOnInit(): void {
               this.submitError = 'Payment cancelled. Your booking is saved but not confirmed.';
             });
             reject(new Error('Payment cancelled'));
-          }
-        }
+          },
+        },
       };
 
       const rzp = new Razorpay(options);
-      
+
       rzp.on('payment.failed', (response: any) => {
         console.error('❌ Payment failed:', response.error);
         // Run inside Angular zone to trigger change detection
@@ -730,20 +740,25 @@ ngOnInit(): void {
   }
 
   // Verify payment with backend
-  private async verifyPayment(paymentResponse: RazorpayPaymentResponse, bookingId: number): Promise<void> {
+  private async verifyPayment(
+    paymentResponse: RazorpayPaymentResponse,
+    bookingId: number,
+  ): Promise<void> {
     try {
       const verifyData = {
         razorpay_order_id: paymentResponse.razorpay_order_id,
         razorpay_payment_id: paymentResponse.razorpay_payment_id,
         razorpay_signature: paymentResponse.razorpay_signature,
-        booking_id: bookingId
+        booking_id: bookingId,
       };
 
-      const verifyResult = await this.http.post<{ success: boolean; message: string; booking: BookingResponse }>(
-        `${this.baseUrl}/api/v1/bookings/verify-payment`,
-        verifyData,
-        { headers: { 'Content-Type': 'application/json' } }
-      ).toPromise();
+      const verifyResult = await this.http
+        .post<{
+          success: boolean;
+          message: string;
+          booking: BookingResponse;
+        }>(`${this.baseUrl}/api/v1/bookings/verify-payment`, verifyData, { headers: { 'Content-Type': 'application/json' } })
+        .toPromise();
 
       if (verifyResult?.success) {
         console.log('✅ Payment verified successfully');
@@ -753,7 +768,7 @@ ngOnInit(): void {
           this.paymentInProgress = false;
           this.isSubmitting = false;
         });
-        
+
         setTimeout(() => {
           this.closeModal();
           // Optional: Redirect to success page
@@ -762,17 +777,17 @@ ngOnInit(): void {
       } else {
         throw new Error(verifyResult?.message || 'Payment verification failed');
       }
-
     } catch (error: any) {
       console.error('❌ Payment verification failed:', error);
       this.paymentInProgress = false;
       this.isSubmitting = false;
-      this.submitError = 'Payment verification failed. Please contact support with your payment ID.';
+      this.submitError =
+        'Payment verification failed. Please contact support with your payment ID.';
     }
   }
 
   private markFormGroupTouched() {
-    Object.keys(this.consultationForm.controls).forEach(key => {
+    Object.keys(this.consultationForm.controls).forEach((key) => {
       const control = this.consultationForm.get(key);
       control?.markAsTouched();
     });
@@ -787,19 +802,27 @@ ngOnInit(): void {
     const field = this.consultationForm.get(fieldName);
     if (field?.errors) {
       if (field.errors['required']) {
-        switch(fieldName) {
-          case 'first_name': return 'First name is required';
-          case 'last_name': return 'Last name is required';
-          case 'email': return 'Email is required';
-          case 'mobile_no': return 'Mobile number is required';
-          case 'treatment_id': return 'Please select a service';
-          case 'budget': return 'Please select a budget preference';
-          default: return `${fieldName.replace('_', ' ')} is required`;
+        switch (fieldName) {
+          case 'first_name':
+            return 'First name is required';
+          case 'last_name':
+            return 'Last name is required';
+          case 'email':
+            return 'Email is required';
+          case 'mobile_no':
+            return 'Mobile number is required';
+          case 'treatment_id':
+            return 'Please select a service';
+          case 'budget':
+            return 'Please select a budget preference';
+          default:
+            return `${fieldName.replace('_', ' ')} is required`;
         }
       }
       if (field.errors['email']) return 'Please enter a valid email address';
       if (field.errors['pattern']) return 'Please enter a valid 10-digit mobile number';
-      if (field.errors['minlength']) return `Must be at least ${field.errors['minlength'].requiredLength} characters`;
+      if (field.errors['minlength'])
+        return `Must be at least ${field.errors['minlength'].requiredLength} characters`;
     }
     return '';
   }

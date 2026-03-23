@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TreatmentService } from 'src/app/core/services/treatment.service';
 
 @Component({
   selector: 'app-search-results',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './search-results.component.html',
-  styleUrls: ['./search-results.component.css']
+  styleUrls: ['./search-results.component.css'],
 })
 export class SearchResultsComponent implements OnInit {
   searchQuery: string = '';
@@ -19,18 +19,23 @@ export class SearchResultsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private treatmentService: TreatmentService
+    private treatmentService: TreatmentService,
   ) {}
+  generateSlug(name: string): string {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.searchQuery = params['q'] || '';
       if (this.searchQuery) {
         this.performSearch(this.searchQuery);
       }
     });
   }
-  
 
   performSearch(query: string): void {
     this.loading = true;
@@ -44,12 +49,13 @@ export class SearchResultsComponent implements OnInit {
         console.error('Search error:', err);
         this.searchResults = null;
         this.loading = false;
-      }
+      },
     });
   }
 
-  navigateToDoctor(doctorId: number): void {
-    this.router.navigate(['/doctors', doctorId]);
+  navigateToDoctor(doctor: any): void {
+    const slug = this.generateSlug(doctor.name);
+    this.router.navigate(['/doctors', slug]);
   }
 
   navigateToTreatment(treatmentId: number): void {
@@ -57,7 +63,7 @@ export class SearchResultsComponent implements OnInit {
   }
 
   navigateToHospital(hospitalId: number): void {
-    this.router.navigate(['/hospitals', hospitalId]);
+    this.router.navigate(['/hospitals-detail', hospitalId]);
   }
 
   formatPrice(treatment: any): string {
@@ -81,7 +87,7 @@ export class SearchResultsComponent implements OnInit {
     return [
       ...Array(fullStars).fill('full'),
       ...Array(halfStar).fill('half'),
-      ...Array(emptyStars).fill('empty')
+      ...Array(emptyStars).fill('empty'),
     ];
   }
 
@@ -93,14 +99,14 @@ export class SearchResultsComponent implements OnInit {
       if (primaryImage) {
         return `https://portal.cureonmedicaltourism.com${primaryImage.url}`;
       }
-      
+
       // If no primary image, use the first image
       const firstImage = hospital.images[0];
       if (firstImage) {
         return `https://portal.cureonmedicaltourism.com${firstImage.url}`;
       }
     }
-    
+
     // Fallback to default image
     return 'assets/images/hospital-default.png';
   }
@@ -115,7 +121,7 @@ export class SearchResultsComponent implements OnInit {
       // If it's a relative path, prepend the base URL
       return `https://portal.cureonmedicaltourism.com${doctor.profile_photo.startsWith('/') ? '' : '/'}${doctor.profile_photo}`;
     }
-    
+
     // Fallback to default doctor image
     return 'assets/images/dtl-doctor.png';
   }

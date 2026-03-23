@@ -31,7 +31,7 @@
       </h3>
       <div class="row">
         <div *ngFor="let doctor of searchResults.doctors.data" class="col-lg-4 col-md-6 mb-4">
-          <div class="user-card" (click)="navigateToDoctor(doctor.id)">
+          <div class="user-card">
             <div class="card-inner">
               <div class="user-card-img">
                 <img class="img-fluid"
@@ -76,7 +76,7 @@
             </div>
             <!-- More Detail -->
             <div class="read-more">
-              <a *ngIf="doctor.id" [attr.href]="'/doctor-details/' + doctor.id" class="btn">
+              <a class="user-card" [routerLink]="['/doctors', generateSlug(doctor.name)]" class="btn">
                 More Detail <i class="fa fa-arrow-up"></i>
               </a>
             </div>

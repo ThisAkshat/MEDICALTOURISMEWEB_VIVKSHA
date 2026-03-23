@@ -122,14 +122,41 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
-                                        <label for="mobile" class="form-label">Mobile Number<span
-                                                class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Mobile Number"
-                                            formControlName="mobile" />
-                                        <div class="text-danger"
-                                            *ngIf="contactForm.get('mobile')?.touched && contactForm.get('mobile')?.invalid">
-                                            Enter a valid 10-digit mobile number
-                                        </div>
+                                        <label class="form-label">Mobile Number<span class="text-danger">*</span></label>
+
+<div class="phone-input-group">
+
+  <!-- Country Code Dropdown -->
+  <div class="custom-select-wrapper country-code-wrapper">
+    <div class="form-select country-select"
+         [class.open]="isCountryDropdownOpen"
+         (click)="toggleCountryDropdown()">
+      <span>{{ selectedCountry.flag }} {{ selectedCountry.code }}</span>
+    </div>
+
+    <div class="select-dropdown" *ngIf="isCountryDropdownOpen">
+      <div class="select-option"
+           *ngFor="let country of countryCodes"
+           (click)="selectCountry(country)">
+        {{ country.flag }} {{ country.name }} ({{ country.code }})
+      </div>
+    </div>
+  </div>
+
+  <!-- Phone Number Input -->
+  <input
+    type="tel"
+    class="form-control phone-number-input"
+    placeholder="Enter phone number"
+    formControlName="mobile"
+  />
+
+</div>
+
+<div class="text-danger"
+ *ngIf="contactForm.get('mobile')?.touched && contactForm.get('mobile')?.invalid">
+  Enter a valid phone number
+</div>
                                     </div>
                                 </div>
                             </div>

@@ -9,12 +9,51 @@ import { ContactService, ContactInfo } from 'src/app/core/services/contact.servi
 import { Title, Meta } from '@angular/platform-browser';
 import { SeoService } from 'src/app/core/services/seo.service';
 
+export interface CountryCode {
+  name: string;
+  code: string;
+  flag: string;
+}
+
+export const COUNTRY_CODES: CountryCode[] = [
+  { name: 'India', code: '+91', flag: '🇮🇳' },
+  { name: 'United States', code: '+1', flag: '🇺🇸' },
+  { name: 'United Arab Emirates', code: '+971', flag: '🇦🇪' },
+  { name: 'United Kingdom', code: '+44', flag: '🇬🇧' },
+  { name: 'Canada', code: '+1', flag: '🇨🇦' },
+  { name: 'Australia', code: '+61', flag: '🇦🇺' },
+  { name: 'Germany', code: '+49', flag: '🇩🇪' },
+  { name: 'France', code: '+33', flag: '🇫🇷' },
+  { name: 'Saudi Arabia', code: '+966', flag: '🇸🇦' },
+  { name: 'Kuwait', code: '+965', flag: '🇰🇼' },
+  { name: 'Qatar', code: '+974', flag: '🇶🇦' },
+  { name: 'Oman', code: '+968', flag: '🇴🇲' },
+  { name: 'Bahrain', code: '+973', flag: '🇧🇭' },
+  { name: 'Bangladesh', code: '+880', flag: '🇧🇩' },
+  { name: 'Nepal', code: '+977', flag: '🇳🇵' },
+  { name: 'Sri Lanka', code: '+94', flag: '🇱🇰' },
+  { name: 'Pakistan', code: '+92', flag: '🇵🇰' },
+  { name: 'Nigeria', code: '+234', flag: '🇳🇬' },
+  { name: 'Kenya', code: '+254', flag: '🇰🇪' },
+  { name: 'Tanzania', code: '+255', flag: '🇹🇿' },
+  { name: 'South Africa', code: '+27', flag: '🇿🇦' },
+  { name: 'Singapore', code: '+65', flag: '🇸🇬' },
+  { name: 'Malaysia', code: '+60', flag: '🇲🇾' },
+  { name: 'Indonesia', code: '+62', flag: '🇮🇩' },
+  { name: 'Thailand', code: '+66', flag: '🇹🇭' },
+  { name: 'Russia', code: '+7', flag: '🇷🇺' },
+  { name: 'China', code: '+86', flag: '🇨🇳' },
+  { name: 'Japan', code: '+81', flag: '🇯🇵' },
+  { name: 'South Korea', code: '+82', flag: '🇰🇷' },
+  { name: 'Brazil', code: '+55', flag: '🇧🇷' },
+];
+
 @Component({
   selector: 'app-contact',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './contact.html',
-  styleUrls: ['./contact.css']
+  styleUrls: ['./contact.css'],
 })
 export class ContactComponent implements OnInit {
   contactForm: FormGroup;
@@ -29,6 +68,23 @@ export class ContactComponent implements OnInit {
   // ✅ NEW: Selected display value
   selectedDepartmentLabel: string = '';
 
+  countryCodes: CountryCode[] = COUNTRY_CODES;
+  selectedCountry: CountryCode = COUNTRY_CODES[0];
+  isCountryDropdownOpen = false;
+
+  toggleCountryDropdown(): void {
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
+  }
+
+  selectCountry(country: CountryCode): void {
+    this.selectedCountry = country;
+    this.isCountryDropdownOpen = false;
+  }
+  get fullPhoneNumber(): string {
+    const digits = (this.contactForm.value.mobile || '').replace(/\D/g, '');
+    return `${this.selectedCountry.code}${digits}`;
+  }
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -38,16 +94,13 @@ export class ContactComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private metaService: Meta,
-    private seo: SeoService
+    private seo: SeoService,
   ) {
     this.contactForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      mobile: [
-        '',
-        [Validators.required, Validators.pattern(/^\+?[0-9]{10,15}$/)]
-      ],
+      mobile: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{10,15}$/)]],
       department: ['', Validators.required],
       query: ['', Validators.required],
     });
@@ -82,7 +135,7 @@ export class ContactComponent implements OnInit {
           //console.log('✅ Contact banner loaded:', this.banner);
         }
       },
-      error: (err) => console.error('❌ Error loading contact banner:', err)
+      error: (err) => console.error('❌ Error loading contact banner:', err),
     });
 
     // load contact information
@@ -91,117 +144,118 @@ export class ContactComponent implements OnInit {
         this.contactInfo = contactInfo;
         //console.log('✅ Contact info loaded:', this.contactInfo);
       },
-      error: (err) => console.error('❌ Error loading contact info:', err)
+      error: (err) => console.error('❌ Error loading contact info:', err),
     });
 
     // fetch treatment types on load
     this.treatmentService.getTreatmentTypes().subscribe({
-      next: (types) => this.treatmentTypes = types,
-      error: (err) => console.error('Error loading treatment types ❌', err)
+      next: (types) => (this.treatmentTypes = types),
+      error: (err) => console.error('Error loading treatment types ❌', err),
     });
-    this.titleService.setTitle('Contact CureOn Medical Tourism | Get Medical Travel Assistance in India');
+    this.titleService.setTitle(
+      'Contact CureOn Medical Tourism | Get Medical Travel Assistance in India',
+    );
     this.metaService.updateTag({
-    name: 'description',
-    content: 'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.'
-});
-/* =======================
+      name: 'description',
+      content:
+        'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.',
+    });
+    /* =======================
     SEO META TAGS
   ======================== */
-  this.seo.setTitle(
-  'Contact CureOn Medical Tourism | Get Medical Travel Assistance in India'
-);
-  this.seo.setDescription(
-  'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.'
-);
+    this.seo.setTitle('Contact CureOn Medical Tourism | Get Medical Travel Assistance in India');
+    this.seo.setDescription(
+      'Contact CureOn Medical Tourism for personalized medical travel assistance in India. Get expert consultation, hospital coordination, and complete support for international patients.',
+    );
 
-  this.metaService.updateTag({
-    name: 'robots',
-    content: 'index, follow'
-  });
+    this.metaService.updateTag({
+      name: 'robots',
+      content: 'index, follow',
+    });
 
-  // Canonical
-  this.seo.setCanonical(
-  'https://www.cureonmedicaltourism.com/contact'
-);
+    // Canonical
+    this.seo.setCanonical('https://www.cureonmedicaltourism.com/contact');
 
-  /* =======================
+    /* =======================
     OPEN GRAPH
   ======================== */
 
-  this.metaService.updateTag({
-    property: 'og:type',
-    content: 'website'
-  });
+    this.metaService.updateTag({
+      property: 'og:type',
+      content: 'website',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:url',
-    content: 'https://www.cureonmedicaltourism.com/contact'
-  });
+    this.metaService.updateTag({
+      property: 'og:url',
+      content: 'https://www.cureonmedicaltourism.com/contact',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:title',
-    content: 'Contact CureOn Medical Tourism | International Patient Support'
-  });
+    this.metaService.updateTag({
+      property: 'og:title',
+      content: 'Contact CureOn Medical Tourism | International Patient Support',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:description',
-    content: 'Speak with our medical travel experts today. Get assistance with treatment planning, hospital selection, visa support, and travel coordination in India.'
-  });
+    this.metaService.updateTag({
+      property: 'og:description',
+      content:
+        'Speak with our medical travel experts today. Get assistance with treatment planning, hospital selection, visa support, and travel coordination in India.',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:image',
-    content: 'https://www.cureonmedicaltourism.com/assets/images/contact-og.jpg'
-  });
+    this.metaService.updateTag({
+      property: 'og:image',
+      content: 'https://www.cureonmedicaltourism.com/assets/images/contact-og.jpg',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:site_name',
-    content: 'CureOn Medical Tourism'
-  });
+    this.metaService.updateTag({
+      property: 'og:site_name',
+      content: 'CureOn Medical Tourism',
+    });
 
-  this.metaService.updateTag({
-    property: 'og:locale',
-    content: 'en_US'
-  });
+    this.metaService.updateTag({
+      property: 'og:locale',
+      content: 'en_US',
+    });
 
-  /* =======================
+    /* =======================
     TWITTER CARD
   ======================== */
 
-  this.metaService.updateTag({
-    name: 'twitter:card',
-    content: 'summary_large_image'
-  });
+    this.metaService.updateTag({
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    });
 
-  this.metaService.updateTag({
-    name: 'twitter:title',
-    content: 'Contact CureOn Medical Tourism | Get Free Medical Consultation'
-  });
+    this.metaService.updateTag({
+      name: 'twitter:title',
+      content: 'Contact CureOn Medical Tourism | Get Free Medical Consultation',
+    });
 
-  this.metaService.updateTag({
-    name: 'twitter:description',
-    content: 'Connect with our team for affordable medical treatment in India with complete international patient support.'
-  });
+    this.metaService.updateTag({
+      name: 'twitter:description',
+      content:
+        'Connect with our team for affordable medical treatment in India with complete international patient support.',
+    });
 
-  this.metaService.updateTag({
-    name: 'twitter:image',
-    content: 'https://www.cureonmedicaltourism.com/assets/images/contact-twitter.jpg'
-  });
-
+    this.metaService.updateTag({
+      name: 'twitter:image',
+      content: 'https://www.cureonmedicaltourism.com/assets/images/contact-twitter.jpg',
+    });
   }
 
   // ✅ NEW: Generate dynamic Google Maps embed URL with pin pointer
   getMapUrl(): SafeResourceUrl {
     let mapUrl: string;
-    
+
     if (this.contactInfo?.address) {
       const encodedAddress = encodeURIComponent(this.contactInfo.address);
       // Simple Google Maps search URL - automatically shows red pin marker for the searched address
       mapUrl = `https://maps.google.com/maps?width=100%25&height=400&hl=en&q=${encodedAddress}&t=&z=15&ie=UTF8&iwloc=B&output=embed`;
     } else {
       // Fallback to default Indore location with pin marker (original embed URL already has marker)
-      mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14717.094017012312!2d75.88652043885348!3d22.755229057468668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af403406fb%3A0x5b50834b117f8bab!2sVijay%20Nagar%2C%20Scheme%20No%2054%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1758971607856!5m2!1sen!2sin";
+      mapUrl =
+        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14717.094017012312!2d75.88652043885348!3d22.755229057468668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396302af403406fb%3A0x5b50834b117f8bab!2sVijay%20Nagar%2C%20Scheme%20No%2054%2C%20Indore%2C%20Madhya%20Pradesh%20452010!5e0!3m2!1sen!2sin!4v1758971607856!5m2!1sen!2sin';
     }
-    
+
     return this.sanitizer.bypassSecurityTrustResourceUrl(mapUrl);
   }
 
@@ -211,10 +265,12 @@ export class ContactComponent implements OnInit {
         first_name: this.contactForm.value.firstName,
         last_name: this.contactForm.value.lastName,
         email: this.contactForm.value.email,
-        phone: String(this.contactForm.value.mobile),
+
+        phone: this.fullPhoneNumber,
+
         subject: 'Contact Form Submission',
         message: this.contactForm.value.query,
-        service_type: this.contactForm.value.department
+        service_type: this.contactForm.value.department,
       };
 
       this.http.post('https://portal.cureonmedicaltourism.com/api/v1/contact', payload).subscribe({
@@ -222,13 +278,14 @@ export class ContactComponent implements OnInit {
           //console.log('Form Submitted ✅', res);
           this.isSubmitted = true;
           this.contactForm.reset();
+          this.selectedCountry = COUNTRY_CODES[0];
           // ✅ Reset dropdown label
           this.selectedDepartmentLabel = '';
         },
         error: (err) => {
           console.error('Form submission error ❌', err);
           alert('Something went wrong. Please try again.');
-        }
+        },
       });
     } else {
       this.contactForm.markAllAsTouched();

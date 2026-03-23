@@ -4,28 +4,27 @@ import { Title, Meta } from '@angular/platform-browser';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
-
-constructor(
+  constructor(
     private title: Title,
     private meta: Meta,
-    @Inject(DOCUMENT) private dom: Document
-) {}
+    @Inject(DOCUMENT) private dom: Document,
+  ) {}
 
-setTitle(title: string) {
+  setTitle(title: string) {
     this.title.setTitle(title);
-}
+  }
 
-setDescription(description: string) {
+  setDescription(description: string) {
     this.meta.updateTag({ name: 'description', content: description });
-}
+  }
 
-setCanonical(url: string) {
+  setCanonical(url: string) {
     let link: HTMLLinkElement | null = this.dom.querySelector("link[rel='canonical']");
     if (!link) {
-    link = this.dom.createElement('link');
-    link.setAttribute('rel', 'canonical');
-    this.dom.head.appendChild(link);
+      link = this.dom.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.dom.head.appendChild(link);
     }
     link.setAttribute('href', url);
-}
+  }
 }
